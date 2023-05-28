@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+let centers: String[];
+
 function App() {
-  const [backndData, setBackndData] = useState([{}]);
+  const [backndData, setBackndData] = useState({ centers });
 
   useEffect(() => {
     fetch("/api")
@@ -14,8 +16,13 @@ function App() {
 
   return (
     <div className="App">
-      test
-      <div style={{ background: "red" }}>test red</div>
+      {typeof backndData.centers === "undefined" ? (
+        <p>Loading ...</p>
+      ) : (
+        backndData.centers.map((center: any, i: any) => (
+          <p key={i}>{center} </p>
+        ))
+      )}
     </div>
   );
 }
