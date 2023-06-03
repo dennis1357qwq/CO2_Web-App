@@ -32,7 +32,7 @@ export function CenterList() {
       ) : (
         backendCenters.centers.map(
           (center: CenterObj, i: number = center.id) => (
-            <NavLink key={i} to={`/Center/${center.id}`}>
+            <NavLink key={i} to={`/center/${center.id}`}>
               <p key={center.id}>{center.name}</p>
             </NavLink>
           )
