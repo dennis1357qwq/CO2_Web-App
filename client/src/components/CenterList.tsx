@@ -30,8 +30,12 @@ export function CenterList() {
       {typeof backendCenters.centers === "undefined" ? (
         <div>Loading ...</div>
       ) : (
-        backendCenters.centers.map((center: CenterObj, i: number = center.id) =>
-          rtValue(center)
+        backendCenters.centers.map(
+          (center: CenterObj, i: number = center.id) => (
+            <NavLink key={i} to={`/Center/${center.id}`}>
+              <p key={center.id}>{center.name}</p>
+            </NavLink>
+          )
         )
       )}
     </div>
@@ -39,13 +43,3 @@ export function CenterList() {
 }
 
 export default CenterList;
-
-function rtValue(center: CenterObj) {
-  return (
-    <>
-      <NavLink to={`/Center/${center.id}`}>
-        <div key={center.id}>{center.name}</div>
-      </NavLink>
-    </>
-  );
-}
