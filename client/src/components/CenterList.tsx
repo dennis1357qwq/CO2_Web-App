@@ -1,28 +1,51 @@
+import * as React from "react";
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
-let centers: String[];
+interface CenterObj {
+  id: number;
+  location: string;
+  peakConsumption: number;
+  name: string;
+}
+
+interface CenterStack {
+  centers: CenterObj[];
+}
+
 export function CenterList() {
-  const [backndData, setBackndData] = useState({ centers });
-
+  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
+    centers: [],
+  });
   useEffect(() => {
     fetch("/api")
       .then((response) => response.json())
       .then((data) => {
-        setBackndData(data);
+        setBackendCenters(data);
       });
   }, []);
 
   return (
     <div className="App">
-      {typeof backndData.centers === "undefined" ? (
-        <p>Loading ...</p>
+      {typeof backendCenters.centers === "undefined" ? (
+        <div>Loading ...</div>
       ) : (
-        backndData.centers.map((center: any, i: any) => (
-          <p key={i}>{center} </p>
-        ))
+        backendCenters.centers.map((center: CenterObj, i: number = center.id) =>
+          rtValue(center)
+        )
       )}
     </div>
   );
 }
 
 export default CenterList;
+
+function rtValue(center: CenterObj) {
+  return (
+    <>
+      <NavLink to={`/Center/${center.id}`}>
+        <div key={center.id}>{center.name}</div>
+      </NavLink>
+    </>
+  );
+}
