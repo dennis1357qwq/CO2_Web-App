@@ -12,9 +12,32 @@ const pool = mysql
   })
   .promise();
 
-async function getCenters() {
+export async function getCenters() {
   const [rows] = await pool.query("SELECT * FROM centers");
   return rows;
 }
-const notes = await getCenters();
-console.log(notes);
+
+export async function getCenter(id) {
+  const [rows] = await pool.query(
+    `
+    SELECT *
+    FROM centers
+    WHERE center_id = ?
+    `,
+    [id]
+  );
+  return rows[0];
+}
+
+export async function createCenter(name, location, peakConsumption) {
+  const [result] = await pool.query(
+    `
+    INSERT INTO centers (name, location, peak_consumption)
+    VALUES (?,?,?)
+    `,
+    [name, location, peakConsumption]
+  );
+
+  const id = result.insertId;
+  return getCenter(id);
+}
