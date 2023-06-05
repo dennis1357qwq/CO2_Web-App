@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 interface CenterObj {
   id: number;
   location: string;
-  peakConsumption: number;
+  peak_consumption: number;
   name: string;
 }
 
@@ -15,7 +15,7 @@ export function Center() {
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     id: 0,
     location: "",
-    peakConsumption: 0,
+    peak_consumption: 0,
     name: "",
   });
 
@@ -32,7 +32,7 @@ export function Center() {
       <div>
         <li>Name: {backendCenter.name}</li>
         <li>Ort: {backendCenter.location}</li>
-        <li>peak-Verbrauch: {backendCenter.peakConsumption}</li>
+        <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
       </div>
       <NavLink to="/">Home</NavLink>
     </>

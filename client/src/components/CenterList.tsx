@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 interface CenterObj {
   center_id: number;
   location: string;
-  peakConsumption: number;
+  peak_consumption: number;
   name: string;
 }
 
