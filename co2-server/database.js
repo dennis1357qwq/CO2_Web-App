@@ -50,5 +50,5 @@ export async function deleteCenter(id) {
     [id]
   );
 
-  return getCenter(id);
+  return getCenters();
 }
