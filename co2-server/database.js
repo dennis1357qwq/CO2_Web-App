@@ -41,3 +41,14 @@ export async function createCenter(name, location, peakConsumption) {
   const id = result.insertId;
   return getCenter(id);
 }
+
+export async function deleteCenter(id) {
+  const [result] = await pool.query(
+    `
+    DELETE FROM centers WHERE center_id = ?
+    `,
+    [id]
+  );
+
+  return getCenter(id);
+}
