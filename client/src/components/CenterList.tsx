@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 interface CenterObj {
-  id: number;
+  center_id: number;
   location: string;
-  peakConsumption: number;
+  peak_consumption: number;
   name: string;
 }
 
@@ -31,9 +31,9 @@ export function CenterList() {
         <div>Loading ...</div>
       ) : (
         backendCenters.centers.map(
-          (center: CenterObj, i: number = center.id) => (
-            <NavLink key={i} to={`/center/${center.id}`}>
-              <p key={center.id}>{center.name}</p>
+          (center: CenterObj, i: number = center.center_id) => (
+            <NavLink key={i} to={`/center/${center.center_id}`}>
+              <p key={center.center_id}>{center.name}</p>
             </NavLink>
           )
         )

@@ -1,25 +1,16 @@
-const express = require("express");
+import express from "express";
+import { getCenter, getCenters, createCenter } from "./database.js";
 const app = express();
 
-const centers = [
-  { id: 1, location: "there...", peakConsumption: 100000, name: "center 1" },
-  {
-    id: 2,
-    location: "elsewhere...",
-    peakConsumption: 110000,
-    name: "center 2",
-  },
-  { id: 3, location: "there...", peakConsumption: 120000, name: "center 3" },
-];
-
-app.get("/api", (req, res) => {
+app.get("/api", async (req, res) => {
+  const centers = await getCenters();
   res.json({
     centers,
   });
 });
 
-app.get("/api/center/:id", (req, res) => {
-  const center = centers.find((c) => c.id === parseInt(req.params.id));
+app.get("/api/center/:id", async (req, res) => {
+  const center = await getCenter(req.params.id);
   if (!center) res.status(404);
   res.json({
     center: center,
