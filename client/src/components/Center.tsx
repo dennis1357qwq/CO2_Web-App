@@ -34,7 +34,7 @@ export function Center() {
         <li>Ort: {backendCenter.location}</li>
         <li>peak-Verbrauch: {backendCenter.peakConsumption}</li>
       </div>
-      <NavLink to="/">Home</NavLink>
+      <NavLink to="/dashboard">Home</NavLink>
     </>
   );
 }

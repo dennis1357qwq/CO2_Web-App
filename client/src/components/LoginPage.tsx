@@ -1,4 +1,5 @@
 import { useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 
 export default function LoginPage() {
@@ -6,6 +7,7 @@ export default function LoginPage() {
   const [signInPassword, setSignInPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   function handleSignInEmailFieldChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -26,6 +28,7 @@ export default function LoginPage() {
 
     try {
       // Sign in Logic here
+      navigate("/dashboard");
       setErrorMessage("E-Mail or Password is wrong!");
       setLoading(false);
     } catch (err) {
@@ -36,53 +39,42 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center text-center">
-      <div className="lg:w-2/5 md:w-3/5 w-4/5">
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium leading-8 text-gray-900"
-        >
+      <div className="">
+        <label htmlFor="email" className="">
           E-Mail
         </label>
-        <div className="relative mt-2 rounded-md shadow-lg">
+        <div className="">
           <input
             type="email"
             id="email"
-            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className=""
             placeholder="Enter your E-Mail Adress"
             value={signInEmail}
             //onClick={(event) => console.log(event)}
             onChange={(e) => handleSignInEmailFieldChange(e)}
           />
         </div>
-
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium leading-8 text-gray-900"
-        >
+        <label htmlFor="password" className="">
           Password
         </label>
-        <div className="relative mt-2 rounded-md shadow-lg">
+        <div className="">
           <input
             type="password"
             id="password"
-            className="block w-full rounded-md border-0 py-1.5 pl-3 pr-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className=""
             placeholder="Enter your Password"
             value={signInPassword}
             //onClick={(event) => console.log(event)}
             onChange={(e) => handleSignInPasswordFieldChange(e)}
           />
         </div>
-
-        <button
-          className={`
-            bg-white mt-6 border rounded-xl border-gray-300 p-2 hover:bg-indigo-600 hover:text-white shadow-m
-            ${loading ? "bg-indigo-600 text-white animate-pulse" : ""}
-          `}
-          disabled={loading}
-          onClick={handleSignIn}
-        >
-          Sign in
-        </button>
+        <button className="" disabled={loading} onClick={handleSignIn}>
+          Login
+        </button>{" "}
+        &nbsp; &nbsp;
+        <NavLink to="/register">
+          <button className="">Sign Up</button>
+        </NavLink>
         <p className="text-red-900">{errorMessage}</p>
       </div>
     </div>
