@@ -1,6 +1,12 @@
 import express from "express";
 import { getCenter, getCenters, createCenter } from "./database.js";
+import bodyParser from "body-parser";
+
 const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json());
 
 app.get("/api", async (req, res) => {
   const centers = await getCenters();
@@ -11,6 +17,18 @@ app.get("/api", async (req, res) => {
 
 app.get("/api/center/:id", async (req, res) => {
   const center = await getCenter(req.params.id);
+  if (!center) res.status(404);
+  res.json({
+    center: center,
+  });
+});
+
+app.post("/api/newCenter", async (req, res) => {
+  const center = await createCenter(
+    req.body.CenterName,
+    req.body.CenterLocation,
+    req.body.CenterPeakConsumption
+  );
   if (!center) res.status(404);
   res.json({
     center: center,

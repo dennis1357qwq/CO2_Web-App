@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 interface CenterObj {
-  id: number;
+  center_id: number;
   location: string;
   peak_consumption: number;
   name: string;
@@ -13,7 +13,7 @@ interface CenterObj {
 export function Center() {
   const { id } = useParams();
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
-    id: 0,
+    center_id: 0,
     location: "",
     peak_consumption: 0,
     name: "",
