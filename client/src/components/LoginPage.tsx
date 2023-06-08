@@ -21,20 +21,24 @@ export default function LoginPage() {
     setSignInPassword(event.target.value);
   }
 
-  async function handleSignIn(event: SyntheticEvent) {
+  async function handleSignIn(event: any) {
     event.preventDefault();
     setErrorMessage("");
     setLoading(true);
 
-    try {
-      // Sign in Logic here
-      navigate("/dashboard");
-      setErrorMessage("E-Mail or Password is wrong!");
-      setLoading(false);
-    } catch (err) {
-      setErrorMessage("There was an error signing in!");
-      setLoading(false);
-    }
+    const user = { signInEmail, signInPassword };
+
+    fetch("api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    })
+      .then((repsonse) => repsonse.json())
+      .then((data) => console.log(data));
+
+    // check for successful login
+    navigate("/dashboard");
+    setLoading(false);
   }
 
   return (

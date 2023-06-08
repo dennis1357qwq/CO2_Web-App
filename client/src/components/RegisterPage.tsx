@@ -1,4 +1,5 @@
 import { useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
+import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 
 export default function RegisterPage() {
@@ -7,6 +8,7 @@ export default function RegisterPage() {
   const [registerPassword, setRegisterPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   function handleRegisterUsernameFieldChange(
     event: ChangeEvent<HTMLInputElement>
@@ -29,19 +31,23 @@ export default function RegisterPage() {
     setRegisterPassword(event.target.value);
   }
 
-  async function handleRegister(event: SyntheticEvent) {
+  async function handleRegister(event: any) {
     event.preventDefault();
     setErrorMessage("");
     setLoading(true);
+    const user = { username, registerEmail, registerPassword };
 
-    try {
-      // Register Logic here
-      setErrorMessage("E-Mail adress or username already in use!");
-      setLoading(false);
-    } catch (err) {
-      setErrorMessage("There was an error while register!");
-      setLoading(false);
-    }
+    fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+    // check for error and print ?
+
+    setLoading(false);
+    navigate("/");
   }
 
   return (
@@ -70,7 +76,6 @@ export default function RegisterPage() {
             className=""
             placeholder="Enter your E-Mail Adress"
             value={registerEmail}
-            //onClick={(event) => console.log(event)}
             onChange={(e) => handleRegisterEmailFieldChange(e)}
           />
         </div>
@@ -85,7 +90,6 @@ export default function RegisterPage() {
             className=""
             placeholder="Enter a Password"
             value={registerPassword}
-            //onClick={(event) => console.log(event)}
             onChange={(e) => handleRegisterPasswordFieldChange(e)}
           />
         </div>
