@@ -30,6 +30,14 @@ export function Center() {
       });
   }, []);
 
+  const handleClick = () => {
+    const dialog = document.querySelector("dialog");
+    if (!dialog) {
+      console.log("error");
+    }
+    dialog?.showModal();
+  };
+
   return (
     <>
       <div>
@@ -37,6 +45,9 @@ export function Center() {
         <li>Ort: {backendCenter.location}</li>
         <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
       </div>
+
+      <dialog id="dialog">test</dialog>
+      <button onClick={handleClick}>Edit</button>
       <DeleteButton id={backendCenter.center_id} path={path} />
       <NavLink to="/">Home</NavLink>
     </>
