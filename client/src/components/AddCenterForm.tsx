@@ -55,6 +55,7 @@ export function AddCenterForm() {
           ></input>
 
           <button type="submit">Add</button>
+          <NavLink to="/">Home</NavLink>
         </form>
       </div>
     </>

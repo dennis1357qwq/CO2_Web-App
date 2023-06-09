@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { DeleteButton } from "./DeleteButton";
 
 interface CenterObj {
   center_id: number;
@@ -19,8 +20,10 @@ export function Center() {
     name: "",
   });
 
+  const path = `/api/center/${id}`;
+
   useEffect(() => {
-    fetch(`/api/center/${id}`)
+    fetch(path)
       .then((response) => response.json())
       .then((data) => {
         setBackendCenter(data.center);
@@ -34,6 +37,7 @@ export function Center() {
         <li>Ort: {backendCenter.location}</li>
         <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
       </div>
+      <DeleteButton id={backendCenter.center_id} path={path} />
       <NavLink to="/">Home</NavLink>
     </>
   );

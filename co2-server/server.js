@@ -1,5 +1,10 @@
 import express from "express";
-import { getCenter, getCenters, createCenter } from "./database.js";
+import {
+  getCenter,
+  getCenters,
+  createCenter,
+  deleteCenter,
+} from "./database.js";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -32,6 +37,13 @@ app.post("/api/newCenter", async (req, res) => {
   if (!center) res.status(404);
   res.json({
     center: center,
+  });
+});
+
+app.delete("/api/center/:id", async (req, res) => {
+  const centers = await deleteCenter(req.params.id);
+  res.json({
+    centers,
   });
 });
 

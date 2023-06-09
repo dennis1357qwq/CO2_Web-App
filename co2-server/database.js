@@ -45,8 +45,8 @@ export async function createCenter(name, location, peakConsumption) {
 export async function deleteCenter(id) {
   const [result] = await pool.query(
     `
-      DELETE FROM centers WHERE center_id = ?
-      `,
+    DELETE FROM centers WHERE center_id = ?
+    `,
     [id]
   );
 
