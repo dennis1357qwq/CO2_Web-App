@@ -42,6 +42,18 @@ export async function createCenter(name, location, peakConsumption) {
   return getCenter(id);
 }
 
+export async function changeCentre(id, n, l, p){
+  const [result] = await pool.query(
+    `
+    UPDATE centers 
+    SET name = ?, location = ?, peak_consumption = ?
+    WHERE center_id = ?
+    `,
+    [n, l, p, id]
+  );
+  return getCenter(id);
+}
+
 export async function deleteCenter(id) {
   const [result] = await pool.query(
     `
@@ -54,13 +66,13 @@ export async function deleteCenter(id) {
 }
 
 
-export async function addUser(username, password) {
+export async function addUser(username, password, email) {
   const [result] = await pool.query(
     `
-    INSERT INTO users (username, password)
-    VALUES (?,?)
+    INSERT INTO users (username, password, email)
+    VALUES (?,?,?)
     `,
-    [username, password]
+    [username, password, email]
   );
 
   const id = result.insertId;
