@@ -42,14 +42,23 @@ export async function createCenter(name, location, peakConsumption) {
   return getCenter(id);
 }
 
-export async function checkUserExists(email, password) {
+export async function login(email, password) {
   const [rows] = await pool.query(
     `
     SELECT * from user WHERE email = ? AND password = ?
     `,
     [email, password]
   );
-  
+  return rows[0];
+}
+
+export async function checkUserExists(username, email) {
+  const [rows] = await pool.query(
+    `
+    SELECT * from user WHERE username = ? OR email = ?
+    `,
+    [username, email]
+  );
   return rows[0];
 }
 

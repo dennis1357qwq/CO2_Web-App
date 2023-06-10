@@ -42,63 +42,50 @@ export default function RegisterPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status == 400) {
+          setErrorMessage("Username or E-Mail already in Use!");
+          setLoading(false);
+        } else if (response.status == 200) {
+          setLoading(false);
+          navigate("/");
+        }
+      })
       .then((data) => console.log(data));
     // check for error and print ?
-
-    setLoading(false);
-    navigate("/");
+    // success message !
   }
 
   return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <div className="">
-        <label htmlFor="username" className="">
-          Username
-        </label>
-        <div className="">
-          <input
-            type="username"
-            id="username"
-            className=""
-            placeholder="Enter a username"
-            value={username}
-            onChange={(e) => handleRegisterUsernameFieldChange(e)}
-          ></input>
-        </div>
-        <label htmlFor="email" className="">
-          E-Mail
-        </label>
-        <div className="">
-          <input
-            type="email"
-            id="email"
-            className=""
-            placeholder="Enter your E-Mail Adress"
-            value={registerEmail}
-            onChange={(e) => handleRegisterEmailFieldChange(e)}
-          />
-        </div>
-
-        <label htmlFor="password" className="">
-          Password
-        </label>
-        <div className="">
-          <input
-            type="password"
-            id="password"
-            className=""
-            placeholder="Enter a Password"
-            value={registerPassword}
-            onChange={(e) => handleRegisterPasswordFieldChange(e)}
-          />
-        </div>
-
-        <button className="" disabled={loading} onClick={handleRegister}>
-          Register
-        </button>
-        <p className="text-red-900">{errorMessage}</p>
-      </div>
-    </div>
+    <form onSubmit={handleRegister}>
+      <label htmlFor="username">Username</label>
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter a Username"
+        value={username}
+        onChange={(e) => handleRegisterUsernameFieldChange(e)}
+      />
+      <label htmlFor="email">E-Mail</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter a E-Mail Adress"
+        value={registerEmail}
+        onChange={(e) => handleRegisterEmailFieldChange(e)}
+      />
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter a Password"
+        value={registerPassword}
+        onChange={(e) => handleRegisterPasswordFieldChange(e)}
+      />
+      <button type="submit" disabled={loading} onClick={handleRegister}>
+        Register
+      </button>
+      <p className="text-red-900">{errorMessage}</p>
+    </form>
   );
 }

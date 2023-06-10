@@ -33,54 +33,44 @@ export default function LoginPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
     })
-      .then((repsonse) => repsonse.json())
+      .then((repsonse) => {
+        if (repsonse.status == 404) {
+          setErrorMessage("Credentials are wrong / User does not exist!");
+          // setAuth ?? accessToken
+          setLoading(false);
+        } else if (repsonse.status == 200) {
+          navigate("/dashboard");
+          setLoading(false);
+        }
+      })
       .then((data) => console.log(data));
-
-    // check for successful login
-    navigate("/dashboard");
-    setLoading(false);
   }
 
   return (
-    <div className="flex flex-col items-center justify-center text-center">
-      <div className="">
-        <label htmlFor="email" className="">
-          E-Mail
-        </label>
-        <div className="">
-          <input
-            type="email"
-            id="email"
-            className=""
-            placeholder="Enter your E-Mail Adress"
-            value={signInEmail}
-            //onClick={(event) => console.log(event)}
-            onChange={(e) => handleSignInEmailFieldChange(e)}
-          />
-        </div>
-        <label htmlFor="password" className="">
-          Password
-        </label>
-        <div className="">
-          <input
-            type="password"
-            id="password"
-            className=""
-            placeholder="Enter your Password"
-            value={signInPassword}
-            //onClick={(event) => console.log(event)}
-            onChange={(e) => handleSignInPasswordFieldChange(e)}
-          />
-        </div>
-        <button className="" disabled={loading} onClick={handleSignIn}>
-          Login
-        </button>{" "}
-        &nbsp; &nbsp;
-        <NavLink to="/register">
-          <button className="">Sign Up</button>
-        </NavLink>
-        <p className="text-red-900">{errorMessage}</p>
-      </div>
-    </div>
+    <form onSubmit={handleSignIn}>
+      <label htmlFor="email">E-Mail</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter your E-Mail Adress"
+        value={signInEmail}
+        onChange={(e) => handleSignInEmailFieldChange(e)}
+      />
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter your Password"
+        value={signInPassword}
+        onChange={(e) => handleSignInPasswordFieldChange(e)}
+      />
+      <button type="submit" disabled={loading} onClick={handleSignIn}>
+        Login
+      </button>
+      <NavLink to="/register">
+        <button className="">Sign Up</button>
+      </NavLink>
+      <p className="text-red-900">{errorMessage}</p>
+    </form>
   );
 }
