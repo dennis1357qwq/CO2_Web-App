@@ -1,8 +1,5 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Center from "./Center";
-import { EditCenterForm } from "./EditCenterForm";
 
 export function EditCenter(props: {
   id: number;
@@ -51,13 +48,10 @@ export function EditCenter(props: {
   };
 
   const testfunc = () => {
-    // console.log("click");
     if (checkIfChanged()) {
       setNoChangesError(true);
-      //   console.log("no change");
     }
     if (!checkIfChanged()) {
-      //   console.log("true change");
       setNoChangesError(false);
       callPutApi(
         props.id,

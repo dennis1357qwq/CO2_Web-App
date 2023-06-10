@@ -1,13 +1,5 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { NavLink, redirect, useNavigate } from "react-router-dom";
-
-// interface CenterObj {
-//   center_id: number;
-//   location: string;
-//   peak_consumption: number;
-//   name: string;
-// }
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 export function AddCenterForm() {
   const [CenterName, setName] = useState("");
