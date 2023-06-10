@@ -13,7 +13,7 @@ export function DeleteButton(props: { id: number; path: string }) {
 
     //Info notification: Center with return data has been added!
 
-    navigate("/");
+    navigate("/dashboard");
   };
 
   return (

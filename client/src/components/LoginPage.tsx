@@ -35,12 +35,12 @@ export default function LoginPage() {
     })
       .then((repsonse) => {
         if (repsonse.status == 404) {
+          setLoading(false);
           setErrorMessage("Credentials are wrong / User does not exist!");
           // setAuth ?? accessToken
-          setLoading(false);
         } else if (repsonse.status == 200) {
-          navigate("/dashboard");
           setLoading(false);
+          navigate("/dashboard");
         }
       })
       .then((data) => console.log(data));

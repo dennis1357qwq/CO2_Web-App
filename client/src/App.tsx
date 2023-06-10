@@ -17,6 +17,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/center/:id" element={<Center />} />
         <Route path="/newCenter" element={<AddCenterForm />} />
+        <Route path="*" element={<Overview />} />
       </Routes>
     </>
   );

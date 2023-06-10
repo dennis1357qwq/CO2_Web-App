@@ -8,13 +8,9 @@ import {
 } from "./database.js";
 import bodyParser from "body-parser";
 
-
 const app = express();
-
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-
 
 app.post("/api/login", async(req, res) => {
   console.log(req.body)
@@ -25,7 +21,7 @@ app.post("/api/login", async(req, res) => {
   }
   else res.status(200);
   res.json({
-    user: user, // Was anderes zurückgeben ? Sicherheit
+    user: user,
   })
 })
 
@@ -37,7 +33,7 @@ app.post("/api/register", async(req, res) => {
     console.log("User with E-Mail adress or Username exists already!")
     res.status(400);
     res.json({
-      user: null, // Was anderes zurückgeben ? Sicherheit
+      user: null,
     })
   }
   else{
