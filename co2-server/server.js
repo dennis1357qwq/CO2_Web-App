@@ -1,6 +1,13 @@
 import express from "express";
-import { getCenter, getCenters, createCenter, addUser, getUser, deleteUser, checkUserExists, login } from "./database.js";
+import {
+  getCenter,
+  getCenters,
+  createCenter, addUser, getUser, deleteUser, checkUserExists, login,
+  deleteCenter,
+  updateCenter,
+} from "./database.js";
 import bodyParser from "body-parser";
+
 
 const app = express();
 
@@ -8,21 +15,6 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-
-app.get("/api", async (req, res) => {
-  const centers = await getCenters();
-  res.json({
-    centers,
-  });
-});
-
-app.get("/api/center/:id", async (req, res) => {
-  const center = await getCenter(req.params.id);
-  if (!center) res.status(404);
-  res.json({
-    center: center,
-  });
-});
 
 app.post("/api/login", async(req, res) => {
   console.log(req.body)
@@ -61,6 +53,54 @@ app.post("/api/register", async(req, res) => {
     })
   }
   // check is create successful -> error message?
+});
+
+app.get("/api", async (req, res) => {
+  const centers = await getCenters();
+  res.json({
+    centers,
+  });
+});
+
+app.get("/api/center/:id", async (req, res) => {
+  const center = await getCenter(req.params.id);
+  if (!center) res.status(404);
+  res.json({
+    center: center,
+  });
+});
+
+
+
+app.post("/api/newCenter", async (req, res) => {
+  const center = await createCenter(
+    req.body.CenterName,
+    req.body.CenterLocation,
+    req.body.CenterPeakConsumption
+  );
+  if (!center) res.status(404);
+  res.json({
+    center: center,
+  });
+});
+
+app.delete("/api/center/:id", async (req, res) => {
+  const centers = await deleteCenter(req.params.id);
+  res.json({
+    centers,
+  });
+});
+
+app.put("/api/center/:id", async (req, res) => {
+  const result = await updateCenter(
+    req.body.center_id,
+    req.body.CenterName,
+    req.body.CenterLocation,
+    req.body.CenterPeakConsumption
+  );
+  res.json({
+    center: result,
+  });
 });
 
 app.listen(5002, () => {

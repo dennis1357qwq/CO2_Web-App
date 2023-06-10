@@ -1,10 +1,12 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { DeleteButton } from "./DeleteButton";
+import { EditCenter } from "./EditCenter";
 
 interface CenterObj {
-  id: number;
+  center_id: number;
   location: string;
   peak_consumption: number;
   name: string;
@@ -13,14 +15,16 @@ interface CenterObj {
 export function Center() {
   const { id } = useParams();
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
-    id: 0,
+    center_id: 0,
     location: "",
     peak_consumption: 0,
     name: "",
   });
 
+  const path = `/api/center/${id}`;
+
   useEffect(() => {
-    fetch(`/api/center/${id}`)
+    fetch(path)
       .then((response) => response.json())
       .then((data) => {
         setBackendCenter(data.center);
@@ -34,6 +38,14 @@ export function Center() {
         <li>Ort: {backendCenter.location}</li>
         <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
       </div>
+
+      <EditCenter
+        id={backendCenter.center_id}
+        name={backendCenter.name}
+        location={backendCenter.location}
+        peakCons={backendCenter.peak_consumption}
+      />
+      <DeleteButton id={backendCenter.center_id} path={path} />
       <NavLink to="/dashboard">Home</NavLink>
     </>
   );

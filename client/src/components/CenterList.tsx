@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 interface CenterObj {
@@ -32,9 +32,11 @@ export function CenterList() {
       ) : (
         backendCenters.centers.map(
           (center: CenterObj, i: number = center.center_id) => (
-            <NavLink key={i} to={`/center/${center.center_id}`}>
-              <p key={center.center_id}>{center.name}</p>
-            </NavLink>
+            <div key={i}>
+              <NavLink key={i} to={`/center/${center.center_id}`}>
+                <p key={center.center_id}>{center.name}</p>
+              </NavLink>
+            </div>
           )
         )
       )}
