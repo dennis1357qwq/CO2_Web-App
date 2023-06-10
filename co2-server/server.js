@@ -4,6 +4,7 @@ import {
   getCenters,
   createCenter,
   deleteCenter,
+  updateCenter,
 } from "./database.js";
 import bodyParser from "body-parser";
 
@@ -44,6 +45,18 @@ app.delete("/api/center/:id", async (req, res) => {
   const centers = await deleteCenter(req.params.id);
   res.json({
     centers,
+  });
+});
+
+app.put("/api/center/:id", async (req, res) => {
+  const result = await updateCenter(
+    req.body.center_id,
+    req.body.name,
+    req.body.location,
+    req.body.peak_consumption
+  );
+  res.json({
+    center: result,
   });
 });
 

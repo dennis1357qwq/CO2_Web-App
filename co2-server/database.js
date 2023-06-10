@@ -42,6 +42,18 @@ export async function createCenter(name, location, peakConsumption) {
   return getCenter(id);
 }
 
+export async function updateCenter(id, name, location, peakConsumption) {
+  const [result] = await pool.query(
+    `
+      UPDATE centers 
+      SET name = ?, location = ?, peak_consumption = ?
+      WHERE center_id = ?
+      `,
+    [name, location, peakConsumption, id]
+  );
+  return getCenter(id);
+}
+
 export async function deleteCenter(id) {
   const [result] = await pool.query(
     `

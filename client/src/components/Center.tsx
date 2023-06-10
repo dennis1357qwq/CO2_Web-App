@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink, useNavigate } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
+import { EditCenter } from "./EditCenter";
 
 interface CenterObj {
   center_id: number;
@@ -30,14 +31,6 @@ export function Center() {
       });
   }, []);
 
-  const handleClick = () => {
-    const dialog = document.querySelector("dialog");
-    if (!dialog) {
-      console.log("error");
-    }
-    dialog?.showModal();
-  };
-
   return (
     <>
       <div>
@@ -46,8 +39,12 @@ export function Center() {
         <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
       </div>
 
-      <dialog id="dialog">test</dialog>
-      <button onClick={handleClick}>Edit</button>
+      <EditCenter
+        id={backendCenter.center_id}
+        name={backendCenter.name}
+        location={backendCenter.location}
+        peakCons={backendCenter.peak_consumption}
+      />
       <DeleteButton id={backendCenter.center_id} path={path} />
       <NavLink to="/">Home</NavLink>
     </>
