@@ -33,7 +33,7 @@ app.post("/api/login", async(req, res) => {
   }
   else res.status(200);
   res.json({
-    user: user,
+    user: user, // Was anderes zurückgeben ? Sicherheit
   })
 })
 
@@ -45,7 +45,7 @@ app.post("/api/register", async(req, res) => {
     console.log("User with E-Mail adress or Username exists already!")
     res.status(400);
     res.json({
-      user: exists,
+      user: null, // Was anderes zurückgeben ? Sicherheit
     })
   }
   else{
