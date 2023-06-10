@@ -51,9 +51,9 @@ app.delete("/api/center/:id", async (req, res) => {
 app.put("/api/center/:id", async (req, res) => {
   const result = await updateCenter(
     req.body.center_id,
-    req.body.name,
-    req.body.location,
-    req.body.peak_consumption
+    req.body.CenterName,
+    req.body.CenterLocation,
+    req.body.CenterPeakConsumption
   );
   res.json({
     center: result,

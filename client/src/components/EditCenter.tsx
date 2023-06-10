@@ -102,9 +102,9 @@ export function EditCenter(props: {
 function callPutApi(id: number, name: string, peak: number, location: string) {
   const center = {
     center_id: id,
-    name: name,
-    location: location,
-    peak_consumption: peak,
+    CenterName: name,
+    CenterLocation: location,
+    CenterPeakConsumption: peak,
   };
 
   fetch(`/api/center/${id}`, {
