@@ -2,17 +2,58 @@ import express from "express";
 import {
   getCenter,
   getCenters,
-  createCenter,
+  createCenter, addUser, getUser, deleteUser, checkUserExists, login,
   deleteCenter,
   updateCenter,
 } from "./database.js";
 import bodyParser from "body-parser";
 
+
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+
+app.post("/api/login", async(req, res) => {
+  console.log(req.body)
+  const user = await login(req.body.signInEmail, req.body.signInPassword)
+  if (!user) {
+    console.log("User does not exist!");
+    res.status(404);
+  }
+  else res.status(200);
+  res.json({
+    user: user, // Was anderes zurückgeben ? Sicherheit
+  })
+})
+
+app.post("/api/register", async(req, res) => {
+  console.log(req.body)
+  const exists = await checkUserExists(req.body.username, req.body.registerEmail)
+  console.log(exists);
+  if (exists){
+    console.log("User with E-Mail adress or Username exists already!")
+    res.status(400);
+    res.json({
+      user: null, // Was anderes zurückgeben ? Sicherheit
+    })
+  }
+  else{
+    const user = await addUser(
+      req.body.username,
+      req.body.registerEmail,
+      req.body.registerPassword
+    );
+    if (!user) res.status(500);
+    else res.status(200);
+    res.json({
+      user: user,
+    })
+  }
+  // check is create successful -> error message?
+});
 
 app.get("/api", async (req, res) => {
   const centers = await getCenters();
@@ -28,6 +69,8 @@ app.get("/api/center/:id", async (req, res) => {
     center: center,
   });
 });
+
+
 
 app.post("/api/newCenter", async (req, res) => {
   const center = await createCenter(
@@ -62,4 +105,4 @@ app.put("/api/center/:id", async (req, res) => {
 
 app.listen(5002, () => {
   console.log("server started on port 5002");
-});
+})

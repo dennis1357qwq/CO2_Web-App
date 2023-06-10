@@ -21,7 +21,7 @@ export function AddCenterForm() {
 
     //Info notification: Center with return data has been added!
 
-    navigate("/");
+    navigate("/dashboard");
   };
   return (
     <>
@@ -47,7 +47,7 @@ export function AddCenterForm() {
           ></input>
 
           <button type="submit">Add</button>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/dashboard">Home</NavLink>
         </form>
       </div>
     </>

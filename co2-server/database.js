@@ -1,6 +1,6 @@
 import mysql from "mysql2";
-
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const pool = mysql
@@ -11,6 +11,62 @@ const pool = mysql
     database: process.env.MYSQL_DATABASE,
   })
   .promise();
+
+
+  export async function login(email, password) {
+    const [rows] = await pool.query(
+      `
+      SELECT * from user WHERE email = ? AND password = ?
+      `,
+      [email, password]
+    );
+    return rows[0];
+  }
+  
+  export async function checkUserExists(username, email) {
+    const [rows] = await pool.query(
+      `
+      SELECT * from user WHERE username = ? OR email = ?
+      `,
+      [username, email]
+    );
+    return rows[0];
+  }
+  
+  export async function getUser(id) {
+    const [rows] = await pool.query(
+      `
+      SELECT * FROM user WHERE user_id = ?
+      `,
+      [id]
+    );
+    return rows[0];
+  }
+  
+  export async function addUser(username, email, password) {
+    const [result] = await pool.query(
+      `
+      INSERT INTO user (username, email, password)
+      VALUES (?,?,?)
+      `,
+      [username, email, password]
+    );
+  
+    const id = result.insertId;
+    return getUser(id);
+  }
+  
+  export async function deleteUser(id) {
+    const [result] = await pool.query(
+      `
+      DELETE FROM user WHERE user_id = ?
+      `,
+      [id]
+    );
+   
+    //return getCenters();
+  }
+
 
 export async function getCenters() {
   const [rows] = await pool.query("SELECT * FROM centers");
@@ -41,6 +97,8 @@ export async function createCenter(name, location, peakConsumption) {
   const id = result.insertId;
   return getCenter(id);
 }
+
+
 
 export async function updateCenter(id, name, location, peakConsumption) {
   const [result] = await pool.query(

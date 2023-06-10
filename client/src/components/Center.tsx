@@ -46,7 +46,7 @@ export function Center() {
         peakCons={backendCenter.peak_consumption}
       />
       <DeleteButton id={backendCenter.center_id} path={path} />
-      <NavLink to="/">Home</NavLink>
+      <NavLink to="/dashboard">Home</NavLink>
     </>
   );
 }
