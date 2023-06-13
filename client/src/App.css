@@ -112,6 +112,7 @@
   position: fixed;
   border: lightgrey solid;
   padding: 10px;
+  width: max-content;
 }
 
 #AddSubmitButton {
