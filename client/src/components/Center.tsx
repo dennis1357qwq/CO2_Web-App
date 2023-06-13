@@ -32,22 +32,28 @@ export function Center() {
   }, []);
 
   return (
-    <>
-      <div>
-        <li>Name: {backendCenter.name}</li>
-        <li>Ort: {backendCenter.location}</li>
-        <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
-      </div>
+    <div className="Center-wrapper">
+      <div className="Center">
+        <div className="Center-data-list">
+          <li>Name: {backendCenter.name}</li>
+          <li>Ort: {backendCenter.location}</li>
+          <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
+        </div>
 
-      <EditCenter
-        id={backendCenter.center_id}
-        name={backendCenter.name}
-        location={backendCenter.location}
-        peakCons={backendCenter.peak_consumption}
-      />
-      <DeleteButton id={backendCenter.center_id} path={path} />
-      <NavLink to="/dashboard">Home</NavLink>
-    </>
+        <div className="Center-buttons">
+          <EditCenter
+            id={backendCenter.center_id}
+            name={backendCenter.name}
+            location={backendCenter.location}
+            peakCons={backendCenter.peak_consumption}
+          />
+          <DeleteButton id={backendCenter.center_id} path={path} />
+        </div>
+        <NavLink className={"Home-Link"} to="/dashboard">
+          Home
+        </NavLink>
+      </div>
+    </div>
   );
 }
 

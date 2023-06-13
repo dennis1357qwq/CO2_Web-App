@@ -1,0 +1,131 @@
+#root {
+  font-family: sans-serif;
+}
+
+.Overview {
+  display: grid;
+  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  position: fixed;
+  text-align: center;
+  gap: 1rem;
+}
+
+#AddButton {
+  border: 0.1rem solid darkgray;
+  border-radius: 10%;
+  width: 30px;
+  height: 30px;
+}
+
+.Center-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Center {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  position: fixed;
+}
+
+.Center-data-list {
+  /* background-color: violet; */
+  display: grid;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.Center-data-list li {
+  /* background-color: yellow; */
+  list-style-type: none;
+}
+
+.Center-buttons {
+  /* background-color: aqua; */
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.Home-Link {
+  /* background-color: yellowgreen; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Edit-form {
+  display: flex;
+  gap: 1rem;
+  /* background-color: blanchedalmond; */
+}
+
+.Edit-form-labels {
+  display: grid;
+  gap: 1rem;
+}
+
+.Edit-form-inputs {
+  display: grid;
+  gap: 1rem;
+}
+
+.Button-Message-row {
+  display: flex;
+  /* background-color: red; */
+  gap: 4rem;
+}
+
+.Button-row {
+  display: flex;
+  gap: 0.5em;
+  /* background-color: blue; */
+  position: relative;
+  width: min-content;
+}
+
+.EditCenter-wrapper {
+  display: grid;
+  gap: 1rem;
+}
+
+#NoChangesLabel {
+  color: red;
+}
+
+.AddCenter-wrapper {
+  display: grid;
+  gap: 2em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  position: fixed;
+  border: lightgrey solid;
+  padding: 10px;
+}
+
+#AddSubmitButton {
+  width: min-content;
+  /* background-color: green; */
+}
+
+#AddNavLink {
+  /* background-color: red; */
+  text-align: center;
+}
+
+.InputLastLine {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}

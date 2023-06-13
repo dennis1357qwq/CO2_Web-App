@@ -67,33 +67,49 @@ export function EditCenter(props: {
   return (
     <>
       <button onClick={handleClickOpenEditor}>Edit</button>
-      <dialog id="dialog">
-        <form>
-          <input
-            type="text"
-            value={CenterName}
-            placeholder={props.name}
-            onChange={(e) => setCenterName(e.target.value)}
-          ></input>
-          <label>location : </label>
-          <input
-            type="text"
-            value={CenterLocation}
-            placeholder={props.location}
-            onChange={(e) => setCenterLocation(e.target.value)}
-          ></input>
-          <label>peak Consumption : </label>
-          <input
-            type="text"
-            value={CenterPeakConsumption}
-            placeholder={`${props.peakCons}`}
-            onChange={(e) => checkAndSetPeakCons(e.target.value)}
-          ></input>
-        </form>
 
-        <button onClick={testfunc}>Edit</button>
-        <button onClick={handleClickCloseEditor}>cancel</button>
-        {NoChangesError ? <label>no changes</label> : ""}
+      <dialog className="Dialog-wrap" id="dialog">
+        <div className="EditCenter-wrapper">
+          <form className="Edit-form">
+            <div className="Edit-form-labels">
+              <label>name: </label>
+              <label>location: </label>
+              <label>peak Consumption: </label>
+            </div>
+            <div className="Edit-form-inputs">
+              <input
+                type="text"
+                value={CenterName}
+                placeholder={props.name}
+                onChange={(e) => setCenterName(e.target.value)}
+              ></input>
+              <input
+                type="text"
+                value={CenterLocation}
+                placeholder={props.location}
+                onChange={(e) => setCenterLocation(e.target.value)}
+              ></input>
+              <input
+                type="text"
+                value={CenterPeakConsumption}
+                placeholder={`${props.peakCons}`}
+                onChange={(e) => checkAndSetPeakCons(e.target.value)}
+              ></input>
+            </div>
+          </form>
+
+          <div className="Button-Message-row">
+            <div className="Button-row">
+              <button onClick={testfunc}>Edit</button>
+              <button onClick={handleClickCloseEditor}>cancel</button>
+            </div>
+            {NoChangesError ? (
+              <label id="NoChangesLabel">No changes made!</label>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
       </dialog>
     </>
   );

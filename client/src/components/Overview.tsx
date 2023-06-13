@@ -3,9 +3,11 @@ import CenterList from "./CenterList";
 
 export const Overview: any = () => {
   return (
-    <div>
+    <div className="Overview">
       <CenterList />
-      <NavLink to="/newCenter">+</NavLink>
+      <NavLink to="/newCenter">
+        <button id="AddButton">+</button>
+      </NavLink>
     </div>
   );
 };

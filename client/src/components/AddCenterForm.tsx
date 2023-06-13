@@ -26,28 +26,40 @@ export function AddCenterForm() {
   return (
     <>
       <div>
-        <form onSubmit={handleSubmit}>
-          <label>name : </label>
-          <input
-            type="text"
-            value={CenterName}
-            onChange={(e) => setName(e.target.value)}
-          ></input>
-          <label>location : </label>
-          <input
-            type="text"
-            value={CenterLocation}
-            onChange={(e) => setCenterLocation(e.target.value)}
-          ></input>
-          <label>peak Consumption : </label>
-          <input
-            type="number"
-            value={CenterPeakConsumption}
-            onChange={(e) => setCenterPeakConsumption(+e.target.value)}
-          ></input>
+        <form className="AddCenter-wrapper" onSubmit={handleSubmit}>
+          <div className="Edit-form">
+            <div className="Edit-form-labels">
+              <label>name : </label>
+              <label>location : </label>
+              <label>peak Consumption : </label>
+            </div>
+            <div className="Edit-form-inputs">
+              <input
+                type="text"
+                value={CenterName}
+                onChange={(e) => setName(e.target.value)}
+              ></input>
+              <input
+                type="text"
+                value={CenterLocation}
+                onChange={(e) => setCenterLocation(e.target.value)}
+              ></input>
 
-          <button type="submit">Add</button>
-          <NavLink to="/dashboard">Home</NavLink>
+              <input
+                type="number"
+                value={CenterPeakConsumption}
+                onChange={(e) => setCenterPeakConsumption(+e.target.value)}
+              ></input>
+            </div>
+          </div>
+          <div className="InputLastLine">
+            <NavLink id="AddNavLink" to="/dashboard">
+              <button>Cancel</button>
+            </NavLink>
+            <button id="AddSubmitButton" type="submit">
+              Add
+            </button>
+          </div>
         </form>
       </div>
     </>
