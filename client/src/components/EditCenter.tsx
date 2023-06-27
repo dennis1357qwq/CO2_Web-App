@@ -101,7 +101,7 @@ export function EditCenter(props: {
           <div className="Button-Message-row">
             <div className="Button-row">
               <button onClick={testfunc}>Edit</button>
-              <button onClick={handleClickCloseEditor}>cancel</button>
+              <button onClick={handleClickCloseEditor}>Cancel</button>
             </div>
             {NoChangesError ? (
               <label id="NoChangesLabel">No changes made!</label>

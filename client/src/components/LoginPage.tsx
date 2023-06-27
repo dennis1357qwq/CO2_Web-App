@@ -47,30 +47,32 @@ export default function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleSignIn}>
-      <label htmlFor="email">E-Mail</label>
-      <input
-        type="email"
-        id="email"
-        placeholder="Enter your E-Mail Adress"
-        value={signInEmail}
-        onChange={(e) => handleSignInEmailFieldChange(e)}
-      />
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Enter your Password"
-        value={signInPassword}
-        onChange={(e) => handleSignInPasswordFieldChange(e)}
-      />
-      <button type="submit" disabled={loading} onClick={handleSignIn}>
-        Login
-      </button>
-      <NavLink to="/register">
-        <button className="">Sign Up</button>
-      </NavLink>
-      <p className="text-red-900">{errorMessage}</p>
-    </form>
+    <div className="Login-form-wrapper">
+      <form className="Login-form" onSubmit={handleSignIn}>
+        <label htmlFor="email">E-Mail</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="Enter your E-Mail Adress"
+          value={signInEmail}
+          onChange={(e) => handleSignInEmailFieldChange(e)}
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your Password"
+          value={signInPassword}
+          onChange={(e) => handleSignInPasswordFieldChange(e)}
+        />
+        <button type="submit" disabled={loading} onClick={handleSignIn}>
+          Login
+        </button>
+        <NavLink to="/register">
+          <button className="">Sign Up</button>
+        </NavLink>
+        <p className="text-red-900">{errorMessage}</p>
+      </form>
+    </div>
   );
 }

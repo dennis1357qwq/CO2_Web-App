@@ -1,0 +1,16 @@
+.Login-form {
+  display: grid;
+  gap: 1rem;
+  width: 300px;
+}
+
+.Login-form-wrapper {
+  width: max-content;
+  /* background-color: red; */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  position: fixed;
+  border: solid lightgrey;
+  padding: 30px;
+}
