@@ -1,4 +1,4 @@
-import express from "express";
+import express, { response } from "express";
 import {
   getCenter,
   getCenters,
@@ -67,8 +67,10 @@ app.get("/api", async (req, res) => {
 app.get("/api/center/:id", async (req, res) => {
   const center = await getCenter(req.params.id);
   if (!center) res.status(404);
+  const carbon = await getCarbon(center.location);
   res.json({
     center: center,
+    carbonData: carbon,
   });
 });
 
@@ -103,22 +105,34 @@ app.put("/api/center/:id", async (req, res) => {
   });
 });
 
-const headers = {
-  Accept: "application/json",
-};
-let postCode = "RG41";
+async function getCarbon(postCode) {
+  const headers = {
+    Accept: "application/json",
+  };
 
-fetch(`https://api.carbonintensity.org.uk/regional/postcode/${postCode}`, {
-  method: "GET",
+  try {
+    const response = await fetch(
+      `https://api.carbonintensity.org.uk/regional/postcode/${postCode}`,
+      {
+        method: "GET",
 
-  headers: headers,
-})
-  .then(function (res) {
-    return res.json();
-  })
-  .then(function (body) {
-    console.log(body);
-  });
+        headers: headers,
+      }
+    );
+
+    const result = await response.json();
+    return result;
+  } catch {
+    console.log("error");
+  }
+
+  // .then(function (res) {
+  //   return res.json();
+  // })
+  // .then((body) => {
+  //   return body;
+  // });
+}
 
 app.listen(5002, () => {
   console.log("server started on port 5002");
