@@ -6,6 +6,7 @@ CREATE TABLE `centers` (
     `name` varchar(255) NOT NULL,
     `location` varchar(255),
     `peak_consumption` integer,
+    `user_id` integer NOT NULL,
     PRIMARY KEY (`center_id`));
 
     INSERT INTO `centers` VALUES (1, 'Center 1', 'east', 100070);
