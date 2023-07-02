@@ -122,3 +122,50 @@ export async function deleteCenter(id) {
 
   return getCenters();
 }
+//maybe include getting center information instead of just their id´s
+export async function getScenario(scenario_id){
+  const [result] = await pool.query(
+    `Select * FROM scenario WHERE scenario_id = ?`,
+    [scenario_id]
+  );
+  return result[0];
+}
+
+export async function getScenarios(user_id){
+  const [result] = await pool.query(
+    `Select * FROM scenario WHERE scenario_id = ?`,
+    [user_id]
+  );
+  return result;
+}
+
+
+
+export async function createScenario(user_id, centers){
+  const [result] = await pool.query(
+    `INSERT INTO scenario (user_id) VALUES ?`,
+    [user_id]
+  );
+  const id = result.insertId;
+
+  for (let center in centers){
+    const [result1] = await pool.query(
+      `INSERT INTO includes (scenario_id, center_id) VALUES ?,?`,
+      [id, center]
+    );
+  }
+  return getScenarios();
+}
+
+export async function deleteScenario(id) {
+  const [result] = await pool.query(
+    `
+    DELETE FROM scenarios WHERE scenario_id = ?
+    `,
+    [id]
+  );
+
+  return getScenarios();
+}
+
+//TODO: export async function updateScenario()
