@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import { EditCenter } from "./EditCenter";
+import { Map } from "./Map";
 
 interface CenterObj {
   center_id: number;
@@ -53,6 +54,7 @@ export function Center() {
           Home
         </NavLink>
       </div>
+      <Map />
     </div>
   );
 }
