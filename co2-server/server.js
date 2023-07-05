@@ -9,6 +9,7 @@ import {
   updateCenter,
   updateAdress,
 } from "./dbCenterQueries.js";
+import { getCarbon } from "./CarbonApi.js";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -57,6 +58,11 @@ app.post("/api/register", async (req, res) => {
 
 app.get("/api", async (req, res) => {
   const centers = await getCenters();
+  for (let i = 0; i < centers.length; i++) {
+    let adress = await getAdress(centers[i].adress_id);
+    const center = centers[i];
+    centers[i] = { center, adress };
+  }
   res.json({
     centers,
   });
@@ -65,18 +71,23 @@ app.get("/api", async (req, res) => {
 app.get("/api/center/:id", async (req, res) => {
   const center = await getCenter(req.params.id);
   if (!center) res.status(404);
-  const carbon = await getCarbon(center.location);
+  const adress = await getAdress(center.adress_id);
+  // const carbon = await getCarbon(center.location);
   res.json({
     center: center,
-    carbonData: carbon,
+    adress: adress,
+    // carbonData: carbon,
   });
 });
 
 app.post("/api/newCenter", async (req, res) => {
   const center = await createCenter(
     req.body.CenterName,
-    req.body.CenterLocation,
-    req.body.CenterPeakConsumption
+    req.body.CenterPeakConsumption,
+    req.body.lat,
+    req.body.long,
+    req.body.outPost,
+    req.body.adress
   );
   if (!center) res.status(404);
   res.json({
@@ -95,35 +106,26 @@ app.put("/api/center/:id", async (req, res) => {
   const result = await updateCenter(
     req.body.center_id,
     req.body.CenterName,
-    req.body.CenterLocation,
+    req.body.lattitude,
+    req.body.longitude,
+    req.outerPostCode,
     req.body.CenterPeakConsumption
+  );
+  const ad_id = await getCenter(req.body.center_id);
+  const upad = await updateAdress(
+    ad_id.adress_id,
+    req.body.nr,
+    req.body.line_1,
+    req.body.line_2,
+    req.body.city,
+    req.body.region,
+    req.body.postCode,
+    req.body.country
   );
   res.json({
     center: result,
   });
 });
-
-async function getCarbon(postCode) {
-  const headers = {
-    Accept: "application/json",
-  };
-
-  try {
-    const response = await fetch(
-      `https://api.carbonintensity.org.uk/regional/postcode/${postCode}`,
-      {
-        method: "GET",
-
-        headers: headers,
-      }
-    );
-
-    const result = await response.json();
-    return result;
-  } catch {
-    console.log("error");
-  }
-}
 
 app.listen(5002, () => {
   console.log("server started on port 5002");
