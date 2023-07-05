@@ -30,7 +30,10 @@ export function AddCenterForm() {
           <div className="Edit-form">
             <div className="Edit-form-labels">
               <label>name : </label>
-              <label>location : </label>
+              <label>Street : </label>
+              <label>Nr : </label>
+              <label>City : </label>
+              <label>postcode : </label>
               <label>peak Consumption : </label>
             </div>
             <div className="Edit-form-inputs">
@@ -39,12 +42,12 @@ export function AddCenterForm() {
                 value={CenterName}
                 onChange={(e) => setName(e.target.value)}
               ></input>
+              <input type="text"></input>
               <input
                 type="text"
                 value={CenterLocation}
                 onChange={(e) => setCenterLocation(e.target.value)}
               ></input>
-
               <input
                 type="number"
                 value={CenterPeakConsumption}

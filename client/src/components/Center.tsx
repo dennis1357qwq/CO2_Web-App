@@ -5,13 +5,7 @@ import { NavLink } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import { EditCenter } from "./EditCenter";
 import { Map } from "./Map";
-
-interface CenterObj {
-  center_id: number;
-  location: string;
-  peak_consumption: number;
-  name: string;
-}
+import { CenterObj } from "./CenterInterface";
 
 export function Center() {
   const { id } = useParams();

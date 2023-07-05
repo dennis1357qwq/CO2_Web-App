@@ -1,13 +1,7 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-
-interface CenterObj {
-  center_id: number;
-  location: string;
-  peak_consumption: number;
-  name: string;
-}
+import { CenterObj } from "./CenterInterface";
 
 interface CenterStack {
   centers: CenterObj[];

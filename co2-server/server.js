@@ -1,16 +1,14 @@
-import express, { response } from "express";
+import express from "express";
+import { addUser, checkUserExists, login } from "./database.js";
 import {
   getCenter,
+  getAdress,
   getCenters,
   createCenter,
-  addUser,
-  getUser,
-  deleteUser,
-  checkUserExists,
-  login,
   deleteCenter,
   updateCenter,
-} from "./database.js";
+  updateAdress,
+} from "./dbCenterQueries.js";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -125,13 +123,6 @@ async function getCarbon(postCode) {
   } catch {
     console.log("error");
   }
-
-  // .then(function (res) {
-  //   return res.json();
-  // })
-  // .then((body) => {
-  //   return body;
-  // });
 }
 
 app.listen(5002, () => {
