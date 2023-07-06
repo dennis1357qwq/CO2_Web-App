@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 export function AddCenterForm() {
   const [CenterName, setName] = useState("");
   const [CenterLocation, setCenterLocation] = useState("");
   const [CenterPeakConsumption, setCenterPeakConsumption] = useState(0);
+  const userContext = useContext(UserContext);
+  const user_id = userContext.user.user_id;
+  // console.log(user_id);
   const navigate = useNavigate();
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const center = { CenterLocation, CenterPeakConsumption, CenterName };
+
+    const center = {
+      CenterLocation,
+      CenterPeakConsumption,
+      CenterName,
+      user_id,
+    };
 
     fetch("/api/newCenter", {
       method: "POST",

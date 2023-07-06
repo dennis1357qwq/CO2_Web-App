@@ -57,8 +57,9 @@ app.post("/api/register", async (req, res) => {
   // check is create successful -> error message?
 });
 
-app.get("/api", async (req, res) => {
-  const centers = await getCenters();
+app.post("/api", async (req, res) => {
+  // console.log(req.body.user_id)
+  const centers = await getCenters(Number(req.body.user_id));
   res.json({
     centers,
   });
@@ -78,7 +79,8 @@ app.post("/api/newCenter", async (req, res) => {
   const center = await createCenter(
     req.body.CenterName,
     req.body.CenterLocation,
-    req.body.CenterPeakConsumption
+    req.body.CenterPeakConsumption,
+    req.body.user_id
   );
   if (!center) res.status(404);
   res.json({

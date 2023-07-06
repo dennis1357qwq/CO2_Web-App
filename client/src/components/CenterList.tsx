@@ -1,6 +1,7 @@
 import * as React from "react";
-import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useContext } from "react";
+import { NavLink, redirect } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 interface CenterObj {
   center_id: number;
@@ -14,16 +15,24 @@ interface CenterStack {
 }
 
 export function CenterList() {
-  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
-    centers: [],
-  });
+  const userContext = useContext(UserContext);
+  // console.log(userContext.user);
+
   useEffect(() => {
-    fetch("/api")
+    fetch("/api", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userContext.user),
+    })
       .then((response) => response.json())
       .then((data) => {
         setBackendCenters(data);
       });
   }, []);
+
+  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
+    centers: [],
+  });
 
   return (
     <div className="App">

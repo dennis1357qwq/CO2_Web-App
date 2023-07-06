@@ -8,6 +8,8 @@ type AuthUser = {
 export type UserContextType = {
   user: any;
   setUser: any;
+  authenticated: any;
+  setAuthenticated: any;
 };
 
 type UserContextProviderType = {
@@ -18,8 +20,12 @@ export const UserContext = createContext({} as UserContextType);
 
 export const UserContextProvider = ({ children }: UserContextProviderType) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [authenticated, setAuthenticated] = useState(false);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider
+      value={{ user, setUser, authenticated, setAuthenticated }}
+    >
       {children}
     </UserContext.Provider>
   );

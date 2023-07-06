@@ -50,13 +50,17 @@ export default function LoginPage() {
     } else if (response.status == 200) {
       setLoading(false);
       const { username, user_id } = (await response.json()).user;
-
+      // Bei erfolgreicher Anmeldung: User setzen
       userContext.setUser({
         username,
         user_id,
       });
 
-      // user_id, username auslesen und setUser
+      userContext.setAuthenticated(true);
+      // LocalStorage to remember when reloading page
+      localStorage.setItem("status", "loggedIn");
+      localStorage.setItem("username", username);
+      localStorage.setItem("user_id", user_id);
       navigate("/dashboard");
     }
   }

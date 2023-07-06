@@ -10,6 +10,7 @@ interface CenterObj {
   location: string;
   peak_consumption: number;
   name: string;
+  affiliated_id: number;
 }
 
 export function Center() {
@@ -19,6 +20,7 @@ export function Center() {
     location: "",
     peak_consumption: 0,
     name: "",
+    affiliated_id: 0,
   });
 
   const path = `/api/center/${id}`;

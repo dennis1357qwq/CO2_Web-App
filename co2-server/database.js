@@ -68,8 +68,14 @@ const pool = mysql
   }
 
 
-export async function getCenters() {
-  const [rows] = await pool.query("SELECT * FROM centers");
+export async function getCenters(user_id) {
+  const [rows] = await pool.query(
+    `
+    SELECT * FROM centers WHERE affiliated_user = ?
+    `,
+    [user_id]
+    );
+    console.log(rows)
   return rows;
 }
 
@@ -85,13 +91,13 @@ export async function getCenter(id) {
   return rows[0];
 }
 
-export async function createCenter(name, location, peakConsumption) {
+export async function createCenter(name, location, peakConsumption, user_id) {
   const [result] = await pool.query(
     `
-    INSERT INTO centers (name, location, peak_consumption)
-    VALUES (?,?,?)
+    INSERT INTO centers (name, location, peak_consumption, affiliated_user)
+    VALUES (?,?,?,?)
     `,
-    [name, location, peakConsumption]
+    [name, location, peakConsumption, user_id]
   );
 
   const id = result.insertId;
