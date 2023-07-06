@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
@@ -6,12 +6,36 @@ export function AddCenterForm() {
   const [CenterName, setName] = useState("");
   const [CenterLocation, setCenterLocation] = useState("");
   const [CenterPeakConsumption, setCenterPeakConsumption] = useState(0);
-  const userContext = useContext(UserContext);
-  const user_id = userContext.user.user_id;
-  // console.log(user_id);
   const navigate = useNavigate();
+  const userContext = useContext(UserContext);
+
+  // check for logged in !!
+  useEffect(() => {
+    // Check of authenticated, wenn nicht localstorage, wenn nicht zum login
+    async function checkLoggedIn() {
+      if (userContext.authenticated) {
+        return null;
+      }
+      const loggedIn = localStorage.getItem("status");
+      // console.log(loggedIn);
+      if (loggedIn) {
+        const username = localStorage.getItem("username");
+        const user_id = Number(localStorage.getItem("user_id"));
+        // console.log(user_id);
+        await userContext.setUser({
+          username,
+          user_id,
+        });
+        await userContext.setAuthenticated(true);
+      } else {
+        navigate("/");
+      }
+    }
+    checkLoggedIn();
+  }, []);
 
   const handleSubmit = (e: any) => {
+    const user_id = userContext.user.user_id;
     e.preventDefault();
 
     const center = {
@@ -33,6 +57,7 @@ export function AddCenterForm() {
 
     navigate("/dashboard");
   };
+
   return (
     <>
       <div>

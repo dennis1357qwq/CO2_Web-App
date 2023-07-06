@@ -1,9 +1,10 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import { EditCenter } from "./EditCenter";
+import { UserContext } from "../context/UserContext";
 
 interface CenterObj {
   center_id: number;
@@ -14,6 +15,8 @@ interface CenterObj {
 }
 
 export function Center() {
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     center_id: 0,
@@ -22,6 +25,31 @@ export function Center() {
     name: "",
     affiliated_id: 0,
   });
+
+  // check for logged in !!
+  useEffect(() => {
+    // Check of authenticated, wenn nicht localstorage, wenn nicht zum login
+    async function checkLoggedIn() {
+      if (userContext.authenticated) {
+        return null;
+      }
+      const loggedIn = localStorage.getItem("status");
+      // console.log(loggedIn);
+      if (loggedIn) {
+        const username = localStorage.getItem("username");
+        const user_id = Number(localStorage.getItem("user_id"));
+        // console.log(user_id);
+        await userContext.setUser({
+          username,
+          user_id,
+        });
+        await userContext.setAuthenticated(true);
+      } else {
+        navigate("/");
+      }
+    }
+    checkLoggedIn();
+  }, []);
 
   const path = `/api/center/${id}`;
 

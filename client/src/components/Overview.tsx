@@ -8,16 +8,20 @@ export const Overview = () => {
   const navigate = useNavigate();
 
   const userContext = useContext(UserContext);
-  // console.log(userContext.authenticated);
+  //console.log(userContext.authenticated);
 
   useEffect(() => {
-    // Check im localStorage ob loggedIn gesetzt wurde
+    // Check of authenticated, wenn nicht localstorage, wenn nicht zum login
     async function checkLoggedIn() {
+      if (userContext.authenticated) {
+        return null;
+      }
       const loggedIn = localStorage.getItem("status");
       // console.log(loggedIn);
       if (loggedIn) {
         const username = localStorage.getItem("username");
         const user_id = Number(localStorage.getItem("user_id"));
+        // console.log(user_id);
         await userContext.setUser({
           username,
           user_id,
@@ -33,6 +37,7 @@ export const Overview = () => {
   if (!userContext.authenticated) {
     return null;
   }
+
   return (
     <div className="Overview">
       <h1>
