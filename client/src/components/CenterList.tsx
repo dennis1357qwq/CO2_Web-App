@@ -1,11 +1,8 @@
 import * as React from "react";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { CenterObj } from "./CenterInterface";
-
-interface CenterStack {
-  centers: CenterObj[];
-}
+import { CenterObj, CenterStack } from "./CenterInterface";
+import { Map } from "./Map";
 
 export function CenterList() {
   const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
@@ -20,7 +17,7 @@ export function CenterList() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="CenterListWrapper">
       {typeof backendCenters.centers === "undefined" ? (
         <div>Loading ...</div>
       ) : (
@@ -34,6 +31,7 @@ export function CenterList() {
           )
         )
       )}
+      <Map centers={backendCenters.centers}></Map>
     </div>
   );
 }

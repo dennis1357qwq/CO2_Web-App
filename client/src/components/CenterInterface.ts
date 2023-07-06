@@ -8,6 +8,10 @@ export interface CenterObj {
   adress: adress;
 }
 
+export interface CenterStack {
+  centers: CenterObj[];
+}
+
 interface adress {
   unit_number: string;
   adress_line_1: string;
@@ -16,4 +20,13 @@ interface adress {
   region: string;
   postal_code: string;
   country: string;
+}
+
+export interface mapPoint {
+  position: number[];
+  key: number;
+}
+
+export interface pointlist {
+  points: mapPoint[];
 }

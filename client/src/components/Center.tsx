@@ -70,7 +70,7 @@ export function Center() {
           Home
         </NavLink>
       </div>
-      <Map />
+      <Map centers={[backendCenter]} />
     </div>
   );
 }

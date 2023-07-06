@@ -1,12 +1,21 @@
 import "leaflet/dist/leaflet.css";
 import "./Map.css";
-import { MapContainer, TileLayer, useMap } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { pointlist, mapPoint, CenterStack, CenterObj } from "./CenterInterface";
 
-export function Map(points: []) {
+export function Map(points: CenterStack) {
   return (
     <div className="MapWrapper">
-      <MapContainer center={[52.520008, 13.404954]} zoom={13}>
+      <MapContainer center={[53, 13]} zoom={5}>
         <TileLayer url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"></TileLayer>
+        {points.centers.map(
+          (point: CenterObj, index: number = point.center_id) => (
+            <Marker
+              key={index}
+              position={[point.lattitude, point.longitude]}
+            ></Marker>
+          )
+        )}
       </MapContainer>
     </div>
   );
