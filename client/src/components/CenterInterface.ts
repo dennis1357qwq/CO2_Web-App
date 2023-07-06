@@ -1,14 +1,19 @@
 export interface CenterObj {
   center_id: number;
-  location: string;
-  peak_consumption: number;
   name: string;
+  peak_consumption: number;
+  lattitude: number;
+  longitude: number;
+  outer_postcode: string;
+  adress: adress;
 }
 
-interface location {
-  street: string;
-  houseNumber: string;
+interface adress {
+  unit_number: string;
+  adress_line_1: string;
+  adress_line_2: string;
   city: string;
-  postcode: string;
-  coordinates: number[];
+  region: string;
+  postal_code: string;
+  country: string;
 }

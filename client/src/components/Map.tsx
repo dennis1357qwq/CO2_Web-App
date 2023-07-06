@@ -2,7 +2,7 @@ import "leaflet/dist/leaflet.css";
 import "./Map.css";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 
-export function Map() {
+export function Map(points: []) {
   return (
     <div className="MapWrapper">
       <MapContainer center={[52.520008, 13.404954]} zoom={13}>

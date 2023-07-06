@@ -59,9 +59,9 @@ app.post("/api/register", async (req, res) => {
 app.get("/api", async (req, res) => {
   const centers = await getCenters();
   for (let i = 0; i < centers.length; i++) {
-    let adress = await getAdress(centers[i].adress_id);
+    let adress1 = await getAdress(centers[i].adress_id);
     const center = centers[i];
-    centers[i] = { center, adress };
+    centers[i] = writeCenterObj(center, adress1);
   }
   res.json({
     centers,
@@ -69,16 +69,55 @@ app.get("/api", async (req, res) => {
 });
 
 app.get("/api/center/:id", async (req, res) => {
-  const center = await getCenter(req.params.id);
-  if (!center) res.status(404);
-  const adress = await getAdress(center.adress_id);
-  // const carbon = await getCarbon(center.location);
-  res.json({
-    center: center,
-    adress: adress,
-    // carbonData: carbon,
-  });
+  const center1 = await getCenter(req.params.id);
+  if (!center1) res.status(404);
+  if (!center1.adress_id) {
+    res.json({
+      center: center,
+    });
+  } else {
+    const adress1 = await getAdress(center1.adress_id);
+    const center = writeCenterObj(center1, adress1);
+    res.json({
+      center: center,
+    });
+  }
 });
+
+function writeCenterObj(center, adress1) {
+  const center_id = center.center_id;
+  const name = center.name;
+  const peak_consumption = center.peak_consumption;
+  const lattitude = center.lattitude;
+  const longitude = center.longitude;
+  const outer_postcode = center.outer_postcode;
+  const unit_number = adress1.unit_number;
+  const adress_line_1 = adress1.adress_line_1;
+  const adress_line_2 = adress1.adress_line_2;
+  const city = adress1.city;
+  const region = adress1.region;
+  const postal_code = adress1.postal_code;
+  const country = adress1.country;
+  const adress = {
+    unit_number,
+    adress_line_1,
+    adress_line_2,
+    city,
+    region,
+    postal_code,
+    country,
+  };
+
+  return {
+    center_id,
+    name,
+    peak_consumption,
+    lattitude,
+    longitude,
+    outer_postcode,
+    adress,
+  };
+}
 
 app.post("/api/newCenter", async (req, res) => {
   const center = await createCenter(

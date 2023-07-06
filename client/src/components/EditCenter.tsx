@@ -1,12 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CenterObj } from "./CenterInterface";
 
-export function EditCenter(props: {
-  id: number;
-  name: string;
-  location: string;
-  peakCons: number;
-}) {
+export function EditCenter(props: CenterObj) {
   const [CenterName, setCenterName] = useState("");
   const [CenterLocation, setCenterLocation] = useState("");
   const [CenterPeakConsumption, setCenterPeakConsumption] = useState("");
@@ -21,19 +17,19 @@ export function EditCenter(props: {
     setCenterPeakConsumption(prop);
   };
 
-  const checkIfChanged = () => {
-    const cName = !CenterName ? props.name : CenterName;
-    const cLoc = !CenterLocation ? props.location : CenterLocation;
-    const cPeakCon = !CenterPeakConsumption
-      ? props.peakCons
-      : CenterPeakConsumption;
-    if (
-      cName === props.name &&
-      cLoc === props.location &&
-      +cPeakCon === props.peakCons
-    )
-      return true;
-  };
+  // const checkIfChanged = () => {
+  //   const cName = !CenterName ? props.name : CenterName;
+  //   const cLoc = !CenterLocation ? props.location : CenterLocation;
+  //   const cPeakCon = !CenterPeakConsumption
+  //     ? props.peakCons
+  //     : CenterPeakConsumption;
+  //   if (
+  //     cName === props.name &&
+  //     cLoc === props.location &&
+  //     +cPeakCon === props.peakCons
+  //   )
+  //     return true;
+  // };
 
   dialog?.addEventListener("cancel", (event) => {
     event.preventDefault();
@@ -47,22 +43,22 @@ export function EditCenter(props: {
     dialog?.close();
   };
 
-  const testfunc = () => {
-    if (checkIfChanged()) {
-      setNoChangesError(true);
-    }
-    if (!checkIfChanged()) {
-      setNoChangesError(false);
-      callPutApi(
-        props.id,
-        CenterName ? CenterName : props.name,
-        CenterPeakConsumption ? +CenterPeakConsumption : props.peakCons,
-        CenterLocation ? CenterLocation : props.location
-      );
-      dialog?.close();
-      navigate(0);
-    }
-  };
+  // const testfunc = () => {
+  //   if (checkIfChanged()) {
+  //     setNoChangesError(true);
+  //   }
+  //   if (!checkIfChanged()) {
+  //     setNoChangesError(false);
+  //     callPutApi(
+  //       props.id,
+  //       CenterName ? CenterName : props.name,
+  //       CenterPeakConsumption ? +CenterPeakConsumption : props.peakCons,
+  //       CenterLocation ? CenterLocation : props.location
+  //     );
+  //     dialog?.close();
+  //     navigate(0);
+  //   }
+  // };
 
   return (
     <>
@@ -86,13 +82,13 @@ export function EditCenter(props: {
               <input
                 type="text"
                 value={CenterLocation}
-                placeholder={props.location}
+                // placeholder={props.location}
                 onChange={(e) => setCenterLocation(e.target.value)}
               ></input>
               <input
                 type="text"
                 value={CenterPeakConsumption}
-                placeholder={`${props.peakCons}`}
+                // placeholder={`${props.peakCons}`}
                 onChange={(e) => checkAndSetPeakCons(e.target.value)}
               ></input>
             </div>
@@ -100,7 +96,7 @@ export function EditCenter(props: {
 
           <div className="Button-Message-row">
             <div className="Button-row">
-              <button onClick={testfunc}>Edit</button>
+              {/* <button onClick={testfunc}>Edit</button> */}
               <button onClick={handleClickCloseEditor}>Cancel</button>
             </div>
             {NoChangesError ? (
