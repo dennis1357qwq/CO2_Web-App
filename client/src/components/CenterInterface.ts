@@ -12,7 +12,7 @@ export interface CenterStack {
   centers: CenterObj[];
 }
 
-interface adress {
+export interface adress {
   unit_number: string;
   adress_line_1: string;
   adress_line_2: string;
