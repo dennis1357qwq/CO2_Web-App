@@ -6,6 +6,7 @@ export async function createCenter(
   lat,
   long,
   outPost,
+  user_id,
   adress
 ) {
   const adressId = await createAdress(
@@ -20,10 +21,10 @@ export async function createCenter(
 
   const [result] = await pool.query(
     `
-        INSERT INTO centers (name, peak_consumption, lattitude, longitude, outer_postcode, adress_id)
+        INSERT INTO centers (name, peak_consumption, lattitude, longitude, outer_postcode, adress_id, user_id)
         VALUES (?,?,?,?,?,?)
         `,
-    [name, peakConsumption, lat, long, outPost, adressId.adress_id]
+    [name, peakConsumption, lat, long, outPost, adressId.adress_id, user_id]
   );
 
   const id = result.insertId;
