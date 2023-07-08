@@ -56,8 +56,8 @@ app.post("/api/register", async (req, res) => {
   // check is create successful -> error message?
 });
 
-app.get("/api", async (req, res) => {
-  const centers = await getCenters();
+app.get("/api/:id", async (req, res) => {
+  const centers = await getCenters(req.params.id);
   for (let i = 0; i < centers.length; i++) {
     let adress1 = await getAdress(centers[i].adress_id);
     const center = centers[i];

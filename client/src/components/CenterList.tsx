@@ -1,20 +1,27 @@
 import * as React from "react";
-import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useEffect, useContext } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 import { CenterObj, CenterStack } from "./CenterInterface";
 import { Map } from "./Map";
 
 export function CenterList() {
-  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
-    centers: [],
-  });
+  const userContext = useContext(UserContext);
+  const { id } = useParams();
+  // console.log(userContext.user);
+  const path = `/api/${id}`;
+
   useEffect(() => {
-    fetch("/api")
+    fetch(path)
       .then((response) => response.json())
       .then((data) => {
         setBackendCenters(data);
       });
   }, []);
+
+  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
+    centers: [],
+  });
 
   return (
     <div className="CenterListWrapper">

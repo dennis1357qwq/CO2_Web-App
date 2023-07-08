@@ -2,6 +2,7 @@ export interface CenterObj {
   center_id: number;
   name: string;
   peak_consumption: number;
+  user_id: number;
   lattitude: number;
   longitude: number;
   outer_postcode: string;

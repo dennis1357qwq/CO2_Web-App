@@ -1,18 +1,21 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import { EditCenter } from "./EditCenter";
+import { UserContext } from "../context/UserContext";
 import { Map } from "./Map";
 import { CenterObj } from "./CenterInterface";
-import LoginPage from "./LoginPage";
 
 export function Center() {
+  const userContext = useContext(UserContext);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     center_id: 0,
     name: "",
+    user_id: 0,
     peak_consumption: 0,
     lattitude: 0,
     longitude: 0,
@@ -28,7 +31,33 @@ export function Center() {
     },
   });
 
+  // check for logged in !!
+  useEffect(() => {
+    // Check of authenticated, wenn nicht localstorage, wenn nicht zum login
+    async function checkLoggedIn() {
+      if (userContext.authenticated) {
+        return null;
+      }
+      const loggedIn = localStorage.getItem("status");
+      // console.log(loggedIn);
+      if (loggedIn) {
+        const username = localStorage.getItem("username");
+        const user_id = Number(localStorage.getItem("user_id"));
+        // console.log(user_id);
+        await userContext.setUser({
+          username,
+          user_id,
+        });
+        await userContext.setAuthenticated(true);
+      } else {
+        navigate("/");
+      }
+    }
+    checkLoggedIn();
+  }, []);
+
   const path = `/api/center/${id}`;
+  const user_id = userContext.user.user_id;
 
   useEffect(() => {
     fetch(path)
@@ -59,6 +88,7 @@ export function Center() {
             center_id={backendCenter.center_id}
             name={backendCenter.name}
             peak_consumption={backendCenter.peak_consumption}
+            user_id={backendCenter.user_id}
             lattitude={backendCenter.lattitude}
             longitude={backendCenter.longitude}
             outer_postcode={backendCenter.outer_postcode}
@@ -66,7 +96,7 @@ export function Center() {
           />
           <DeleteButton id={backendCenter.center_id} path={path} />
         </div>
-        <NavLink className={"Home-Link"} to="/dashboard">
+        <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
           Home
         </NavLink>
       </div>

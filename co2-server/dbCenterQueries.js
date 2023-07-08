@@ -52,8 +52,13 @@ export async function createAdress(
   return getAdress(id);
 }
 
-export async function getCenters() {
-  const [rows] = await pool.query("SELECT * FROM centers");
+export async function getCenters(id) {
+  const [rows] = await pool.query(
+    `
+    SELECT * FROM centers WHERE user_id = ?
+    `,
+    [id]
+  );
   return rows;
 }
 

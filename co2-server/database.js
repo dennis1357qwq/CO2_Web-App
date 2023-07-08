@@ -3,7 +3,7 @@ import pool from "./dbPool.js";
 export async function login(email, password) {
   const [rows] = await pool.query(
     `
-      SELECT * from users WHERE email = ? AND password = ?
+      SELECT * from user WHERE email = ? AND password = ?
       `,
     [email, password]
   );
@@ -13,7 +13,7 @@ export async function login(email, password) {
 export async function checkUserExists(username, email) {
   const [rows] = await pool.query(
     `
-      SELECT * from users WHERE username = ? OR email = ?
+      SELECT * from user WHERE username = ? OR email = ?
       `,
     [username, email]
   );
@@ -23,7 +23,7 @@ export async function checkUserExists(username, email) {
 export async function getUser(id) {
   const [rows] = await pool.query(
     `
-      SELECT * FROM users WHERE user_id = ?
+      SELECT * FROM user WHERE user_id = ?
       `,
     [id]
   );
@@ -33,7 +33,7 @@ export async function getUser(id) {
 export async function addUser(username, email, password) {
   const [result] = await pool.query(
     `
-      INSERT INTO users (username, email, password)
+      INSERT INTO user (username, email, password)
       VALUES (?,?,?)
       `,
     [username, email, password]
@@ -46,13 +46,14 @@ export async function addUser(username, email, password) {
 export async function deleteUser(id) {
   const [result] = await pool.query(
     `
-      DELETE FROM users WHERE user_id = ?
+      DELETE FROM user WHERE user_id = ?
       `,
     [id]
   );
 
   //return getCenters();
 }
+
 //maybe include getting center information instead of just their id´s
 export async function getScenario(scenario_id) {
   const [result] = await pool.query(
@@ -78,7 +79,7 @@ export async function createScenario(user_id, centers) {
 
   for (let center in centers) {
     const [result1] = await pool.query(
-      `INSERT INTO includes (scenario_id, center_id) VALUES ?,?`,
+      `INSERT INTO center_scenario (scenario_id, center_id) VALUES ?,?`,
       [id, center]
     );
   }

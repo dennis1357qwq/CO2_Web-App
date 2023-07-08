@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { adress, CenterObj } from "./CenterInterface";
 import { Map } from "./Map";
+import { UserContext } from "../context/UserContext";
 
 export function AddCenterForm() {
   const [inputCenter, setInputCenter] = React.useState<CenterObj>({
     center_id: 0,
     name: "",
     peak_consumption: 0,
+    user_id: 0,
     lattitude: 0,
     longitude: 0,
     outer_postcode: "",
@@ -22,12 +24,14 @@ export function AddCenterForm() {
       country: "",
     },
   });
+
   const [useAddress, setUseAddress] = useState(true);
   const [notUkFlag, setNotUkFlag] = useState(false);
   const [CenterName, setName] = useState("");
   const [CenterLattitude, setCenterLattitude] = useState("");
   const [CenterLongitude, setCenterLongitude] = useState("");
   const [CenterPeakConsumption, setCenterPeakConsumption] = useState("");
+  const [UserId, setUserId] = useState();
   const [CenterOuterPostCode, setCenterOuterPostCode] = useState("");
   const [CenterAdressUnitNr, setCenterAdressUnitNr] = useState("");
   const [CenterAdressLine1, setCenterAdressLine1] = useState("");
@@ -48,9 +52,37 @@ export function AddCenterForm() {
     postal_code: "",
     country: "",
   });
-  const navigate = useNavigate();
 
-  const validateNuberInput = (value: any, setValue: any) => {
+  const navigate = useNavigate();
+  const userContext = useContext(UserContext);
+
+  // check for logged in !!
+  useEffect(() => {
+    // Check of authenticated, wenn nicht localstorage, wenn nicht zum login
+    async function checkLoggedIn() {
+      if (userContext.authenticated) {
+        return null;
+      }
+      const loggedIn = localStorage.getItem("status");
+      // console.log(loggedIn);
+      if (loggedIn) {
+        const username = localStorage.getItem("username");
+        const user_id = Number(localStorage.getItem("user_id"));
+        // console.log(user_id);
+        await userContext.setUser({
+          username,
+          user_id,
+        });
+        await userContext.setAuthenticated(true);
+      } else {
+        navigate("/");
+      }
+    }
+    checkLoggedIn();
+  }, []);
+  const user_id = userContext.user.user_id;
+
+  const validateNumberInput = (value: any, setValue: any) => {
     if (isNaN(value)) return;
     setValue(value);
   };
@@ -189,6 +221,8 @@ export function AddCenterForm() {
       });
   }
 
+  // navigate("/dashboard")
+
   return (
     <>
       <div>
@@ -229,7 +263,7 @@ export function AddCenterForm() {
                 type="text"
                 value={CenterPeakConsumption}
                 onChange={(e) =>
-                  validateNuberInput(e.target.value, setCenterPeakConsumption)
+                  validateNumberInput(e.target.value, setCenterPeakConsumption)
                 }
               ></input>
             </div>
@@ -243,7 +277,7 @@ export function AddCenterForm() {
                       type="text"
                       value={CenterLattitude}
                       onChange={(e) =>
-                        validateNuberInput(e.target.value, setCenterLattitude)
+                        validateNumberInput(e.target.value, setCenterLattitude)
                       }
                       size={10}
                     ></input>
@@ -252,7 +286,7 @@ export function AddCenterForm() {
                       type="text"
                       value={CenterLongitude}
                       onChange={(e) =>
-                        validateNuberInput(e.target.value, setCenterLongitude)
+                        validateNumberInput(e.target.value, setCenterLongitude)
                       }
                       size={10}
                     ></input>
@@ -331,7 +365,7 @@ export function AddCenterForm() {
             ""
           )}
           <div className="InputLastLine">
-            <NavLink id="AddNavLink" to="/dashboard">
+            <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
               <button>Cancel</button>
             </NavLink>
             <button id="AddSubmitButton" type="submit">

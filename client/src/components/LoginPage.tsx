@@ -1,12 +1,22 @@
-import { useEffect, useState, ChangeEvent, SyntheticEvent } from "react";
+import {
+  useEffect,
+  useState,
+  ChangeEvent,
+  SyntheticEvent,
+  useContext,
+} from "react";
 import { NavLink, Navigate, useNavigate } from "react-router-dom";
 import "./LoginPage.css";
+import { UserContext } from "../context/UserContext";
 
 export default function LoginPage() {
+  const userContext = useContext(UserContext);
+
   const [signInEmail, setSignInEmail] = useState("");
   const [signInPassword, setSignInPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
 
   function handleSignInEmailFieldChange(event: ChangeEvent<HTMLInputElement>) {
@@ -28,22 +38,31 @@ export default function LoginPage() {
 
     const user = { signInEmail, signInPassword };
 
-    fetch("api/login", {
+    const response = await fetch("api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),
-    })
-      .then((repsonse) => {
-        if (repsonse.status == 404) {
-          setLoading(false);
-          setErrorMessage("Credentials are wrong / User does not exist!");
-          // setAuth ?? accessToken
-        } else if (repsonse.status == 200) {
-          setLoading(false);
-          navigate("/dashboard");
-        }
-      })
-      .then((data) => console.log(data));
+    });
+
+    if (response.status == 404) {
+      setLoading(false);
+      setErrorMessage("Credentials are wrong / User does not exist!");
+    } else if (response.status == 200) {
+      setLoading(false);
+      const { username, user_id } = (await response.json()).user;
+      // Bei erfolgreicher Anmeldung: User setzen
+      userContext.setUser({
+        username,
+        user_id,
+      });
+
+      userContext.setAuthenticated(true);
+      // LocalStorage to remember when reloading page
+      localStorage.setItem("status", "loggedIn");
+      localStorage.setItem("username", username);
+      localStorage.setItem("user_id", user_id);
+      navigate(`/dashboard/${user_id}`);
+    }
   }
 
   return (
@@ -69,7 +88,7 @@ export default function LoginPage() {
           Login
         </button>
         <NavLink to="/register">
-          <button className="">Sign Up</button>
+          <button className="">Need an Account?</button>
         </NavLink>
         <p className="text-red-900">{errorMessage}</p>
       </form>
