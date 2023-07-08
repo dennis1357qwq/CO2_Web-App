@@ -58,7 +58,7 @@ app.post("/api/register", async (req, res) => {
 });
 
 app.get("/api", async (req, res) => {
-  const centers = await getCenters();
+  const centers = await getCenters(); //TODO: somehow get user_id to properly call right centers
   res.json({
     centers,
   });
@@ -74,6 +74,7 @@ app.get("/api/center/:id", async (req, res) => {
   });
 });
 
+// add current user_id to request 
 app.post("/api/newCenter", async (req, res) => {
   const center = await createCenter(
     req.body.CenterName,
