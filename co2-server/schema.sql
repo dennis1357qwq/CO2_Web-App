@@ -1,3 +1,6 @@
+CREATE DATABASE Co2_Center_DB;
+USE Co2_Center_DB;
+
 CREATE TABLE `adresses` (
     `adress_id` integer NOT NULL AUTO_INCREMENT,
     `unit_number` varchar(255) NOT NULL,
