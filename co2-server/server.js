@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post("/api/login", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const user = await login(req.body.signInEmail, req.body.signInPassword);
   if (!user) {
     console.log("User does not exist!");
@@ -34,7 +34,7 @@ app.post("/api/register", async (req, res) => {
     req.body.username,
     req.body.registerEmail
   );
-  console.log(exists);
+  // console.log(exists);
   if (exists) {
     console.log("User with E-Mail adress or Username exists already!");
     res.status(400);
@@ -119,13 +119,14 @@ function writeCenterObj(center, adress1) {
   };
 }
 
-app.post("/api/newCenter", async (req, res) => {
+app.post("/api/newCenter/:id", async (req, res) => {
   const center = await createCenter(
     req.body.CenterName,
     req.body.CenterPeakConsumption,
     req.body.lat,
     req.body.long,
     req.body.outPost,
+    req.params.id,
     req.body.adress
   );
   if (!center) res.status(404);

@@ -89,7 +89,7 @@ export async function createScenario(user_id, centers) {
 export async function deleteScenario(id) {
   const [result] = await pool.query(
     `
-    DELETE FROM scenarios WHERE scenario_id = ?
+    DELETE FROM center_scenario WHERE scenario_id = ?
     `,
     [id]
   );

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useState, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { adress, CenterObj } from "./CenterInterface";
 import { Map } from "./Map";
 import { UserContext } from "../context/UserContext";
 
 export function AddCenterForm() {
+  const { id } = useParams();
   const [inputCenter, setInputCenter] = React.useState<CenterObj>({
     center_id: 0,
     name: "",
@@ -80,7 +81,7 @@ export function AddCenterForm() {
     }
     checkLoggedIn();
   }, []);
-  const user_id = userContext.user.user_id;
+  // const user_id = userContext.user.user_id;
 
   const validateNumberInput = (value: any, setValue: any) => {
     if (isNaN(value)) return;
@@ -114,7 +115,7 @@ export function AddCenterForm() {
             );
 
             const adress = {
-              nr: re.house_number,
+              nr: re.house_number ? re.house_number : 0,
               line_1: re.road,
               line_2: "",
               city: re.city,
@@ -127,9 +128,13 @@ export function AddCenterForm() {
               CenterPeakConsumption: CenterPeakConsumption,
               lat: CenterLattitude,
               long: CenterLongitude,
-              outPost: CenterOuterPostCode,
+              outPost: re.postcode,
               adress: adress,
             };
+
+            if (center.adress.country === "United Kingdom") {
+              sendData(center);
+            }
 
             console.log(center);
           }
@@ -143,7 +148,7 @@ export function AddCenterForm() {
   }
 
   function sendData(center: any) {
-    fetch("/api/newCenter", {
+    fetch(`/api/newCenter/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(center),
@@ -215,7 +220,6 @@ export function AddCenterForm() {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data[0].lat);
         setCenterLattitude(data[0].lat);
         setCenterLongitude(data[0].lon);
       });
@@ -365,7 +369,7 @@ export function AddCenterForm() {
             ""
           )}
           <div className="InputLastLine">
-            <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
+            <NavLink id="AddNavLink" to={`/dashboard/${id}`}>
               <button>Cancel</button>
             </NavLink>
             <button id="AddSubmitButton" type="submit">

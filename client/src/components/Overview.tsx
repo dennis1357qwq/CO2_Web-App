@@ -1,10 +1,11 @@
 import { useContext, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import CenterList from "./CenterList";
 import { UserContext } from "../context/UserContext";
 import { LogoutButton } from "./LogoutButton";
 
 export const Overview = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const userContext = useContext(UserContext);
@@ -45,7 +46,7 @@ export const Overview = () => {
         {userContext?.user?.user_id}
       </h1>
       <CenterList />
-      <NavLink to="/newCenter">
+      <NavLink to={`/newCenter/${id}`}>
         <button id="AddButton">+</button>
       </NavLink>
       <LogoutButton />

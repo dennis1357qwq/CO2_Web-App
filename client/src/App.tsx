@@ -16,7 +16,7 @@ function App() {
         <Route path="/dashboard/:id" element={<Overview />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/center/:id" element={<Center />} />
-        <Route path="/newCenter" element={<AddCenterForm />} />
+        <Route path="/newCenter/:id" element={<AddCenterForm />} />
         <Route path="*" element={<Overview />} />
       </Routes>
     </>
