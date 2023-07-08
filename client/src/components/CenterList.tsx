@@ -1,29 +1,18 @@
 import * as React from "react";
 import { useEffect, useContext } from "react";
-import { NavLink, redirect } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
-
-interface CenterObj {
-  center_id: number;
-  location: string;
-  peak_consumption: number;
-  name: string;
-}
-
-interface CenterStack {
-  centers: CenterObj[];
-}
+import { CenterObj, CenterStack } from "./CenterInterface";
+import { Map } from "./Map";
 
 export function CenterList() {
   const userContext = useContext(UserContext);
+  const { id } = useParams();
   // console.log(userContext.user);
+  const path = `/api/${id}`;
 
   useEffect(() => {
-    fetch("/api", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userContext.user),
-    })
+    fetch(path)
       .then((response) => response.json())
       .then((data) => {
         setBackendCenters(data);
@@ -35,7 +24,7 @@ export function CenterList() {
   });
 
   return (
-    <div className="App">
+    <div className="CenterListWrapper">
       {typeof backendCenters.centers === "undefined" ? (
         <div>Loading ...</div>
       ) : (
@@ -49,6 +38,7 @@ export function CenterList() {
           )
         )
       )}
+      <Map centers={backendCenters.centers}></Map>
     </div>
   );
 }

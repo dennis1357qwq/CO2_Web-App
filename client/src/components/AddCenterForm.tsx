@@ -1,11 +1,58 @@
-import { useContext, useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { adress, CenterObj } from "./CenterInterface";
+import { Map } from "./Map";
 import { UserContext } from "../context/UserContext";
 
 export function AddCenterForm() {
+  const [inputCenter, setInputCenter] = React.useState<CenterObj>({
+    center_id: 0,
+    name: "",
+    peak_consumption: 0,
+    user_id: 0,
+    lattitude: 0,
+    longitude: 0,
+    outer_postcode: "",
+    adress: {
+      unit_number: "",
+      adress_line_1: "",
+      adress_line_2: "",
+      city: "",
+      region: "",
+      postal_code: "",
+      country: "",
+    },
+  });
+
+  const [useAddress, setUseAddress] = useState(true);
+  const [notUkFlag, setNotUkFlag] = useState(false);
   const [CenterName, setName] = useState("");
-  const [CenterLocation, setCenterLocation] = useState("");
-  const [CenterPeakConsumption, setCenterPeakConsumption] = useState(0);
+  const [CenterLattitude, setCenterLattitude] = useState("");
+  const [CenterLongitude, setCenterLongitude] = useState("");
+  const [CenterPeakConsumption, setCenterPeakConsumption] = useState("");
+  const [UserId, setUserId] = useState();
+  const [CenterOuterPostCode, setCenterOuterPostCode] = useState("");
+  const [CenterAdressUnitNr, setCenterAdressUnitNr] = useState("");
+  const [CenterAdressLine1, setCenterAdressLine1] = useState("");
+  const [CenterAdressLine2, setCenterAdressLine2] = useState("");
+  const [CenterAdressCity, setCenterAdressCity] = useState("");
+  const [CenterAdressRegion, setCenterAdressRegion] = useState("");
+  const [CenterAdressPostCode, setCenterAdressPostCode] = useState("");
+  const [CenterAdressCountry, setCenterAdressCountry] = useState("");
+  const [innerPost, setInnerPost] = useState("");
+  const [PostUKok, setPostUKok] = useState(true);
+  const [validationError, setValidationError] = useState(false);
+  const [latAdress, setLatAdress] = React.useState<adress>({
+    unit_number: "",
+    adress_line_1: "",
+    adress_line_2: "",
+    city: "",
+    region: "",
+    postal_code: "",
+    country: "",
+  });
+
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 
@@ -33,18 +80,69 @@ export function AddCenterForm() {
     }
     checkLoggedIn();
   }, []);
+  const user_id = userContext.user.user_id;
 
-  const handleSubmit = (e: any) => {
-    const user_id = userContext.user.user_id;
+  const validateNumberInput = (value: any, setValue: any) => {
+    if (isNaN(value)) return;
+    setValue(value);
+  };
+
+  async function handleSubmit(e: any) {
     e.preventDefault();
+    let a = { postcode: "" };
+    a.postcode = "";
+    if (CenterAdressPostCode) {
+      a = await checkPostalCode(CenterAdressPostCode);
+    }
+    validateInput();
+    if (!validationError) {
+      if (PostUKok) {
+        if (useAddress) {
+          getLatLongFromAdress(
+            CenterAdressLine1,
+            CenterAdressUnitNr,
+            CenterAdressCity,
+            CenterAdressRegion,
+            CenterAdressCountry,
+            a.postcode
+          );
+        } else {
+          if (CenterLattitude && CenterLongitude) {
+            const re = await getAdressFromLatLong(
+              +CenterLattitude,
+              +CenterLongitude
+            );
 
-    const center = {
-      CenterLocation,
-      CenterPeakConsumption,
-      CenterName,
-      user_id,
-    };
+            const adress = {
+              nr: re.house_number,
+              line_1: re.road,
+              line_2: "",
+              city: re.city,
+              region: re.state,
+              postCode: re.postcode,
+              country: re.country,
+            };
+            const center = {
+              CenterName: CenterName,
+              CenterPeakConsumption: CenterPeakConsumption,
+              lat: CenterLattitude,
+              long: CenterLongitude,
+              outPost: CenterOuterPostCode,
+              adress: adress,
+            };
 
+            console.log(center);
+          }
+        }
+
+        //Info notification: Center with return data has been added!
+
+        // navigate("/dashboard");
+      }
+    }
+  }
+
+  function sendData(center: any) {
     fetch("/api/newCenter", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,43 +150,222 @@ export function AddCenterForm() {
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+  }
 
-    //Info notification: Center with return data has been added!
+  function validateInput() {
+    if (
+      !CenterName ||
+      !CenterPeakConsumption ||
+      (!(CenterLattitude && CenterLongitude) &&
+        (!CenterAdressLine1 ||
+          !CenterAdressUnitNr ||
+          !CenterAdressCity ||
+          !CenterAdressRegion ||
+          !CenterAdressCountry ||
+          !CenterAdressPostCode))
+    ) {
+      setValidationError(true);
+      console.log("validation error");
+    } else {
+      // checkPostalCode(CenterAdressPostCode);
+      setValidationError(false);
+      console.log("valid ok");
+    }
+  }
 
-    navigate("/dashboard");
-  };
+  async function checkPostalCode(postal_code: string) {
+    const response = await fetch(
+      `https://api.postcodes.io/postcodes/${postal_code}`
+    );
+
+    const result = await response.json();
+
+    if (result.error) {
+      console.log("PostCode  - error"); //error handling
+      setPostUKok(false);
+    } else {
+      setCenterOuterPostCode(result.result.outcode);
+      setCenterAdressPostCode(result.result.postcode);
+      setPostUKok(true);
+    }
+    return result.result;
+  }
+
+  async function getAdressFromLatLong(lattitude: number, longitude: number) {
+    const response = await fetch(
+      `https://geocode.maps.co/reverse?lat=${lattitude}&lon=${longitude}`
+    );
+
+    const result = await response.json();
+    console.log(result.address);
+    return result.address;
+  }
+
+  function getLatLongFromAdress(
+    street: string,
+    hnr: string,
+    city: string,
+    state: string,
+    country: string,
+    postcode: string
+  ) {
+    console.log(postcode);
+    fetch(
+      `https://geocode.maps.co/search?street=${hnr}+${street}&city=${city}&state=${state}&postalcode=${postcode}&country=${country}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data[0].lat);
+        setCenterLattitude(data[0].lat);
+        setCenterLongitude(data[0].lon);
+      });
+  }
+
+  // navigate("/dashboard")
 
   return (
     <>
       <div>
         <form className="AddCenter-wrapper" onSubmit={handleSubmit}>
+          <div id="location-solution-button">
+            <input
+              type="radio"
+              value="Coordinates"
+              name="location"
+              onChange={() => {
+                setUseAddress(!useAddress);
+              }}
+            />{" "}
+            use Coordinates
+            <input
+              type="radio"
+              value="Address"
+              name="location"
+              defaultChecked
+              onChange={() => {
+                setUseAddress(!useAddress);
+              }}
+            />
+            use Addres
+          </div>
           <div className="Edit-form">
-            <div className="Edit-form-labels">
+            <div id="name-input" className="input-block">
               <label>name : </label>
-              <label>location : </label>
-              <label>peak Consumption : </label>
-            </div>
-            <div className="Edit-form-inputs">
               <input
                 type="text"
                 value={CenterName}
                 onChange={(e) => setName(e.target.value)}
               ></input>
+            </div>
+            <div id="peak-consumption-input" className="input-block">
+              <label>peak Consumption : </label>
               <input
                 type="text"
-                value={CenterLocation}
-                onChange={(e) => setCenterLocation(e.target.value)}
-              ></input>
-
-              <input
-                type="number"
                 value={CenterPeakConsumption}
-                onChange={(e) => setCenterPeakConsumption(+e.target.value)}
+                onChange={(e) =>
+                  validateNumberInput(e.target.value, setCenterPeakConsumption)
+                }
               ></input>
             </div>
+            {!useAddress ? (
+              <>
+                <Map centers={[]} />
+                <div id="lat/long-input" className="input-block">
+                  <label>lattitude/longitude: </label>
+                  <div>
+                    <input
+                      type="text"
+                      value={CenterLattitude}
+                      onChange={(e) =>
+                        validateNumberInput(e.target.value, setCenterLattitude)
+                      }
+                      size={10}
+                    ></input>
+
+                    <input
+                      type="text"
+                      value={CenterLongitude}
+                      onChange={(e) =>
+                        validateNumberInput(e.target.value, setCenterLongitude)
+                      }
+                      size={10}
+                    ></input>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div id="address-line-1-input" className="input-block">
+                  <label>address line 1: </label>
+                  <input
+                    type="text"
+                    value={CenterAdressLine1}
+                    onChange={(e) => setCenterAdressLine1(e.target.value)}
+                  ></input>
+                </div>
+                <div id="address-line-2-input" className="input-block">
+                  <label>address line 2 : </label>
+                  <input
+                    type="text"
+                    value={CenterAdressLine2}
+                    onChange={(e) => setCenterAdressLine2(e.target.value)}
+                  ></input>
+                </div>
+                <div id="unitnr-input" className="input-block">
+                  <label>Unitnr. : </label>
+                  <input
+                    type="text"
+                    value={CenterAdressUnitNr}
+                    onChange={(e) => setCenterAdressUnitNr(e.target.value)}
+                  ></input>
+                </div>
+                <div id="city-input" className="input-block">
+                  <label>city : </label>
+                  <input
+                    type="text"
+                    value={CenterAdressCity}
+                    onChange={(e) => setCenterAdressCity(e.target.value)}
+                  ></input>
+                </div>
+                <div id="postcode-input" className="input-block">
+                  <label>postcode : </label>
+                  <input
+                    type="text"
+                    value={CenterAdressPostCode}
+                    onChange={(e) => setCenterAdressPostCode(e.target.value)}
+                  ></input>
+                </div>
+                <div id="region-input" className="input-block">
+                  <label>state : </label>
+                  <input
+                    type="text"
+                    value={CenterAdressRegion}
+                    onChange={(e) => setCenterAdressRegion(e.target.value)}
+                  ></input>
+                </div>
+                <div id="country-input" className="input-block">
+                  <label>country : </label>
+                  <input
+                    type="text"
+                    value={CenterAdressCountry}
+                    onChange={(e) => setCenterAdressCountry(e.target.value)}
+                  ></input>
+                </div>
+              </>
+            )}
           </div>
+          {validationError ? (
+            <label id="NoChangesLabel">complete input!</label>
+          ) : (
+            ""
+          )}
+          {!PostUKok ? (
+            <label id="NoChangesLabel">Give an Adress in Uk!</label>
+          ) : (
+            ""
+          )}
           <div className="InputLastLine">
-            <NavLink id="AddNavLink" to="/dashboard">
+            <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
               <button>Cancel</button>
             </NavLink>
             <button id="AddSubmitButton" type="submit">

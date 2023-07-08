@@ -5,14 +5,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
 import { EditCenter } from "./EditCenter";
 import { UserContext } from "../context/UserContext";
-
-interface CenterObj {
-  center_id: number;
-  location: string;
-  peak_consumption: number;
-  name: string;
-  affiliated_id: number;
-}
+import { Map } from "./Map";
+import { CenterObj } from "./CenterInterface";
 
 export function Center() {
   const userContext = useContext(UserContext);
@@ -20,10 +14,21 @@ export function Center() {
   const { id } = useParams();
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     center_id: 0,
-    location: "",
-    peak_consumption: 0,
     name: "",
-    affiliated_id: 0,
+    user_id: 0,
+    peak_consumption: 0,
+    lattitude: 0,
+    longitude: 0,
+    outer_postcode: "",
+    adress: {
+      unit_number: "",
+      adress_line_1: "",
+      adress_line_2: "",
+      city: "",
+      region: "",
+      postal_code: "",
+      country: "",
+    },
   });
 
   // check for logged in !!
@@ -52,6 +57,7 @@ export function Center() {
   }, []);
 
   const path = `/api/center/${id}`;
+  const user_id = userContext.user.user_id;
 
   useEffect(() => {
     fetch(path)
@@ -66,23 +72,35 @@ export function Center() {
       <div className="Center">
         <div className="Center-data-list">
           <li>Name: {backendCenter.name}</li>
-          <li>Ort: {backendCenter.location}</li>
+          <li>
+            Street: {backendCenter.adress.adress_line_1},{" "}
+            {backendCenter.adress.unit_number}
+          </li>
+          <li>
+            {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
+            {backendCenter.adress.region}
+          </li>
           <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
         </div>
 
         <div className="Center-buttons">
           <EditCenter
-            id={backendCenter.center_id}
+            center_id={backendCenter.center_id}
             name={backendCenter.name}
-            location={backendCenter.location}
-            peakCons={backendCenter.peak_consumption}
+            peak_consumption={backendCenter.peak_consumption}
+            user_id={backendCenter.user_id}
+            lattitude={backendCenter.lattitude}
+            longitude={backendCenter.longitude}
+            outer_postcode={backendCenter.outer_postcode}
+            adress={backendCenter.adress}
           />
           <DeleteButton id={backendCenter.center_id} path={path} />
         </div>
-        <NavLink className={"Home-Link"} to="/dashboard">
+        <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
           Home
         </NavLink>
       </div>
+      <Map centers={[backendCenter]} />
     </div>
   );
 }

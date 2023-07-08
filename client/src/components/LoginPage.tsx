@@ -61,7 +61,7 @@ export default function LoginPage() {
       localStorage.setItem("status", "loggedIn");
       localStorage.setItem("username", username);
       localStorage.setItem("user_id", user_id);
-      navigate("/dashboard");
+      navigate(`/dashboard/${user_id}`);
     }
   }
 

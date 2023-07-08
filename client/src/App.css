@@ -28,10 +28,10 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  top: 50%;
+  /* top: 50%;
   left: 50%;
   transform: translate(-50%, -100%);
-  position: fixed;
+  position: relative; */
 }
 
 .Center-data-list {
@@ -62,12 +62,16 @@
 }
 
 .Edit-form {
-  display: flex;
+  display: grid;
   gap: 1rem;
   /* background-color: blanchedalmond; */
 }
 
-.Edit-form-labels {
+.input-block {
+  display: grid;
+}
+
+/* .Edit-form-labels {
   display: grid;
   gap: 1rem;
 }
@@ -75,7 +79,7 @@
 .Edit-form-inputs {
   display: grid;
   gap: 1rem;
-}
+} */
 
 .Button-Message-row {
   display: flex;
@@ -105,7 +109,7 @@
   gap: 2em;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -100%);
+  transform: translate(-50%, -50%);
   position: fixed;
   border: lightgrey solid;
   padding: 10px;
@@ -127,11 +131,3 @@
   gap: 1rem;
   justify-content: center;
 }
-/* 
-#dialog {
-  background-color: red;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -150%);
-  position: fixed;
-} */
