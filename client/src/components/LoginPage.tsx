@@ -88,7 +88,7 @@ export default function LoginPage() {
           Login
         </button>
         <NavLink to="/register">
-          <button className="">Sign Up</button>
+          <button className="">Need an Account?</button>
         </NavLink>
         <p className="text-red-900">{errorMessage}</p>
       </form>

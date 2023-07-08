@@ -75,6 +75,7 @@ app.get("/api/center/:id", async (req, res) => {
   });
 });
 
+// add current user_id to request 
 app.post("/api/newCenter", async (req, res) => {
   const center = await createCenter(
     req.body.CenterName,
