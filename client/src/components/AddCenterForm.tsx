@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { adress, CenterObj } from "./CenterInterface";
 import { Map } from "./Map";
 
 export function AddCenterForm() {
-  const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
+  const [inputCenter, setInputCenter] = React.useState<CenterObj>({
     center_id: 0,
     name: "",
     peak_consumption: 0,
@@ -23,6 +23,7 @@ export function AddCenterForm() {
     },
   });
   const [useAddress, setUseAddress] = useState(true);
+  const [notUkFlag, setNotUkFlag] = useState(false);
   const [CenterName, setName] = useState("");
   const [CenterLattitude, setCenterLattitude] = useState("");
   const [CenterLongitude, setCenterLongitude] = useState("");
@@ -35,8 +36,9 @@ export function AddCenterForm() {
   const [CenterAdressRegion, setCenterAdressRegion] = useState("");
   const [CenterAdressPostCode, setCenterAdressPostCode] = useState("");
   const [CenterAdressCountry, setCenterAdressCountry] = useState("");
-  const [PostUKok, setPostUKok] = useState(false);
-  const [validationError, setValidateError] = useState(false);
+  const [innerPost, setInnerPost] = useState("");
+  const [PostUKok, setPostUKok] = useState(true);
+  const [validationError, setValidationError] = useState(false);
   const [latAdress, setLatAdress] = React.useState<adress>({
     unit_number: "",
     adress_line_1: "",
@@ -53,47 +55,70 @@ export function AddCenterForm() {
     setValue(value);
   };
 
-  const handleSubmit = async (e: any) => {
+  async function handleSubmit(e: any) {
     e.preventDefault();
-    validateInput();
-    if (validationError) console.log("return");
-    checkPostalCode(CenterAdressPostCode);
-    let re = {};
-    if (CenterLattitude && CenterLongitude) {
-      re = await getAdressFromLatLong(+CenterLattitude, +CenterLongitude);
-      console.log(re);
+    let a = { postcode: "" };
+    a.postcode = "";
+    if (CenterAdressPostCode) {
+      a = await checkPostalCode(CenterAdressPostCode);
     }
-    //fill out center obj dependent on whats already there
-    const adress = {
-      CenterAdressUnitNr,
-      CenterAdressLine1,
-      CenterAdressLine2,
-      CenterAdressRegion,
-      CenterAdressCity,
-      CenterAdressPostCode,
-      CenterAdressCountry,
-    };
-    const center = {
-      CenterName,
-      CenterPeakConsumption,
-      CenterLattitude,
-      CenterLongitude,
-      CenterOuterPostCode,
-      adress,
-    };
+    validateInput();
+    if (!validationError) {
+      if (PostUKok) {
+        if (useAddress) {
+          getLatLongFromAdress(
+            CenterAdressLine1,
+            CenterAdressUnitNr,
+            CenterAdressCity,
+            CenterAdressRegion,
+            CenterAdressCountry,
+            a.postcode
+          );
+        } else {
+          if (CenterLattitude && CenterLongitude) {
+            const re = await getAdressFromLatLong(
+              +CenterLattitude,
+              +CenterLongitude
+            );
 
-    // fetch("/api/newCenter", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(center),
-    // })
-    //   .then((response) => response.json())
-    //   .then((data) => console.log(data));
+            const adress = {
+              nr: re.house_number,
+              line_1: re.road,
+              line_2: "",
+              city: re.city,
+              region: re.state,
+              postCode: re.postcode,
+              country: re.country,
+            };
+            const center = {
+              CenterName: CenterName,
+              CenterPeakConsumption: CenterPeakConsumption,
+              lat: CenterLattitude,
+              long: CenterLongitude,
+              outPost: CenterOuterPostCode,
+              adress: adress,
+            };
 
-    //Info notification: Center with return data has been added!
+            console.log(center);
+          }
+        }
 
-    // navigate("/dashboard");
-  };
+        //Info notification: Center with return data has been added!
+
+        // navigate("/dashboard");
+      }
+    }
+  }
+
+  function sendData(center: any) {
+    fetch("/api/newCenter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(center),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  }
 
   function validateInput() {
     if (
@@ -103,30 +128,35 @@ export function AddCenterForm() {
         (!CenterAdressLine1 ||
           !CenterAdressUnitNr ||
           !CenterAdressCity ||
-          !CenterAdressCountry ||
           !CenterAdressRegion ||
+          !CenterAdressCountry ||
           !CenterAdressPostCode))
     ) {
-      setValidateError(true);
+      setValidationError(true);
       console.log("validation error");
     } else {
-      setValidateError(false);
+      // checkPostalCode(CenterAdressPostCode);
+      setValidationError(false);
       console.log("valid ok");
     }
   }
 
-  function checkPostalCode(postal_code: string) {
-    fetch(`https://api.postcodes.io/postcodes/${postal_code}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.error) {
-          console.log("PostCode  - error"); //error handling
-          setPostUKok(false);
-        } else {
-          setCenterOuterPostCode(data.result.outcode);
-          setPostUKok(true);
-        }
-      });
+  async function checkPostalCode(postal_code: string) {
+    const response = await fetch(
+      `https://api.postcodes.io/postcodes/${postal_code}`
+    );
+
+    const result = await response.json();
+
+    if (result.error) {
+      console.log("PostCode  - error"); //error handling
+      setPostUKok(false);
+    } else {
+      setCenterOuterPostCode(result.result.outcode);
+      setCenterAdressPostCode(result.result.postcode);
+      setPostUKok(true);
+    }
+    return result.result;
   }
 
   async function getAdressFromLatLong(lattitude: number, longitude: number) {
@@ -135,7 +165,28 @@ export function AddCenterForm() {
     );
 
     const result = await response.json();
+    console.log(result.address);
     return result.address;
+  }
+
+  function getLatLongFromAdress(
+    street: string,
+    hnr: string,
+    city: string,
+    state: string,
+    country: string,
+    postcode: string
+  ) {
+    console.log(postcode);
+    fetch(
+      `https://geocode.maps.co/search?street=${hnr}+${street}&city=${city}&state=${state}&postalcode=${postcode}&country=${country}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data[0].lat);
+        setCenterLattitude(data[0].lat);
+        setCenterLongitude(data[0].lon);
+      });
   }
 
   return (
@@ -251,7 +302,7 @@ export function AddCenterForm() {
                   ></input>
                 </div>
                 <div id="region-input" className="input-block">
-                  <label>region : </label>
+                  <label>state : </label>
                   <input
                     type="text"
                     value={CenterAdressRegion}
@@ -270,9 +321,12 @@ export function AddCenterForm() {
             )}
           </div>
           {validationError ? (
-            <label id="NoChangesLabel">
-              Name and Coordinates or Name and Address required!
-            </label>
+            <label id="NoChangesLabel">complete input!</label>
+          ) : (
+            ""
+          )}
+          {!PostUKok ? (
+            <label id="NoChangesLabel">Give an Adress in Uk!</label>
           ) : (
             ""
           )}
