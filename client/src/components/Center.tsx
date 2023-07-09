@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink, useNavigate } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
@@ -7,11 +7,15 @@ import { EditCenter } from "./EditCenter";
 import { UserContext } from "../context/UserContext";
 import { Map } from "./Map";
 import { CenterObj } from "./CenterInterface";
+import "./Center.css";
+import DataPieChart from "./PieChart";
 
 export function Center() {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
+  const [carbonData, setCarbonData] = useState<any>({});
+  const [isLoaded, setIsLoaded] = useState(false);
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     center_id: 0,
     name: "",
@@ -65,6 +69,8 @@ export function Center() {
       .then((response) => response.json())
       .then((data) => {
         setBackendCenter(data.center);
+        setCarbonData(data.carbon);
+        setIsLoaded(true);
       });
   }, []);
 
@@ -101,6 +107,14 @@ export function Center() {
           Home
         </NavLink>
       </div>
+      {isLoaded ? (
+        <DataPieChart values={carbonData.data[0].data[0].generationmix} />
+      ) : (
+        // Loading animation vielleicht anders setzen?
+        <div className="loader-container">
+          <div className="spinner"></div>
+        </div>
+      )}
       <Map centers={[backendCenter]} />
     </div>
   );

@@ -78,8 +78,11 @@ app.get("/api/center/:id", async (req, res) => {
   } else {
     const adress1 = await getAdress(center1.adress_id);
     const center = writeCenterObj(center1, adress1);
+    const carbon = await getCarbon(center.outer_postcode);
+    console.log(carbon);
     res.json({
       center: center,
+      carbon: carbon,
     });
   }
 });
