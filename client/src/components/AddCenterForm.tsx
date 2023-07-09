@@ -81,7 +81,7 @@ export function AddCenterForm() {
     }
     checkLoggedIn();
   }, []);
-  // const user_id = userContext.user.user_id;
+  const user_id = userContext.user?.user_id;
 
   const validateNumberInput = (value: any, setValue: any) => {
     if (isNaN(value)) return;

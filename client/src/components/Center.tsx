@@ -57,7 +57,7 @@ export function Center() {
   }, []);
 
   const path = `/api/center/${id}`;
-  const user_id = userContext.user.user_id;
+  const user_id = userContext.user?.user_id;
 
   useEffect(() => {
     fetch(path)
