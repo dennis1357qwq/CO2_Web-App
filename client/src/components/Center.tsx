@@ -48,6 +48,7 @@ export function Center() {
           username,
           user_id,
         });
+
         await userContext.setAuthenticated(true);
       } else {
         navigate("/");
@@ -57,7 +58,7 @@ export function Center() {
   }, []);
 
   const path = `/api/center/${id}`;
-  const user_id = userContext.user.user_id;
+  const user_id = userContext.user?.user_id;
 
   useEffect(() => {
     fetch(path)
