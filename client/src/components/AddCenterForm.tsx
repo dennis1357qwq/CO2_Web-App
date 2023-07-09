@@ -99,7 +99,7 @@ export function AddCenterForm() {
     if (!validationError) {
       if (PostUKok) {
         if (useAddress) {
-          getLatLongFromAdress(
+          const le = await getLatLongFromAdress(
             CenterAdressLine1,
             CenterAdressUnitNr,
             CenterAdressCity,
@@ -107,6 +107,25 @@ export function AddCenterForm() {
             CenterAdressCountry,
             a.postcode
           );
+
+          const adress = {
+            nr: CenterAdressUnitNr,
+            line_1: CenterAdressLine1,
+            line_2: CenterAdressLine2,
+            city: CenterAdressCity,
+            region: CenterAdressRegion,
+            postCode: a.postcode,
+            country: CenterAdressPostCode,
+          };
+          const center = {
+            CenterName: CenterName,
+            CenterPeakConsumption: CenterPeakConsumption,
+            lat: le.lat,
+            long: le.lon,
+            outPost: CenterOuterPostCode,
+            adress: adress,
+          };
+          sendData(center);
         } else {
           if (CenterLattitude && CenterLongitude) {
             const re = await getAdressFromLatLong(
@@ -134,6 +153,8 @@ export function AddCenterForm() {
 
             if (center.adress.country === "United Kingdom") {
               sendData(center);
+            } else {
+              setPostUKok(false);
             }
 
             console.log(center);
@@ -142,7 +163,7 @@ export function AddCenterForm() {
 
         //Info notification: Center with return data has been added!
 
-        // navigate("/dashboard");
+        navigate(`/dashboard/${id}`);
       }
     }
   }
@@ -206,7 +227,7 @@ export function AddCenterForm() {
     return result.address;
   }
 
-  function getLatLongFromAdress(
+  async function getLatLongFromAdress(
     street: string,
     hnr: string,
     city: string,
@@ -214,15 +235,16 @@ export function AddCenterForm() {
     country: string,
     postcode: string
   ) {
-    console.log(postcode);
-    fetch(
+    const response = await fetch(
       `https://geocode.maps.co/search?street=${hnr}+${street}&city=${city}&state=${state}&postalcode=${postcode}&country=${country}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setCenterLattitude(data[0].lat);
-        setCenterLongitude(data[0].lon);
-      });
+    );
+
+    const result = await response.json();
+
+    setCenterLattitude(result[0].lat);
+    setCenterLongitude(result[0].lon);
+
+    return result[0];
   }
 
   // navigate("/dashboard")

@@ -41,10 +41,10 @@ export const Overview = () => {
 
   return (
     <div className="Overview">
-      <h1>
+      {/* <h1>
         Logged in as user: {userContext?.user?.username ?? "ERROR"} with Id:{" "}
         {userContext?.user?.user_id}
-      </h1>
+      </h1> */}
       <CenterList />
       <NavLink to={`/newCenter/${id}`}>
         <button id="AddButton">+</button>
