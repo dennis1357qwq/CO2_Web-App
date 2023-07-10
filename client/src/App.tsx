@@ -7,6 +7,7 @@ import LoginPage from "./components/LoginPage";
 import { Route, Routes } from "react-router-dom";
 import { AddCenterForm } from "./components/AddCenterForm";
 import { Overview } from "./components/Overview";
+import { EditCenter } from "./components/EditCenter";
 
 function App() {
   return (

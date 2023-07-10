@@ -206,7 +206,6 @@ export function AddCenterForm() {
       setValidationError(true);
       console.log("validation error");
     } else {
-      // checkPostalCode(CenterAdressPostCode);
       setValidationError(false);
       console.log("valid ok");
     }
@@ -259,8 +258,6 @@ export function AddCenterForm() {
 
     return result[0];
   }
-
-  // navigate("/dashboard")
 
   return (
     <>
