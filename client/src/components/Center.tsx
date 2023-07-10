@@ -9,12 +9,14 @@ import { Map } from "./Map";
 import { CenterObj } from "./CenterInterface";
 import "./Center.css";
 import DataPieChart from "./PieChart";
+import DataLineChart from "./LineChart";
 
 export function Center() {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
-  const [carbonData, setCarbonData] = useState<any>({});
+  const [currentCarbonData, setCurrentCarbonData] = useState<any>({});
+  const [todayCarbonData, setTodayCarbonData] = useState<any>({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     center_id: 0,
@@ -69,10 +71,13 @@ export function Center() {
       .then((response) => response.json())
       .then((data) => {
         setBackendCenter(data.center);
-        setCarbonData(data.carbon);
+        setCurrentCarbonData(data.currentCarbon);
+        setTodayCarbonData(data.todayCarbon);
         setIsLoaded(true);
       });
   }, []);
+
+  console.log(todayCarbonData);
 
   return (
     <div className="Center-wrapper">
@@ -88,6 +93,14 @@ export function Center() {
             {backendCenter.adress.region}
           </li>
           <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
+          {isLoaded ? (
+            <li>
+              Current Carbon Intensity:{" "}
+              {currentCarbonData.data[0].data[0].intensity.forecast} gCO_2/kWH
+            </li>
+          ) : (
+            <li>Waiting for Data</li>
+          )}
         </div>
 
         <div className="Center-buttons">
@@ -108,14 +121,18 @@ export function Center() {
         </NavLink>
       </div>
       {isLoaded ? (
-        <DataPieChart values={carbonData.data[0].data[0].generationmix} />
+        <DataPieChart
+          values={
+            isLoaded ? currentCarbonData.data[0].data[0].generationmix : 0
+          }
+        />
       ) : (
-        // Loading animation vielleicht anders setzen?
         <div className="loader-container">
           <div className="spinner"></div>
         </div>
       )}
       {isLoaded ? <Map centers={[backendCenter]} /> : null}
+      <DataLineChart values={isLoaded ? todayCarbonData : 0} />
     </div>
   );
 }
