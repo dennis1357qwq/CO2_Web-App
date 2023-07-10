@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { CenterObj } from "./CenterInterface";
 import { Map } from "./Map";
 
@@ -62,35 +62,194 @@ export function EditCenter(props: CenterObj) {
     dialog?.close();
   };
 
-  // const testfunc = () => {
-  //   if (checkIfChanged()) {
-  //     setNoChangesError(true);
+  const testfunc = () => {
+    // if (checkIfChanged()) {
+    //   setNoChangesError(true);
+    // }
+    // if (!checkIfChanged()) {
+    //   setNoChangesError(false);
+    //   callPutApi(
+    //     props.id,
+    //     CenterName ? CenterName : props.name,
+    //     CenterPeakConsumption ? +CenterPeakConsumption : props.peakCons,
+    //     CenterLocation ? CenterLocation : props.location
+    //   );
+  };
+
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+    let a = { postcode: "", outcode: "" };
+    a.postcode = "";
+    if (
+      CenterAdressPostCode ? CenterAdressPostCode : props.adress.postal_code
+    ) {
+      a = await checkPostalCode(
+        CenterAdressPostCode ? CenterAdressPostCode : props.adress.postal_code
+      );
+    }
+    // validateInput();
+    console.log("test");
+    if (PostUKok) {
+      console.log("test");
+      if (useAddress) {
+        console.log(a.postcode);
+        const le = await getLatLongFromAdress(
+          CenterAdressLine1 ? CenterAdressLine1 : props.adress.adress_line_1,
+          CenterAdressUnitNr ? CenterAdressUnitNr : props.adress.unit_number,
+          CenterAdressCity ? CenterAdressCity : props.adress.city,
+          CenterAdressRegion ? CenterAdressRegion : props.adress.region,
+          CenterAdressCountry ? CenterAdressCountry : props.adress.country,
+          a.postcode
+        );
+
+        const adress = {
+          nr: CenterAdressUnitNr ? CenterAdressUnitNr : 0,
+          line_1: CenterAdressLine1
+            ? CenterAdressLine1
+            : props.adress.adress_line_1,
+          line_2: CenterAdressLine2
+            ? CenterAdressLine2
+            : props.adress.adress_line_2,
+          city: CenterAdressCity ? CenterAdressCity : props.adress.city,
+          region: CenterAdressRegion ? CenterAdressRegion : props.adress.region,
+          postCode: a.postcode,
+          country: CenterAdressCountry
+            ? CenterAdressCountry
+            : props.adress.country,
+        };
+        const center = {
+          center_id: props.center_id,
+          CenterName: CenterName ? CenterName : props.name,
+          CenterPeakConsumption: CenterPeakConsumption
+            ? CenterPeakConsumption
+            : props.peak_consumption,
+          lat: le.lat,
+          long: le.lon,
+          outPost: a.outcode,
+          adress: adress,
+        };
+        console.log(center);
+        callPutApi(center);
+      } else {
+        const re = await getAdressFromLatLong(
+          CenterLattitude ? +CenterLattitude : +props.lattitude,
+          CenterLongitude ? +CenterLattitude : +props.longitude
+        );
+
+        const adress = {
+          nr: re.house_number ? re.house_number : 0,
+          line_1: re.road,
+          line_2: "",
+          city: re.city,
+          region: re.state,
+          postCode: re.postcode,
+          country: re.country,
+        };
+        const center = {
+          center_id: props.center_id,
+          CenterName: CenterName ? CenterName : props.name,
+          CenterPeakConsumption: CenterPeakConsumption
+            ? CenterPeakConsumption
+            : props.peak_consumption,
+          lat: CenterLattitude ? CenterLattitude : props.lattitude,
+          long: CenterLongitude ? CenterLongitude : props.longitude,
+          outPost: re.postcode,
+          adress: adress,
+        };
+
+        if (center.adress.country === "United Kingdom") {
+          callPutApi(center);
+        } else {
+          setPostUKok(false);
+        }
+
+        console.log(center);
+      }
+
+      //Info notification: Center with return data has been added!
+    }
+    dialog?.close();
+    navigate(0);
+  }
+
+  async function checkPostalCode(postal_code: string) {
+    const response = await fetch(
+      `https://api.postcodes.io/postcodes/${postal_code}`
+    );
+
+    const result = await response.json();
+
+    if (result.error) {
+      console.log("PostCode  - error"); //error handling
+      setPostUKok(false);
+    } else {
+      setCenterAdressPostCode(result.result.postcode);
+      setPostUKok(true);
+    }
+    return result.result;
+  }
+
+  // function validateInput() {
+  //   if (
+  //     !CenterName ||
+  //     !CenterPeakConsumption ||
+  //     (!(CenterLattitude && CenterLongitude) &&
+  //       (!CenterAdressLine1 ||
+  //         !CenterAdressUnitNr ||
+  //         !CenterAdressCity ||
+  //         !CenterAdressRegion ||
+  //         !CenterAdressCountry ||
+  //         !CenterAdressPostCode))
+  //   ) {
+  //     setValidationError(true);
+  //     console.log("validation error");
+  //   } else {
+  //     setValidationError(false);
+  //     console.log("valid ok");
   //   }
-  //   if (!checkIfChanged()) {
-  //     setNoChangesError(false);
-  //     callPutApi(
-  //       props.id,
-  //       CenterName ? CenterName : props.name,
-  //       CenterPeakConsumption ? +CenterPeakConsumption : props.peakCons,
-  //       CenterLocation ? CenterLocation : props.location
-  //     );
-  //     dialog?.close();
-  //     navigate(0);
-  //   }
-  // };
+  // }
+
+  async function getLatLongFromAdress(
+    street: string,
+    hnr: string,
+    city: string,
+    state: string,
+    country: string,
+    postcode: string
+  ) {
+    const response = await fetch(
+      `https://geocode.maps.co/search?street=${hnr}+${street}&city=${city}&state=${state}&postalcode=${postcode}&country=${country}`
+    );
+
+    const result = await response.json();
+
+    setCenterLattitude(result[0].lat);
+    setCenterLongitude(result[0].lon);
+
+    return result[0];
+  }
+
+  async function getAdressFromLatLong(lattitude: number, longitude: number) {
+    const response = await fetch(
+      `https://geocode.maps.co/reverse?lat=${lattitude}&lon=${longitude}`
+    );
+
+    const result = await response.json();
+    console.log(result.address);
+    return result.address;
+  }
 
   return (
     <>
       <button onClick={handleClickOpenEditor}>Edit</button>
 
       <dialog className="Dialog-wrap" id="dialog">
-        <form onSubmit={() => {}}>
+        <form onSubmit={handleSubmit}>
           <div id="location-solution-button">
             <input
               type="radio"
               value="Coordinates"
               name="location"
-              placeholder=""
               onChange={() => {
                 setUseAddress(!useAddress);
               }}
@@ -130,7 +289,7 @@ export function EditCenter(props: CenterObj) {
             </div>
             {!useAddress ? (
               <>
-                <Map centers={[]} />
+                <Map centers={[props]} />
                 <div id="lat/long-input" className="input-block">
                   <label>lattitude/longitude: </label>
                   <div>
@@ -182,9 +341,9 @@ export function EditCenter(props: CenterObj) {
                     type="text"
                     value={CenterAdressUnitNr}
                     placeholder={
-                      (props.adress.unit_number = 0
-                        ? props.adress.unit_number
-                        : "")
+                      props.adress.unit_number === "0"
+                        ? ""
+                        : props.adress.unit_number
                     }
                     onChange={(e) => setCenterAdressUnitNr(e.target.value)}
                   ></input>
@@ -240,40 +399,33 @@ export function EditCenter(props: CenterObj) {
           )}
           <div className="InputLastLine">
             <button id="AddSubmitButton" type="submit">
-              Add
+              Change
             </button>
+            <div className="Button-Message-row">
+              <div className="Button-row">
+                <button onClick={handleClickCloseEditor}>Cancel</button>
+              </div>
+              {NoChangesError ? (
+                <label id="NoChangesLabel">No changes made!</label>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
         </form>
-        <div className="Button-Message-row">
-          <div className="Button-row">
-            <button onClick={handleClickCloseEditor}>Cancel</button>
-          </div>
-          {NoChangesError ? (
-            <label id="NoChangesLabel">No changes made!</label>
-          ) : (
-            ""
-          )}
-        </div>
       </dialog>
     </>
   );
 }
 
-function callPutApi(id: number, name: string, peak: number, location: string) {
-  const center = {
-    center_id: id,
-    CenterName: name,
-    CenterLocation: location,
-    CenterPeakConsumption: peak,
-  };
-
-  fetch(`/api/center/${id}`, {
+function callPutApi(center: any) {
+  fetch(`/api/center/${center.center_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(center),
   })
     .then((response) => response.json())
     .then((data) => {
-      //   succes message
+      console.log(data);
     });
 }

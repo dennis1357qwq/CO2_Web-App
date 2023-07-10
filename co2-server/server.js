@@ -146,21 +146,21 @@ app.put("/api/center/:id", async (req, res) => {
   const result = await updateCenter(
     req.body.center_id,
     req.body.CenterName,
-    req.body.lattitude,
-    req.body.longitude,
-    req.outerPostCode,
+    req.body.lat,
+    req.body.long,
+    req.body.outPost,
     req.body.CenterPeakConsumption
   );
   const ad_id = await getCenter(req.body.center_id);
   const upad = await updateAdress(
     ad_id.adress_id,
-    req.body.nr,
-    req.body.line_1,
-    req.body.line_2,
-    req.body.city,
-    req.body.region,
-    req.body.postCode,
-    req.body.country
+    req.body.adress.nr,
+    req.body.adress.line_1,
+    req.body.adress.line_2,
+    req.body.adress.city,
+    req.body.adress.region,
+    req.body.adress.postCode,
+    req.body.adress.country
   );
   res.json({
     center: result,
