@@ -74,7 +74,9 @@ export function Center() {
           <li>Name: {backendCenter.name}</li>
           <li>
             Street: {backendCenter.adress.adress_line_1},{" "}
-            {backendCenter.adress.unit_number}
+            {+backendCenter.adress.unit_number != 0
+              ? backendCenter.adress.unit_number
+              : ""}
           </li>
           <li>
             {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
@@ -94,7 +96,11 @@ export function Center() {
             outer_postcode={backendCenter.outer_postcode}
             adress={backendCenter.adress}
           />
-          <DeleteButton id={backendCenter.center_id} path={path} />
+          <DeleteButton
+            id={backendCenter.center_id}
+            path={path}
+            user_id={user_id}
+          />
         </div>
         <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
           Home

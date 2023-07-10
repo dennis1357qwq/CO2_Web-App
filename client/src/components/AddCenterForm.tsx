@@ -84,19 +84,32 @@ export function AddCenterForm() {
   const user_id = userContext.user?.user_id;
 
   const validateNumberInput = (value: any, setValue: any) => {
+    if (value === "-") setValue("-");
     if (isNaN(value)) return;
     setValue(value);
   };
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    let a = { postcode: "" };
+    let a = { postcode: "", outcode: "" };
     a.postcode = "";
     if (CenterAdressPostCode) {
       a = await checkPostalCode(CenterAdressPostCode);
     }
     validateInput();
-    if (!validationError) {
+    if (
+      !(
+        !CenterName ||
+        !CenterPeakConsumption ||
+        (!(CenterLattitude && CenterLongitude) &&
+          (!CenterAdressLine1 ||
+            !CenterAdressUnitNr ||
+            !CenterAdressCity ||
+            !CenterAdressRegion ||
+            !CenterAdressCountry ||
+            !CenterAdressPostCode))
+      )
+    ) {
       if (PostUKok) {
         if (useAddress) {
           const le = await getLatLongFromAdress(
@@ -115,14 +128,14 @@ export function AddCenterForm() {
             city: CenterAdressCity,
             region: CenterAdressRegion,
             postCode: a.postcode,
-            country: CenterAdressPostCode,
+            country: CenterAdressCountry,
           };
           const center = {
             CenterName: CenterName,
             CenterPeakConsumption: CenterPeakConsumption,
             lat: le.lat,
             long: le.lon,
-            outPost: CenterOuterPostCode,
+            outPost: a.outcode,
             adress: adress,
           };
           sendData(center);

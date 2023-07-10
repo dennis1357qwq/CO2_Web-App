@@ -82,13 +82,11 @@ export function EditCenter(props: CenterObj) {
               <input
                 type="text"
                 value={CenterLocation}
-                // placeholder={props.location}
                 onChange={(e) => setCenterLocation(e.target.value)}
               ></input>
               <input
                 type="text"
                 value={CenterPeakConsumption}
-                // placeholder={`${props.peakCons}`}
                 onChange={(e) => checkAndSetPeakCons(e.target.value)}
               ></input>
             </div>
@@ -96,7 +94,6 @@ export function EditCenter(props: CenterObj) {
 
           <div className="Button-Message-row">
             <div className="Button-row">
-              {/* <button onClick={testfunc}>Edit</button> */}
               <button onClick={handleClickCloseEditor}>Cancel</button>
             </div>
             {NoChangesError ? (

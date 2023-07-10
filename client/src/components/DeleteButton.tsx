@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
-export function DeleteButton(props: { id: number; path: string }) {
+export function DeleteButton(props: {
+  id: number;
+  path: string;
+  user_id: number;
+}) {
   const navigate = useNavigate();
   const handleClick = (e: any) => {
     e.preventDefault();
@@ -13,7 +17,7 @@ export function DeleteButton(props: { id: number; path: string }) {
 
     //Info notification: Center with return data has been added!
 
-    navigate("/dashboard");
+    navigate(`/dashboard/${props.user_id}`);
   };
 
   return (
