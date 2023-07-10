@@ -115,7 +115,7 @@ export function Center() {
           <div className="spinner"></div>
         </div>
       )}
-      <Map centers={[backendCenter]} />
+      {isLoaded ? <Map centers={[backendCenter]} /> : null}
     </div>
   );
 }
