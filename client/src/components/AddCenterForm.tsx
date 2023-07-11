@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useState, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { adress, CenterObj } from "./CenterInterface";
 import { Map } from "./Map";
 import { UserContext } from "../context/UserContext";
 
 export function AddCenterForm() {
+  const { id } = useParams();
   const [inputCenter, setInputCenter] = React.useState<CenterObj>({
     center_id: 0,
     name: "",
@@ -80,26 +81,38 @@ export function AddCenterForm() {
     }
     checkLoggedIn();
   }, []);
-
   const user_id = userContext.user?.user_id;
 
   const validateNumberInput = (value: any, setValue: any) => {
+    if (value === "-") setValue("-");
     if (isNaN(value)) return;
     setValue(value);
   };
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    let a = { postcode: "" };
+    let a = { postcode: "", outcode: "" };
     a.postcode = "";
     if (CenterAdressPostCode) {
       a = await checkPostalCode(CenterAdressPostCode);
     }
     validateInput();
-    if (!validationError) {
+    if (
+      !(
+        !CenterName ||
+        !CenterPeakConsumption ||
+        (!(CenterLattitude && CenterLongitude) &&
+          (!CenterAdressLine1 ||
+            !CenterAdressUnitNr ||
+            !CenterAdressCity ||
+            !CenterAdressRegion ||
+            !CenterAdressCountry ||
+            !CenterAdressPostCode))
+      )
+    ) {
       if (PostUKok) {
         if (useAddress) {
-          getLatLongFromAdress(
+          const le = await getLatLongFromAdress(
             CenterAdressLine1,
             CenterAdressUnitNr,
             CenterAdressCity,
@@ -107,6 +120,25 @@ export function AddCenterForm() {
             CenterAdressCountry,
             a.postcode
           );
+
+          const adress = {
+            nr: CenterAdressUnitNr,
+            line_1: CenterAdressLine1,
+            line_2: CenterAdressLine2,
+            city: CenterAdressCity,
+            region: CenterAdressRegion,
+            postCode: a.postcode,
+            country: CenterAdressCountry,
+          };
+          const center = {
+            CenterName: CenterName,
+            CenterPeakConsumption: CenterPeakConsumption,
+            lat: le.lat,
+            long: le.lon,
+            outPost: a.outcode,
+            adress: adress,
+          };
+          sendData(center);
         } else {
           if (CenterLattitude && CenterLongitude) {
             const re = await getAdressFromLatLong(
@@ -115,7 +147,7 @@ export function AddCenterForm() {
             );
 
             const adress = {
-              nr: re.house_number,
+              nr: re.house_number ? re.house_number : 0,
               line_1: re.road,
               line_2: "",
               city: re.city,
@@ -128,9 +160,15 @@ export function AddCenterForm() {
               CenterPeakConsumption: CenterPeakConsumption,
               lat: CenterLattitude,
               long: CenterLongitude,
-              outPost: CenterOuterPostCode,
+              outPost: re.postcode,
               adress: adress,
             };
+
+            if (center.adress.country === "United Kingdom") {
+              sendData(center);
+            } else {
+              setPostUKok(false);
+            }
 
             console.log(center);
           }
@@ -138,13 +176,13 @@ export function AddCenterForm() {
 
         //Info notification: Center with return data has been added!
 
-        // navigate("/dashboard");
+        navigate(`/dashboard/${id}`);
       }
     }
   }
 
   function sendData(center: any) {
-    fetch("/api/newCenter", {
+    fetch(`/api/newCenter/${id}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(center),
@@ -168,7 +206,6 @@ export function AddCenterForm() {
       setValidationError(true);
       console.log("validation error");
     } else {
-      // checkPostalCode(CenterAdressPostCode);
       setValidationError(false);
       console.log("valid ok");
     }
@@ -202,7 +239,7 @@ export function AddCenterForm() {
     return result.address;
   }
 
-  function getLatLongFromAdress(
+  async function getLatLongFromAdress(
     street: string,
     hnr: string,
     city: string,
@@ -210,19 +247,17 @@ export function AddCenterForm() {
     country: string,
     postcode: string
   ) {
-    console.log(postcode);
-    fetch(
+    const response = await fetch(
       `https://geocode.maps.co/search?street=${hnr}+${street}&city=${city}&state=${state}&postalcode=${postcode}&country=${country}`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data[0].lat);
-        setCenterLattitude(data[0].lat);
-        setCenterLongitude(data[0].lon);
-      });
-  }
+    );
 
-  // navigate("/dashboard")
+    const result = await response.json();
+
+    setCenterLattitude(result[0].lat);
+    setCenterLongitude(result[0].lon);
+
+    return result[0];
+  }
 
   return (
     <>
@@ -366,7 +401,7 @@ export function AddCenterForm() {
             ""
           )}
           <div className="InputLastLine">
-            <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
+            <NavLink id="AddNavLink" to={`/dashboard/${id}`}>
               <button>Cancel</button>
             </NavLink>
             <button id="AddSubmitButton" type="submit">

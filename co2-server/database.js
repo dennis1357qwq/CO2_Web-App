@@ -98,7 +98,7 @@ export async function deleteScenario(id) {
   
   const [result] = await pool.query(
     `
-    DELETE FROM scenario WHERE scenario_id = ?;
+    DELETE FROM center_scenario WHERE scenario_id = ?
     `,
     [Number(id)]
   );

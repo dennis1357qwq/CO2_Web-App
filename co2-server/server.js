@@ -9,7 +9,7 @@ import {
   updateCenter,
   updateAdress,
 } from "./dbCenterQueries.js";
-import { getCarbon } from "./CarbonApi.js";
+import { getCarbonCurrent, getCarbonNext24 } from "./CarbonApi.js";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.post("/api/login", async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   const user = await login(req.body.signInEmail, req.body.signInPassword);
   if (!user) {
     console.log("User does not exist!");
@@ -34,7 +34,7 @@ app.post("/api/register", async (req, res) => {
     req.body.username,
     req.body.registerEmail
   );
-  console.log(exists);
+  // console.log(exists);
   if (exists) {
     console.log("User with E-Mail adress or Username exists already!");
     res.status(400);
@@ -80,8 +80,13 @@ app.get("/api/center/:id", async (req, res) => {
   } else {
     const adress1 = await getAdress(center1.adress_id);
     const center = writeCenterObj(center1, adress1);
+    const currentCarbon = await getCarbonCurrent(center.outer_postcode);
+    const carbonNext24 = await getCarbonNext24(center.outer_postcode);
+
     res.json({
       center: center,
+      currentCarbon: currentCarbon,
+      carbonNext24: carbonNext24,
     });
   }
 });
@@ -121,13 +126,14 @@ function writeCenterObj(center, adress1) {
   };
 }
 
-app.post("/api/newCenter", async (req, res) => {
+app.post("/api/newCenter/:id", async (req, res) => {
   const center = await createCenter(
     req.body.CenterName,
     req.body.CenterPeakConsumption,
     req.body.lat,
     req.body.long,
     req.body.outPost,
+    req.params.id,
     req.body.adress
   );
   if (!center) res.status(404);
@@ -147,21 +153,21 @@ app.put("/api/center/:id", async (req, res) => {
   const result = await updateCenter(
     req.body.center_id,
     req.body.CenterName,
-    req.body.lattitude,
-    req.body.longitude,
-    req.outerPostCode,
+    req.body.lat,
+    req.body.long,
+    req.body.outPost,
     req.body.CenterPeakConsumption
   );
   const ad_id = await getCenter(req.body.center_id);
   const upad = await updateAdress(
     ad_id.adress_id,
-    req.body.nr,
-    req.body.line_1,
-    req.body.line_2,
-    req.body.city,
-    req.body.region,
-    req.body.postCode,
-    req.body.country
+    req.body.adress.nr,
+    req.body.adress.line_1,
+    req.body.adress.line_2,
+    req.body.adress.city,
+    req.body.adress.region,
+    req.body.adress.postCode,
+    req.body.adress.country
   );
   res.json({
     center: result,

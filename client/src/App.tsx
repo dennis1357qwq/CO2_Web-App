@@ -9,7 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import { AddCenterForm } from "./components/AddCenterForm";
 import { AddScenarioForm } from "./components/AddScenarioForm";
 import { Overview } from "./components/Overview";
-//import { AddScenarioForm } from "./components/AddScenarioForm";
+import { EditCenter } from "./components/EditCenter";
 
 function App() {
   return (
@@ -19,7 +19,7 @@ function App() {
         <Route path="/dashboard/:id" element={<Overview />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/center/:id" element={<Center />} />
-        <Route path="/newCenter" element={<AddCenterForm />} />
+        <Route path="/newCenter/:id" element={<AddCenterForm />} />
         <Route path="*" element={<Overview />} />
 
         <Route path="/newScenario" element={<AddScenarioForm />} />
