@@ -1,4 +1,3 @@
-import { Tooltip } from "react-leaflet";
 import {
   LineChart,
   Line,
@@ -7,13 +6,32 @@ import {
   CartesianGrid,
   YAxis,
   Brush,
+  Tooltip,
 } from "recharts";
 
+const CustomizedAxisTick = (props: any) => {
+  const { x, y, stroke, payload } = props;
+  var str = String(payload.value);
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="middle"
+        fill="#666"
+        transform="rotate(0)"
+      >
+        {`${str.substring(0, 10)}, ${str.substring(11, 16)}`}
+      </text>
+    </g>
+  );
+};
+
 export default function DataLineChart(values: any) {
-  console.log(values);
   return (
     <>
-      <ResponsiveContainer width={900} height={400}>
+      <ResponsiveContainer width={600} height={400}>
         <LineChart
           width={300}
           height={300}
@@ -22,11 +40,11 @@ export default function DataLineChart(values: any) {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <YAxis />
-          <XAxis dataKey="to" />
+          <XAxis dataKey="from" tick={CustomizedAxisTick} height={40} />
           <Line
             type="monotone"
             dataKey="intensity.forecast"
-            stroke="#89cff0"
+            stroke="#bf4f51"
             strokeWidth={3}
           />
           <Tooltip />
