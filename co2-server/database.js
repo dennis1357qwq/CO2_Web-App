@@ -108,5 +108,41 @@ export async function deleteScenario(id) {
 }
 
 
+export async function updateScenario(scenario_id, centers){
+  const current= await getScenario(scenario_id);
+  console.log(current);
 
+  const cen = [];
+  for (let i =0; i <current.length; i++){
+    cen.push(current[i].center_id);
+  }
+  console.log(cen);
+
+  // neue centren hinzufügen
+for (let i = 0; i < centers.length; i++){
+  if(!cen.includes(centers[i])){
+     const [result1] = await pool.query(
+      `INSERT INTO center_scenario (scenario_id, center_id) VALUES (?,?)`,
+      [scenario_id, centers[i]]
+    );
+  }
+}
+
+//ungebrauchte centren löschen
+for (let i = 0; i < cen.length; i++){
+  if(!centers.includes(cen[i])){
+    const [nada] = await pool.query(
+    `
+    DELETE FROM center_scenario WHERE scenario_id = ?;
+    `,
+    [cen[i]]
+  );
+  }
+}
+
+
+return getScenario(scenario_id);
+
+
+}
 //TODO: export async function updateScenario()

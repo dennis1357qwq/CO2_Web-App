@@ -56,6 +56,36 @@ export function EditScenario(props: ScenarioObj) {
     dialog?.close();
   };
 
+  async function handleSubmit() {
+    const scenario = {
+      scenario_id: backendScenario.scenario_id,
+      user_id: user_id,
+      centers: cen,
+    };
+
+    fetch(`/api/scenario/${backendScenario.scenario_id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(scenario),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+
+    navigate(`/scenario/${backendScenario.scenario_id}`);
+  }
+
+  const cen: number[] = [];
+
+  const included: number[] = [];
+  for (let i = 0; i < backendScenario.centers.length; i++){
+    included.push(backendScenario.centers[i].center_id);
+  }
+
+  console.log(`current ids`);
+  console.log(included);
+
+  const [checked, setChecked] = React.useState(false);
+
   return (
     <>
       <button onClick={handleClickOpenEditor}>Edit</button>
@@ -65,30 +95,60 @@ export function EditScenario(props: ScenarioObj) {
           <form className="Edit-form">
             <div className="Edit-form-labels">
               <h1>Scenario {id} </h1>
-              <label>centers included: </label>
-            </div>
-            <div className="Edit-form-inputs">
-              {typeof backendScenario.centers === "undefined" ? (
-                <div>Loading ...</div>
-              ) : (
-                backendScenario.centers.map(
-                  (center: CenterObj, i: number = center.center_id) => (
-                    <div key={i}>
-                      <li>{center.name}</li>
-                    </div>
-                  )
-                )
-              )}
             </div>
             <div>
-              <h1> Centers available</h1>
+              <h1> Centers</h1>
               {typeof backendCenters === "undefined" ? (
                 <div>Loading ...</div>
               ) : (
                 backendCenters.centers.map(
                   (center: CenterObj, i: number = center.center_id) => (
                     <div key={i}>
-                      <li>{center.name}</li>
+                      {
+                        included.includes(center.center_id) ?(
+                          <div id="adding-center-button">
+                        <input
+                          type="checkbox"
+                          value="Add"
+                          name="checker"
+                          onChange={() => {
+                            if (cen.indexOf(center.center_id) > -1) {
+                              const index = cen.indexOf(center.center_id);
+                              cen.splice(index, 1);
+                            } else {
+                              cen.push(center.center_id);
+                            }
+                            console.log(cen);
+                          }
+                        }
+                        />
+                        <label> {center.name}</label>
+                      </div>
+
+                        ):(
+                          <div id="adding-center-button">
+                        <input
+                          type="checkbox"
+                          value="Add"
+                          name="checker"
+                          
+                          onChange={() => {
+                            if (cen.indexOf(center.center_id) > -1) {
+                              const index = cen.indexOf(center.center_id);
+                              cen.splice(index, 1);
+                            } else {
+                              cen.push(center.center_id);
+                            }
+                            console.log(cen);
+                          }}
+                        />
+                        <label> {center.name}</label>
+                      </div>
+
+                        )
+                        
+                      }
+                      
                     </div>
                   )
                 )
@@ -98,6 +158,9 @@ export function EditScenario(props: ScenarioObj) {
 
           <div className="Button-Message-row">
             <div className="Button-row">
+            <button id="AddSubmitButton" type="submit" onClick={handleSubmit}>
+            Submit
+          </button>
               {/* <button onClick={testfunc}>Edit</button> */}
               <button onClick={handleClickCloseEditor}>Cancel</button>
             </div>

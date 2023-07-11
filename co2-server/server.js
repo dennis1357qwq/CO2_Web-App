@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, checkUserExists, login,  getScenario, getScenarios, createScenario, deleteScenario } from "./database.js";
+import { addUser, checkUserExists, login,  getScenario, getScenarios, createScenario, deleteScenario,  updateScenario } from "./database.js";
 import {
   getCenter,
   getAdress,
@@ -240,6 +240,13 @@ app.delete("/api/scenario/:id", async (req, res) => {
   res.json({
     scenarios,
   });
+});
+
+app.put("/api/scenario/:id", async (req, res) =>{
+  const result = await  updateScenario(req.body.scenario_id, req.body.centers);
+  res.json({
+    result,
+  })
 });
 
 app.listen(5002, () => {
