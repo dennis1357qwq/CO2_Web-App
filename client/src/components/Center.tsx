@@ -16,7 +16,7 @@ export function Center() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [currentCarbonData, setCurrentCarbonData] = useState<any>({});
-  const [todayCarbonData, setTodayCarbonData] = useState<any>({});
+  const [carbonDataNext24, setCarbonDataNext24] = useState<any>({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
     center_id: 0,
@@ -72,12 +72,12 @@ export function Center() {
       .then((data) => {
         setBackendCenter(data.center);
         setCurrentCarbonData(data.currentCarbon);
-        setTodayCarbonData(data.todayCarbon);
+        setCarbonDataNext24(data.carbonNext24);
         setIsLoaded(true);
       });
   }, []);
 
-  console.log(todayCarbonData);
+  console.log(carbonDataNext24);
 
   return (
     <div className="Center-wrapper">
@@ -132,7 +132,7 @@ export function Center() {
         </div>
       )}
       {isLoaded ? <Map centers={[backendCenter]} /> : null}
-      <DataLineChart values={isLoaded ? todayCarbonData : 0} />
+      <DataLineChart values={isLoaded ? carbonDataNext24 : 0} />
     </div>
   );
 }

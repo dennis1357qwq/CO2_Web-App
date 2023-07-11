@@ -9,7 +9,7 @@ import {
   updateCenter,
   updateAdress,
 } from "./dbCenterQueries.js";
-import { getCarbonCurrent, getCarbonToday } from "./CarbonApi.js";
+import { getCarbonCurrent, getCarbonNext24 } from "./CarbonApi.js";
 import bodyParser from "body-parser";
 
 const app = express();
@@ -79,12 +79,12 @@ app.get("/api/center/:id", async (req, res) => {
     const adress1 = await getAdress(center1.adress_id);
     const center = writeCenterObj(center1, adress1);
     const currentCarbon = await getCarbonCurrent(center.outer_postcode);
-    const todayCarbon = await getCarbonToday(center.outer_postcode);
-    console.log(todayCarbon);
+    const carbonNext24 = await getCarbonNext24(center.outer_postcode);
+
     res.json({
       center: center,
       currentCarbon: currentCarbon,
-      todayCarbon: todayCarbon,
+      carbonNext24: carbonNext24,
     });
   }
 });
