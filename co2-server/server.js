@@ -172,8 +172,8 @@ app.get("/api/scenarios/:id", async (req, res)  =>{
   const result = await getScenarios(req.params.id);
   console.log("current scenarios:");
   console.log(result);
+  const scenarios = [];
   if (result.length >0){
-    const scenarios = [];
     for (let i=0; i<  result.length; i++){
       const x = await getScenario(result[i].scenario_id);
       scenarios[i]= writeScenario(x);
@@ -200,7 +200,8 @@ app.get("/api/scenario/:id", async (req, res)  =>{
 function writeScenario(data, cent){
   console.log(`try to write`);
   console.log(data);
-  const scenario_id = data[0].scenario_id;
+  if (data.length >0)
+  {const scenario_id = data[0].scenario_id;
   const user_id = data[0].user_id;
   const centers = cent ;
 
@@ -208,7 +209,7 @@ function writeScenario(data, cent){
     scenario_id,
     user_id,
     centers,
-  };
+  };}
 }
 
 app.post("/api/newScenario", async (req, res) => {
