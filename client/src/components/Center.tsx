@@ -83,6 +83,9 @@ export function Center() {
     <>
       {isLoaded ? (
         <div className="Center-wrapper">
+          <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
+            Home
+          </NavLink>
           <div className="Center">
             <div className="Center-data-list">
               <li>Name: {backendCenter.name}</li>
@@ -125,15 +128,15 @@ export function Center() {
                 user_id={user_id}
               />
             </div>
-            <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
-              Home
-            </NavLink>
           </div>
-          <DataPieChart
-            values={currentCarbonData.data[0].data[0].generationmix}
-          />
+
+          <div className="Charts-wrapper">
+            <DataPieChart
+              values={currentCarbonData.data[0].data[0].generationmix}
+            />
+            <DataLineChart values={carbonDataNext24} />
+          </div>
           <Map centers={[backendCenter]} />
-          <DataLineChart values={carbonDataNext24} />
         </div>
       ) : (
         <div className="loader-container">

@@ -8,10 +8,12 @@ import { Route, Routes } from "react-router-dom";
 import { AddCenterForm } from "./components/AddCenterForm";
 import { Overview } from "./components/Overview";
 import { EditCenter } from "./components/EditCenter";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
     <>
+      <Navbar />
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/dashboard/:id" element={<Overview />} />

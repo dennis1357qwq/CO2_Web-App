@@ -49,7 +49,6 @@ export const Overview = () => {
       <NavLink to={`/newCenter/${id}`}>
         <button id="AddButton">+</button>
       </NavLink>
-      <LogoutButton />
     </div>
   );
 };
