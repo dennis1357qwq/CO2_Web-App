@@ -88,10 +88,10 @@ export function EditCenter(props: CenterObj) {
       );
     }
     // validateInput();
-    console.log("test");
     if (PostUKok) {
       console.log("test");
       if (useAddress) {
+        console.log("test");
         console.log(a.postcode);
         const le = await getLatLongFromAdress(
           CenterAdressLine1 ? CenterAdressLine1 : props.adress.adress_line_1,
@@ -131,45 +131,48 @@ export function EditCenter(props: CenterObj) {
         console.log(center);
         callPutApi(center);
       } else {
+        console.log("else");
         const re = await getAdressFromLatLong(
           CenterLattitude ? +CenterLattitude : +props.lattitude,
           CenterLongitude ? +CenterLattitude : +props.longitude
         );
+        if (PostUKok) {
+          const adress = {
+            nr: re.house_number ? re.house_number : 0,
+            line_1: re.road,
+            line_2: "",
+            city: re.city,
+            region: re.state,
+            postCode: re.postcode,
+            country: re.country,
+          };
+          const center = {
+            center_id: props.center_id,
+            CenterName: CenterName ? CenterName : props.name,
+            CenterPeakConsumption: CenterPeakConsumption
+              ? CenterPeakConsumption
+              : props.peak_consumption,
+            lat: CenterLattitude ? CenterLattitude : props.lattitude,
+            long: CenterLongitude ? CenterLongitude : props.longitude,
+            outPost: re.postcode,
+            adress: adress,
+          };
 
-        const adress = {
-          nr: re.house_number ? re.house_number : 0,
-          line_1: re.road,
-          line_2: "",
-          city: re.city,
-          region: re.state,
-          postCode: re.postcode,
-          country: re.country,
-        };
-        const center = {
-          center_id: props.center_id,
-          CenterName: CenterName ? CenterName : props.name,
-          CenterPeakConsumption: CenterPeakConsumption
-            ? CenterPeakConsumption
-            : props.peak_consumption,
-          lat: CenterLattitude ? CenterLattitude : props.lattitude,
-          long: CenterLongitude ? CenterLongitude : props.longitude,
-          outPost: re.postcode,
-          adress: adress,
-        };
+          if (center.adress.country === "United Kingdom") {
+            callPutApi(center);
+          } else {
+            setPostUKok(false);
+          }
 
-        if (center.adress.country === "United Kingdom") {
-          callPutApi(center);
-        } else {
-          setPostUKok(false);
+          console.log(center);
         }
-
-        console.log(center);
       }
 
       //Info notification: Center with return data has been added!
     }
-    dialog?.close();
-    navigate(0);
+    console.log("end");
+    // dialog?.close();
+    // navigate(0);
   }
 
   async function checkPostalCode(postal_code: string) {
@@ -223,6 +226,11 @@ export function EditCenter(props: CenterObj) {
 
     const result = await response.json();
 
+    if (!result[0]) {
+      setPostUKok(false);
+    } else {
+      setPostUKok(true);
+    }
     setCenterLattitude(result[0].lat);
     setCenterLongitude(result[0].lon);
 
