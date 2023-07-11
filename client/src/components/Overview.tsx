@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import CenterList from "./CenterList";
+import ScenarioList from "./ScenarioList";
 import { UserContext } from "../context/UserContext";
 import { LogoutButton } from "./LogoutButton";
 
@@ -44,9 +45,15 @@ export const Overview = () => {
         Logged in as user: {userContext?.user?.username ?? "ERROR"} with Id:{" "}
         {userContext?.user?.user_id}
       </h1>
+      <h1>Centers</h1>
       <CenterList />
       <NavLink to="/newCenter">
-        <button id="AddButton">+</button>
+        <button id="AddButton">NewCenter</button>
+      </NavLink>
+      <h1>Scenarios</h1>
+      <ScenarioList />
+      <NavLink to="/newScenario">
+        <button id="AddButton">NewScenario</button>
       </NavLink>
       <LogoutButton />
     </div>

@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, checkUserExists, login } from "./database.js";
+import { addUser, checkUserExists, login,  getScenario, getScenarios, createScenario, deleteScenario } from "./database.js";
 import {
   getCenter,
   getAdress,
@@ -67,6 +67,8 @@ app.get("/api/:id", async (req, res) => {
     centers,
   });
 });
+
+
 
 app.get("/api/center/:id", async (req, res) => {
   const center1 = await getCenter(req.params.id);
@@ -163,6 +165,73 @@ app.put("/api/center/:id", async (req, res) => {
   );
   res.json({
     center: result,
+  });
+});
+
+app.get("/api/scenarios/:id", async (req, res)  =>{
+  const result = await getScenarios(req.params.id);
+  console.log("current scenarios:");
+  console.log(result);
+  if (result.length >0){
+    const scenarios = [];
+    for (let i=0; i<  result.length; i++){
+      const x = await getScenario(result[i].scenario_id);
+      scenarios[i]= writeScenario(x);
+    }
+  }
+  res.json({scenarios,});
+
+});
+
+app.get("/api/scenario/:id", async (req, res)  =>{
+  const data = await getScenario(req.params.id);
+  const cen = [];
+  console.log( `call of method`);
+  console.log(data);
+  for (let i in data){
+    cen.push(await getCenter(data[i].center_id))
+  }
+  const scenario = writeScenario(data, cen);
+
+  res.json({scenario,});
+
+});
+
+function writeScenario(data, cent){
+  console.log(`try to write`);
+  console.log(data);
+  const scenario_id = data[0].scenario_id;
+  const user_id = data[0].user_id;
+  const centers = cent ;
+
+  return{
+    scenario_id,
+    user_id,
+    centers,
+  };
+}
+
+app.post("/api/newScenario", async (req, res) => {
+  
+  const scenario = await createScenario(
+    req.body.user_id,
+    req.body.centers,
+  );
+  if (!scenario){
+    res.status(404); 
+  }
+  else {
+    console.log(`new scenario:`);
+    console.log(scenario);
+    res.json({
+    scenario: scenario,
+  });}
+});
+
+app.delete("/api/scenario/:id", async (req, res) => {
+  const scenarios = await deleteScenario(req.params.id);
+  res.json({
+    scenarios,
   });
 });
 

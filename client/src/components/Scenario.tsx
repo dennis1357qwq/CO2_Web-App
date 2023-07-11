@@ -3,32 +3,20 @@ import { useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { NavLink, useNavigate } from "react-router-dom";
 import { DeleteButton } from "./DeleteButton";
-import { EditCenter } from "./EditCenter";
 import { UserContext } from "../context/UserContext";
 import { Map } from "./Map";
-import { CenterObj } from "./CenterInterface";
+import { CenterObj, CenterStack } from "./CenterInterface";
+import { ScenarioObj } from "./ScenarioInterface";
+import { EditScenario } from "./EditScenario";
 
-export function Center() {
+export function Scenario() {
   const userContext = useContext(UserContext);
   const navigate = useNavigate();
   const { id } = useParams();
-  const [backendCenter, setBackendCenter] = React.useState<CenterObj>({
-    center_id: 0,
-    name: "",
+  const [backendScenario, setBackendScenario] = React.useState<ScenarioObj>({
+    scenario_id: 0,
     user_id: 0,
-    peak_consumption: 0,
-    lattitude: 0,
-    longitude: 0,
-    outer_postcode: "",
-    adress: {
-      unit_number: "",
-      adress_line_1: "",
-      adress_line_2: "",
-      city: "",
-      region: "",
-      postal_code: "",
-      country: "",
-    },
+    centers: [],
   });
 
   // check for logged in !!
@@ -57,57 +45,57 @@ export function Center() {
     checkLoggedIn();
   }, []);
 
-  const path = `/api/center/${id}`;
+  const path = `/api/scenario/${id}`;
   const user_id = userContext.user?.user_id;
 
   useEffect(() => {
     fetch(path)
       .then((response) => response.json())
       .then((data) => {
-        setBackendCenter(data.center);
+        setBackendScenario(data.scenario);
       });
   }, []);
 
   return (
-    <div className="Center-wrapper">
-      <div className="Center">
-        <div className="Center-data-list">
-          <li>Name: {backendCenter.name}</li>
-          <li>
-            Street: {backendCenter.adress.adress_line_1},{" "}
-            {backendCenter.adress.unit_number}
-          </li>
-          <li>
-            {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
-            {backendCenter.adress.region}
-          </li>
-          <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
+    <div className="Scenario-wrapper">
+      <div className="Scenario">
+        <div className="Scenario-data-list">
+          <li>Scenario: {backendScenario.scenario_id}</li>
+          <li>Centers:</li>
+          {typeof backendScenario.centers === "undefined" ? (
+            <div>Loading ...</div>
+          ) : (
+            backendScenario.centers.map(
+              (center: CenterObj, i: number = center.center_id) => (
+                <div key={i}>
+                  <NavLink key={i} to={`/center/${center.center_id}`}>
+                    <p key={center.center_id}>{center.name}</p>
+                  </NavLink>
+                </div>
+              )
+            )
+          )}
         </div>
 
         <div className="Center-buttons">
-          <EditCenter
-            center_id={backendCenter.center_id}
-            name={backendCenter.name}
-            peak_consumption={backendCenter.peak_consumption}
-            user_id={backendCenter.user_id}
-            lattitude={backendCenter.lattitude}
-            longitude={backendCenter.longitude}
-            outer_postcode={backendCenter.outer_postcode}
-            adress={backendCenter.adress}
+          <EditScenario
+            scenario_id={backendScenario.scenario_id}
+            user_id={backendScenario.user_id}
+            centers={backendScenario.centers}
           />
           <DeleteButton
-            id={backendCenter.center_id}
+            id={backendScenario.scenario_id}
             path={path}
-            user_id={user_id}
+            user_id={backendScenario.user_id}
           />
         </div>
         <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
           Home
         </NavLink>
       </div>
-      <Map centers={[backendCenter]} />
+      <Map centers={backendScenario.centers} />
     </div>
   );
 }
 
-export default Center;
+export default Scenario;
