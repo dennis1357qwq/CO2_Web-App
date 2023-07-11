@@ -80,60 +80,61 @@ export function Center() {
   console.log(carbonDataNext24);
 
   return (
-    <div className="Center-wrapper">
-      <div className="Center">
-        <div className="Center-data-list">
-          <li>Name: {backendCenter.name}</li>
-          <li>
-            Street: {backendCenter.adress.adress_line_1},{" "}
-            {backendCenter.adress.unit_number}
-          </li>
-          <li>
-            {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
-            {backendCenter.adress.region}
-          </li>
-          <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
-          {isLoaded ? (
-            <li>
-              Current Carbon Intensity:{" "}
-              {currentCarbonData.data[0].data[0].intensity.forecast} gCO_2/kWH
-            </li>
-          ) : (
-            <li>Waiting for Data</li>
-          )}
-        </div>
-
-        <div className="Center-buttons">
-          <EditCenter
-            center_id={backendCenter.center_id}
-            name={backendCenter.name}
-            peak_consumption={backendCenter.peak_consumption}
-            user_id={backendCenter.user_id}
-            lattitude={backendCenter.lattitude}
-            longitude={backendCenter.longitude}
-            outer_postcode={backendCenter.outer_postcode}
-            adress={backendCenter.adress}
-          />
-          <DeleteButton id={backendCenter.center_id} path={path} />
-        </div>
-        <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
-          Home
-        </NavLink>
-      </div>
+    <>
       {isLoaded ? (
-        <DataPieChart
-          values={
-            isLoaded ? currentCarbonData.data[0].data[0].generationmix : 0
-          }
-        />
+        <div className="Center-wrapper">
+          <div className="Center">
+            <div className="Center-data-list">
+              <li>Name: {backendCenter.name}</li>
+              <li>
+                Street: {backendCenter.adress.adress_line_1},{" "}
+                {backendCenter.adress.unit_number}
+              </li>
+              <li>
+                {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
+                {backendCenter.adress.region}
+              </li>
+              <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
+              {isLoaded ? (
+                <li>
+                  Current Carbon Intensity:{" "}
+                  {currentCarbonData.data[0].data[0].intensity.forecast}{" "}
+                  gCO_2/kWH
+                </li>
+              ) : (
+                <li>Waiting for Data</li>
+              )}
+            </div>
+
+            <div className="Center-buttons">
+              <EditCenter
+                center_id={backendCenter.center_id}
+                name={backendCenter.name}
+                peak_consumption={backendCenter.peak_consumption}
+                user_id={backendCenter.user_id}
+                lattitude={backendCenter.lattitude}
+                longitude={backendCenter.longitude}
+                outer_postcode={backendCenter.outer_postcode}
+                adress={backendCenter.adress}
+              />
+              <DeleteButton id={backendCenter.center_id} path={path} />
+            </div>
+            <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
+              Home
+            </NavLink>
+          </div>
+          <DataPieChart
+            values={currentCarbonData.data[0].data[0].generationmix}
+          />
+          <Map centers={[backendCenter]} />
+          <DataLineChart values={carbonDataNext24} />
+        </div>
       ) : (
         <div className="loader-container">
           <div className="spinner"></div>
         </div>
       )}
-      {isLoaded ? <Map centers={[backendCenter]} /> : null}
-      <DataLineChart values={isLoaded ? carbonDataNext24 : 0} />
-    </div>
+    </>
   );
 }
 
