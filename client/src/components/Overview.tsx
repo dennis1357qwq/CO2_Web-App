@@ -56,7 +56,6 @@ export const Overview = () => {
       <NavLink to="/newScenario">
         <button id="AddButton">NewScenario</button>
       </NavLink>
-      <LogoutButton />
     </div>
   );
 };

@@ -15,7 +15,12 @@ export function LogoutButton() {
   };
   return (
     <>
-      <button onClick={handleClick}>Logout</button>
+      <button
+        className="border border-teal-500 bg-teal-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline"
+        onClick={handleClick}
+      >
+        Logout
+      </button>
     </>
   );
 }

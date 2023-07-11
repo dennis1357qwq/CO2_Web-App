@@ -31,10 +31,10 @@ const CustomizedAxisTick = (props: any) => {
 export default function DataLineChart(values: any) {
   return (
     <>
-      <ResponsiveContainer width={600} height={400}>
+      <ResponsiveContainer width="100%" height="100%">
         <LineChart
-          width={300}
-          height={300}
+          width={200}
+          height={200}
           data={values.values}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
