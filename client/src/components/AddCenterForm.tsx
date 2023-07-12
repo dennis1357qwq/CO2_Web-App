@@ -261,152 +261,252 @@ export function AddCenterForm() {
 
   return (
     <>
-      <div>
-        <form className="AddCenter-wrapper" onSubmit={handleSubmit}>
-          <div id="location-solution-button">
-            <input
-              type="radio"
-              value="Coordinates"
-              name="location"
-              onChange={() => {
-                setUseAddress(!useAddress);
-              }}
-            />{" "}
-            use Coordinates
-            <input
-              type="radio"
-              value="Address"
-              name="location"
-              defaultChecked
-              onChange={() => {
-                setUseAddress(!useAddress);
-              }}
-            />
-            use Addres
-          </div>
-          <div className="Edit-form">
-            <div id="name-input" className="input-block">
-              <label>name : </label>
+      <div className="max-w-m flex flex-col justify-center items-center">
+        <form
+          id="AddCenterForm"
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4 min-w-[40%]"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex items-start mb-6">
+            <div className="flex items-center mb-2">
               <input
-                type="text"
-                value={CenterName}
-                onChange={(e) => setName(e.target.value)}
-              ></input>
-            </div>
-            <div id="peak-consumption-input" className="input-block">
-              <label>peak Consumption : </label>
+                id="radio-adress"
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                type="radio"
+                value="Address"
+                name="location"
+                defaultChecked
+                onChange={() => {
+                  setUseAddress(!useAddress);
+                }}
+              />
+              <label
+                htmlFor="radio-adress"
+                className="ml-2 text-sm font-medium text-gray-600"
+              >
+                Adress
+              </label>
               <input
-                type="text"
-                value={CenterPeakConsumption}
-                onChange={(e) =>
-                  validateNumberInput(e.target.value, setCenterPeakConsumption)
-                }
-              ></input>
+                id="radio-coordinates"
+                className="ml-5 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                type="radio"
+                value="Coordinates"
+                name="location"
+                onChange={() => {
+                  setUseAddress(!useAddress);
+                }}
+              />
+              <label
+                htmlFor="radio-coordinates"
+                className="ml-2 text-sm font-medium text-gray-600"
+              >
+                Coordinates
+              </label>
             </div>
-            {!useAddress ? (
-              <>
-                <Map centers={[]} />
-                <div id="lat/long-input" className="input-block">
-                  <label>lattitude/longitude: </label>
-                  <div>
-                    <input
-                      type="text"
-                      value={CenterLattitude}
-                      onChange={(e) =>
-                        validateNumberInput(e.target.value, setCenterLattitude)
-                      }
-                      size={10}
-                    ></input>
-
-                    <input
-                      type="text"
-                      value={CenterLongitude}
-                      onChange={(e) =>
-                        validateNumberInput(e.target.value, setCenterLongitude)
-                      }
-                      size={10}
-                    ></input>
-                  </div>
-                </div>
-              </>
-            ) : (
-              <>
-                <div id="address-line-1-input" className="input-block">
-                  <label>address line 1: </label>
-                  <input
-                    type="text"
-                    value={CenterAdressLine1}
-                    onChange={(e) => setCenterAdressLine1(e.target.value)}
-                  ></input>
-                </div>
-                <div id="address-line-2-input" className="input-block">
-                  <label>address line 2 : </label>
-                  <input
-                    type="text"
-                    value={CenterAdressLine2}
-                    onChange={(e) => setCenterAdressLine2(e.target.value)}
-                  ></input>
-                </div>
-                <div id="unitnr-input" className="input-block">
-                  <label>Unitnr. : </label>
-                  <input
-                    type="text"
-                    value={CenterAdressUnitNr}
-                    onChange={(e) => setCenterAdressUnitNr(e.target.value)}
-                  ></input>
-                </div>
-                <div id="city-input" className="input-block">
-                  <label>city : </label>
-                  <input
-                    type="text"
-                    value={CenterAdressCity}
-                    onChange={(e) => setCenterAdressCity(e.target.value)}
-                  ></input>
-                </div>
-                <div id="postcode-input" className="input-block">
-                  <label>postcode : </label>
-                  <input
-                    type="text"
-                    value={CenterAdressPostCode}
-                    onChange={(e) => setCenterAdressPostCode(e.target.value)}
-                  ></input>
-                </div>
-                <div id="region-input" className="input-block">
-                  <label>state : </label>
-                  <input
-                    type="text"
-                    value={CenterAdressRegion}
-                    onChange={(e) => setCenterAdressRegion(e.target.value)}
-                  ></input>
-                </div>
-                <div id="country-input" className="input-block">
-                  <label>country : </label>
-                  <input
-                    type="text"
-                    value={CenterAdressCountry}
-                    onChange={(e) => setCenterAdressCountry(e.target.value)}
-                  ></input>
-                </div>
-              </>
-            )}
           </div>
+          <div className="mb-6">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900"
+              htmlFor="name"
+            >
+              Center Name
+            </label>
+            <input
+              id="name"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              type="text"
+              value={CenterName}
+              onChange={(e) => setName(e.target.value)}
+            ></input>
+          </div>
+          <div className="mb-6">
+            <label
+              className="block mb-2 text-sm font-medium text-gray-900"
+              htmlFor="peak-consumption"
+            >
+              Peak Consumption
+            </label>
+            <input
+              id="peak-consumption"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              type="text"
+              value={CenterPeakConsumption}
+              onChange={(e) =>
+                validateNumberInput(e.target.value, setCenterPeakConsumption)
+              }
+            ></input>
+          </div>
+          {!useAddress ? (
+            <>
+              <Map points={[]} spawn={[]} showAdress={false} />
+              <div className="mb-6 mt-4">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                  htmlFor="lat"
+                >
+                  Lattitude
+                </label>
+                <div>
+                  <input
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    id="lat"
+                    type="text"
+                    value={CenterLattitude}
+                    onChange={(e) =>
+                      validateNumberInput(e.target.value, setCenterLattitude)
+                    }
+                    size={10}
+                  ></input>
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                    htmlFor="long"
+                  >
+                    Longitude
+                  </label>
+                  <input
+                    id="long"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    type="text"
+                    value={CenterLongitude}
+                    onChange={(e) =>
+                      validateNumberInput(e.target.value, setCenterLongitude)
+                    }
+                    size={10}
+                  ></input>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="adress-line-1"
+                >
+                  Adress Line 1:{" "}
+                </label>
+                <input
+                  id="adress-line-1"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressLine1}
+                  onChange={(e) => setCenterAdressLine1(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="adress-line-2"
+                >
+                  Adress Line 2:
+                </label>
+                <input
+                  id="adress-line-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressLine2}
+                  onChange={(e) => setCenterAdressLine2(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="unit-nr"
+                >
+                  Unit:{" "}
+                </label>
+                <input
+                  id="unit-nr"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressUnitNr}
+                  onChange={(e) => setCenterAdressUnitNr(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="city"
+                >
+                  City:
+                </label>
+                <input
+                  id="city"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressCity}
+                  onChange={(e) => setCenterAdressCity(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="postcode"
+                >
+                  Postcode:
+                </label>
+                <input
+                  id="postcode"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressPostCode}
+                  onChange={(e) => setCenterAdressPostCode(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="state"
+                >
+                  State:
+                </label>
+                <input
+                  id="state"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressRegion}
+                  onChange={(e) => setCenterAdressRegion(e.target.value)}
+                ></input>
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                  htmlFor="country"
+                >
+                  Country:
+                </label>
+                <input
+                  id="country"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  type="text"
+                  value={CenterAdressCountry}
+                  onChange={(e) => setCenterAdressCountry(e.target.value)}
+                ></input>
+              </div>
+            </>
+          )}
           {validationError ? (
-            <label id="NoChangesLabel">complete input!</label>
+            <p className="text-red-700">Incomplete input!</p>
           ) : (
             ""
           )}
           {!PostUKok ? (
-            <label id="NoChangesLabel">Give an Adress in Uk!</label>
+            <p className="text-red-700">Adress has to be in UK!</p>
           ) : (
             ""
           )}
           <div className="InputLastLine">
-            <NavLink id="AddNavLink" to={`/dashboard/${id}`}>
-              <button>Cancel</button>
-            </NavLink>
-            <button id="AddSubmitButton" type="submit">
-              Add
+            <button
+              className="border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-l font-medium"
+              type="submit"
+            >
+              Add Center
             </button>
+            <NavLink id="AddNavLink" to={`/dashboard/${id}`}>
+              <button className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium">
+                Cancel
+              </button>
+            </NavLink>
           </div>
         </form>
       </div>

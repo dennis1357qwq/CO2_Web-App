@@ -10,6 +10,7 @@ import { CenterObj } from "./CenterInterface";
 import "./Center.css";
 import DataPieChart from "./PieChart";
 import DataLineChart from "./LineChart";
+import { CenterHeader } from "./CenterHeader";
 
 export function Center() {
   const userContext = useContext(UserContext);
@@ -77,63 +78,65 @@ export function Center() {
       });
   }, []);
 
-  console.log(carbonDataNext24);
+  // console.log(carbonDataNext24);
 
   return (
     <>
       {isLoaded ? (
-        <div className="Center-wrapper">
+        <div className="Center-Wrapper">
           <div className="Center">
-            <div className="Center-data-list">
-              <li>Name: {backendCenter.name}</li>
-              <li>
-                Street: {backendCenter.adress.adress_line_1},{" "}
-                {+backendCenter.adress.unit_number != 0
-                  ? backendCenter.adress.unit_number
-                  : ""}
-              </li>
-              <li>
-                {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
-                {backendCenter.adress.region}
-              </li>
-              <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
-              {isLoaded ? (
-                <li>
-                  Current Carbon Intensity:{" "}
-                  {currentCarbonData.data[0].data[0].intensity.forecast}{" "}
-                  gCO_2/kWH
-                </li>
-              ) : (
-                <li>Waiting for Data</li>
-              )}
+            <CenterHeader
+              center={backendCenter}
+              path={path}
+              user_id={user_id}
+            />
+            <div>
+              <p className="mt-2 flex items-center text-sm text-gray-500">
+                CURRENT CARBON INTENSITY:
+              </p>
+              <p className="text-3xl font-medium">
+                {currentCarbonData.data[0].data[0].intensity.forecast} gCO
+                <sub>2</sub>/kWH
+              </p>
             </div>
-
-            <div className="Center-buttons">
-              <EditCenter
-                center_id={backendCenter.center_id}
-                name={backendCenter.name}
-                peak_consumption={backendCenter.peak_consumption}
-                user_id={backendCenter.user_id}
-                lattitude={backendCenter.lattitude}
-                longitude={backendCenter.longitude}
-                outer_postcode={backendCenter.outer_postcode}
-                adress={backendCenter.adress}
-              />
-              <DeleteButton
-                id={backendCenter.center_id}
-                path={path}
-                user_id={user_id}
-              />
+            <div className="row-wrapper">
+              <div className="pie-wrapper">
+                <DataPieChart
+                  values={currentCarbonData.data[0].data[0].generationmix}
+                />
+              </div>
+              <div className="Map-Wrapper">
+                <div className="MapSt">
+                  <Map
+                    points={[backendCenter]}
+                    spawn={[
+                      backendCenter.lattitude,
+                      backendCenter.longitude,
+                      13,
+                    ]}
+                    showAdress={true}
+                  />
+                </div>
+              </div>
             </div>
-            <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
-              Home
-            </NavLink>
+            <div className="row-wrapper">
+              <div className="text-xl font-medium text-gray-500">
+                With a peak energy consumption of{" "}
+                {backendCenter.peak_consumption} kW, your center located in{" "}
+                {backendCenter.adress.city} will have a carbon intensity of
+                approx.{" "}
+                {+currentCarbonData.data[0].data[0].intensity.forecast *
+                  +backendCenter.peak_consumption}{" "}
+                gCO<sub>2</sub>/h
+              </div>
+            </div>
+            <div className="row-wrapper">
+              <div className="Charts-Wrapper">
+                <p className="text-2xl font-bold">Daily Charts:</p>
+                <DataLineChart values={carbonDataNext24} />
+              </div>
+            </div>
           </div>
-          <DataPieChart
-            values={currentCarbonData.data[0].data[0].generationmix}
-          />
-          <Map centers={[backendCenter]} />
-          <DataLineChart values={carbonDataNext24} />
         </div>
       ) : (
         <div className="loader-container">
