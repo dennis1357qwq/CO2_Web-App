@@ -10,12 +10,13 @@
 }
 
 .spinner {
-  width: 64px;
-  height: 64px;
-  border: 8px solid;
-  border-color: #3d5af1 transparent #3d5af1 transparent;
-  border-radius: 50%;
-  animation: spin-anim 1.2s linear infinite;
+    width: 64px;
+    height: 64px;
+    border: 8px solid;
+    border-color: #0d9488 transparent #0d9488 transparent;
+    border-radius: 50%;
+    animation: spin-anim 1.2s linear infinite;
+    
 }
 
 @keyframes spin-anim {
@@ -55,6 +56,10 @@
   width: 100%;
   justify-content: center;
   align-items: center;
+}
+.leaflet-container {
+  height: 50vh;
+  width: 50vh;
 }
 
 .Map-Wrapper {

@@ -3,6 +3,7 @@ export async function getCarbonCurrent(postCode) {
     Accept: "application/json",
   };
 
+  console.log('Carbon API with Postcode: ' + postCode);
   try {
     const response = await fetch(
       `https://api.carbonintensity.org.uk/regional/postcode/${postCode}`,
@@ -26,8 +27,8 @@ export async function getCarbonNext24(postCode) {
   };
   // 2017-08-25T12:35Z - ISO8601 FORMAT
   const date = new Date();
-  const now = `${date.getFullYear()}-${('0'+(date.getMonth()+1)).slice(-2)}-${date.getDate()}T${date.getHours()}:00Z`;
-  console.log(now);
+  const now = `${date.getFullYear()}-${('0'+(date.getMonth()+1)).slice(-2)}-${('0'+(date.getDate())).slice(-2)}T${('0'+date.getHours()).slice(-2)}:00Z`;
+  console.log('Carbon API call for: ' + now + ' with Postcode: ' + postCode);
 
   try {
     const response = await fetch(
@@ -38,7 +39,7 @@ export async function getCarbonNext24(postCode) {
         headers: headers,
       }
     );
-
+    
     const result = await response.json();
     const receivedData = result.data.data;
     return receivedData;

@@ -265,42 +265,78 @@ export function EditCenter(props: CenterObj) {
         Edit
       </button>
 
-      <dialog className="Dialog-wrap" id="dialog">
-        <form onSubmit={handleSubmit}>
-          <div id="location-solution-button">
-            <input
-              type="radio"
-              value="Coordinates"
-              name="location"
-              onChange={() => {
-                setUseAddress(!useAddress);
-              }}
-            />{" "}
-            use Coordinates
-            <input
-              type="radio"
-              value="Address"
-              name="location"
-              defaultChecked
-              onChange={() => {
-                setUseAddress(!useAddress);
-              }}
-            />
-            use Addres
-          </div>
-          <div className="Edit-form">
-            <div id="name-input" className="input-block">
-              <label>name : </label>
+      <dialog className="rounded min-w-[50%]" id="dialog">
+        <div className="py-2 py-2 lg:px-8">
+          <h3 className="text-xl font-medium text-gray-900 dark:text-gray">
+            Edit Center
+          </h3>
+          <form
+            className="bg-white rounded pt-4 pb-5 mb-2 mt-2"
+            onSubmit={handleSubmit}
+          >
+            <div className="flex items-start mb-4">
+              <div className="flex items-center mb-2">
+                <input
+                  id="radio-adress"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                  type="radio"
+                  value="Address"
+                  name="location"
+                  defaultChecked
+                  onChange={() => {
+                    setUseAddress(!useAddress);
+                  }}
+                />
+                <label
+                  htmlFor="radio-adress"
+                  className="ml-2 text-sm font-medium text-gray-600"
+                >
+                  Adress
+                </label>
+                <input
+                  id="radio-coordinates"
+                  className="ml-5 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"
+                  type="radio"
+                  value="Coordinates"
+                  name="location"
+                  onChange={() => {
+                    setUseAddress(!useAddress);
+                  }}
+                />
+                <label
+                  htmlFor="radio-coordinates"
+                  className="ml-2 text-sm font-medium text-gray-600"
+                >
+                  Coordinates
+                </label>
+              </div>
+            </div>
+            <div className="mb-2">
+              <label
+                className="block mb-2 text-sm font-medium text-gray-900"
+                htmlFor="center-name"
+              >
+                Name:
+              </label>
               <input
+                id="center-name"
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 type="text"
                 value={CenterName}
                 placeholder={props.name}
                 onChange={(e) => setCenterName(e.target.value)}
               ></input>
             </div>
-            <div id="peak-consumption-input" className="input-block">
-              <label>peak Consumption : </label>
+            <div className="mb-2">
+              <label
+                className="block mb-2 text-sm font-medium text-gray-900"
+                htmlFor="peak-consumption"
+              >
+                Peak Consumption:{" "}
+              </label>
               <input
+                id="peak-consumption"
+                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 type="text"
                 placeholder={"" + props.peak_consumption}
                 value={CenterPeakConsumption}
@@ -309,6 +345,7 @@ export function EditCenter(props: CenterObj) {
                 }
               ></input>
             </div>
+
             {!useAddress ? (
               <>
                 <Map points={[props]} spawn={[]} showAdress={false} />
@@ -339,27 +376,48 @@ export function EditCenter(props: CenterObj) {
               </>
             ) : (
               <>
-                <div id="address-line-1-input" className="input-block">
-                  <label>address line 1: </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="adress-line-1"
+                  >
+                    Adress Line 1:{" "}
+                  </label>
                   <input
+                    id="adress-line-1"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressLine1}
                     placeholder={props.adress.adress_line_1}
                     onChange={(e) => setCenterAdressLine1(e.target.value)}
                   ></input>
                 </div>
-                <div id="address-line-2-input" className="input-block">
-                  <label>address line 2 : </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="adress-line-2"
+                  >
+                    Adress Line 2:{" "}
+                  </label>
                   <input
+                    id="adress-line-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressLine2}
                     placeholder={props.adress.adress_line_2}
                     onChange={(e) => setCenterAdressLine2(e.target.value)}
                   ></input>
                 </div>
-                <div id="unitnr-input" className="input-block">
-                  <label>Unitnr. : </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="unit"
+                  >
+                    Unit:
+                  </label>
                   <input
+                    id="unit"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressUnitNr}
                     placeholder={
@@ -370,36 +428,64 @@ export function EditCenter(props: CenterObj) {
                     onChange={(e) => setCenterAdressUnitNr(e.target.value)}
                   ></input>
                 </div>
-                <div id="city-input" className="input-block">
-                  <label>city : </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="city"
+                  >
+                    City:
+                  </label>
                   <input
+                    id="city"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressCity}
                     placeholder={props.adress.city}
                     onChange={(e) => setCenterAdressCity(e.target.value)}
                   ></input>
                 </div>
-                <div id="postcode-input" className="input-block">
-                  <label>postcode : </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="postcode"
+                  >
+                    Postcode:
+                  </label>
                   <input
+                    id="postcode"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressPostCode}
                     placeholder={props.adress.postal_code}
                     onChange={(e) => setCenterAdressPostCode(e.target.value)}
                   ></input>
                 </div>
-                <div id="region-input" className="input-block">
-                  <label>state : </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="state"
+                  >
+                    State:
+                  </label>
                   <input
+                    id="state"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressRegion}
                     placeholder={props.adress.region}
                     onChange={(e) => setCenterAdressRegion(e.target.value)}
                   ></input>
                 </div>
-                <div id="country-input" className="input-block">
-                  <label>country : </label>
+                <div className="mb-2">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="country"
+                  >
+                    Country:
+                  </label>
                   <input
+                    id="country"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     type="text"
                     value={CenterAdressCountry}
                     placeholder={props.adress.country}
@@ -408,33 +494,41 @@ export function EditCenter(props: CenterObj) {
                 </div>
               </>
             )}
-          </div>
-          {validationError ? (
-            <label id="NoChangesLabel">complete input!</label>
-          ) : (
-            ""
-          )}
-          {!PostUKok ? (
-            <label id="NoChangesLabel">Give an Adress in Uk!</label>
-          ) : (
-            ""
-          )}
-          <div className="InputLastLine">
-            <button id="AddSubmitButton" type="submit">
-              Change
-            </button>
-            <div className="Button-Message-row">
-              <div className="Button-row">
-                <button onClick={handleClickCloseEditor}>Cancel</button>
+            {validationError ? (
+              <p className="text-red-700">Incomplete Input!</p>
+            ) : (
+              ""
+            )}
+            {!PostUKok ? (
+              <p className="text-red-700">Give an Adress in UK!</p>
+            ) : (
+              ""
+            )}
+            <div className="InputLastLine">
+              <button
+                className="border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-l font-medium"
+                type="submit"
+              >
+                Submit
+              </button>
+              <div className="Button-Message-row">
+                <div className="Button-row">
+                  <button
+                    className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium"
+                    onClick={handleClickCloseEditor}
+                  >
+                    Cancel
+                  </button>
+                </div>
+                {NoChangesError ? (
+                  <p className="text-red-700">No changes made!</p>
+                ) : (
+                  ""
+                )}
               </div>
-              {NoChangesError ? (
-                <label id="NoChangesLabel">No changes made!</label>
-              ) : (
-                ""
-              )}
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </dialog>
     </>
   );
