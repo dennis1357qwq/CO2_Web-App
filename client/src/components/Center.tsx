@@ -95,7 +95,8 @@ export function Center() {
                 CURRENT CARBON INTENSITY:
               </p>
               <p className="text-3xl font-medium">
-                {currentCarbonData.data[0].data[0].intensity.forecast} gCO_2/kWH
+                {currentCarbonData.data[0].data[0].intensity.forecast} gCO
+                <sub>2</sub>/kWH
               </p>
             </div>
             <div className="row-wrapper">
@@ -119,12 +120,14 @@ export function Center() {
               </div>
             </div>
             <div className="row-wrapper">
-              <div className="text-2xl font-medium text-gray-500">
+              <div className="text-xl font-medium text-gray-500">
                 With a peak energy consumption of{" "}
-                {backendCenter.peak_consumption}, your center located in{" "}
-                {backendCenter.adress.city} will have a carbon intensity of{" "}
-                {currentCarbonData.data[0].data[0].intensity.forecast}{" "}
-                gCO_2/kWH.
+                {backendCenter.peak_consumption} kW, your center located in{" "}
+                {backendCenter.adress.city} will have a carbon intensity of
+                approx.{" "}
+                {+currentCarbonData.data[0].data[0].intensity.forecast *
+                  +backendCenter.peak_consumption}{" "}
+                gCO<sub>2</sub>/h
               </div>
             </div>
             <div className="row-wrapper">

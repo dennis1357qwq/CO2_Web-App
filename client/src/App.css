@@ -18,9 +18,10 @@
   height: 100%;
 }
 
-.leaflet-container {
+.CenterListWrapper .leaflet-container {
   height: 50vh;
   width: 100%;
+  z-index: 0;
 }
 
 .MapWrapper {
