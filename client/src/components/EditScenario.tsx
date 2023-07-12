@@ -5,17 +5,22 @@ import { ScenarioObj, ScenarioStack } from "./ScenarioInterface";
 import { UserContext } from "../context/UserContext";
 import { CenterStack, CenterObj } from "./CenterInterface";
 
-export function EditScenario(props: ScenarioObj) {
+export function EditScenario(props: { scenario_id: number; user_id: number }) {
   const [NoChangesError, setNoChangesError] = useState(false);
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 
-  const user_id = userContext.user?.user_id;
+  const user_id = props.user_id;
+  console.log(`selbst ermittelte userId: `, user_id);
+  console.log(`übergebene props`, props);
   const { id } = useParams();
   const path1 = `/api/${user_id}`;
   const path = `/api/scenario/${id}`;
 
   // getting all centers
+  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
+    centers: [],
+  });
   useEffect(() => {
     fetch(path1)
       .then((response) => response.json())
@@ -23,10 +28,6 @@ export function EditScenario(props: ScenarioObj) {
         setBackendCenters(data);
       });
   }, []);
-
-  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
-    centers: [],
-  });
 
   // get scenario specific centers
   const [backendScenario, setBackendScenario] = React.useState<ScenarioObj>({
@@ -41,6 +42,8 @@ export function EditScenario(props: ScenarioObj) {
         setBackendScenario(data.scenario);
       });
   }, []);
+  console.log(`current backendCenters `, backendCenters);
+  console.log(`current backendScenario: `, backendScenario);
 
   const dialog = document.querySelector("dialog");
 
@@ -58,26 +61,27 @@ export function EditScenario(props: ScenarioObj) {
 
   async function handleSubmit() {
     const scenario = {
-      scenario_id: backendScenario.scenario_id,
+      scenario_id: Number(id),
       user_id: user_id,
       centers: cen,
     };
 
-    fetch(`/api/scenario/${backendScenario.scenario_id}`, {
+    fetch(`/api/scenario/${Number(id)}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(scenario),
     })
       .then((response) => response.json())
       .then((data) => console.log(data));
+    handleClickCloseEditor();
 
-    navigate(`/scenario/${backendScenario.scenario_id}`);
+    navigate(`/scenario/${Number(id)}`);
   }
 
   const cen: number[] = [];
 
   const included: number[] = [];
-  for (let i = 0; i < backendScenario.centers.length; i++){
+  for (let i = 0; i < backendScenario.centers.length; i++) {
     included.push(backendScenario.centers[i].center_id);
   }
 
@@ -104,51 +108,43 @@ export function EditScenario(props: ScenarioObj) {
                 backendCenters.centers.map(
                   (center: CenterObj, i: number = center.center_id) => (
                     <div key={i}>
-                      {
-                        included.includes(center.center_id) ?(
-                          <div id="adding-center-button">
-                        <input
-                          type="checkbox"
-                          value="Add"
-                          name="checker"
-                          onChange={() => {
-                            if (cen.indexOf(center.center_id) > -1) {
-                              const index = cen.indexOf(center.center_id);
-                              cen.splice(index, 1);
-                            } else {
-                              cen.push(center.center_id);
-                            }
-                            console.log(cen);
-                          }
-                        }
-                        />
-                        <label> {center.name}</label>
-                      </div>
-
-                        ):(
-                          <div id="adding-center-button">
-                        <input
-                          type="checkbox"
-                          value="Add"
-                          name="checker"
-                          
-                          onChange={() => {
-                            if (cen.indexOf(center.center_id) > -1) {
-                              const index = cen.indexOf(center.center_id);
-                              cen.splice(index, 1);
-                            } else {
-                              cen.push(center.center_id);
-                            }
-                            console.log(cen);
-                          }}
-                        />
-                        <label> {center.name}</label>
-                      </div>
-
-                        )
-                        
-                      }
-                      
+                      {included.includes(center.center_id) ? (
+                        <div id="adding-center-button">
+                          <input
+                            type="checkbox"
+                            value="Add"
+                            name="checker"
+                            onChange={() => {
+                              if (cen.indexOf(center.center_id) > -1) {
+                                const index = cen.indexOf(center.center_id);
+                                cen.splice(index, 1);
+                              } else {
+                                cen.push(center.center_id);
+                              }
+                              console.log(cen);
+                            }}
+                          />
+                          <label> {center.name}</label>
+                        </div>
+                      ) : (
+                        <div id="adding-center-button">
+                          <input
+                            type="checkbox"
+                            value="Add"
+                            name="checker"
+                            onChange={() => {
+                              if (cen.indexOf(center.center_id) > -1) {
+                                const index = cen.indexOf(center.center_id);
+                                cen.splice(index, 1);
+                              } else {
+                                cen.push(center.center_id);
+                              }
+                              console.log(cen);
+                            }}
+                          />
+                          <label> {center.name}</label>
+                        </div>
+                      )}
                     </div>
                   )
                 )
@@ -158,9 +154,9 @@ export function EditScenario(props: ScenarioObj) {
 
           <div className="Button-Message-row">
             <div className="Button-row">
-            <button id="AddSubmitButton" type="submit" onClick={handleSubmit}>
-            Submit
-          </button>
+              <button id="AddSubmitButton" type="submit" onClick={handleSubmit}>
+                Submit
+              </button>
               {/* <button onClick={testfunc}>Edit</button> */}
               <button onClick={handleClickCloseEditor}>Cancel</button>
             </div>
@@ -174,21 +170,4 @@ export function EditScenario(props: ScenarioObj) {
       </dialog>
     </>
   );
-}
-
-function callPutApi(id: number, centers: []) {
-  const scenario = {
-    scenario_id: id,
-    centers: centers,
-  };
-
-  fetch(`/api/scenario/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(scenario),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      //   succes message
-    });
 }

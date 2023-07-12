@@ -60,7 +60,7 @@ export function Scenario() {
     <div className="Scenario-wrapper">
       <div className="Scenario">
         <div className="Scenario-data-list">
-          <li>Scenario: {backendScenario.scenario_id}</li>
+          <li>Scenario: {Number(id)}</li>
           <li>Centers:</li>
           {typeof backendScenario.centers === "undefined" ? (
             <div>Loading ...</div>
@@ -78,16 +78,8 @@ export function Scenario() {
         </div>
 
         <div className="Center-buttons">
-          <EditScenario
-            scenario_id={backendScenario.scenario_id}
-            user_id={backendScenario.user_id}
-            centers={backendScenario.centers}
-          />
-          <DeleteButton
-            id={backendScenario.scenario_id}
-            path={path}
-            user_id={backendScenario.user_id}
-          />
+          <EditScenario scenario_id={Number(id)} user_id={user_id} />
+          <DeleteButton id={Number(id)} path={path} user_id={user_id} />
         </div>
         <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
           Home
