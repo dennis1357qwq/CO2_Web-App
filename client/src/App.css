@@ -2,19 +2,24 @@
   font-family: sans-serif;
 }
 
+.body {
+  overflow-y: scroll;
+}
 .Overview {
-  display: grid;
   justify-content: center;
-  position: fixed;
-  text-align: center;
+  text-align: left;
   gap: 1rem;
+  width: 100%;
+  overflow: hidden;
 }
 
-#AddButton {
-  border: 0.1rem solid darkgray;
-  border-radius: 10%;
-  width: 30px;
-  height: 30px;
+.CenterListWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.MapWrapper {
+  width: 100%;
 }
 
 .Center-wrapper {
@@ -61,12 +66,6 @@
   justify-content: center;
 }
 
-.Edit-form {
-  display: grid;
-  gap: 1rem;
-  /* background-color: blanchedalmond; */
-}
-
 .input-block {
   display: grid;
 }
@@ -95,26 +94,6 @@
   width: min-content;
 }
 
-.EditCenter-wrapper {
-  display: grid;
-  gap: 1rem;
-}
-
-#NoChangesLabel {
-  color: red;
-}
-
-.AddCenter-wrapper {
-  display: grid;
-  gap: 2em;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: fixed;
-  border: lightgrey solid;
-  padding: 10px;
-  width: max-content;
-}
 
 #AddSubmitButton {
   width: min-content;

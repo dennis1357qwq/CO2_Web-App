@@ -77,15 +77,10 @@ export function Center() {
       });
   }, []);
 
-  console.log(carbonDataNext24);
-
   return (
     <>
       {isLoaded ? (
         <div className="Center-wrapper">
-          <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
-            Home
-          </NavLink>
           <div className="Center">
             <div className="Center-data-list">
               <li>Name: {backendCenter.name}</li>
@@ -100,15 +95,10 @@ export function Center() {
                 {backendCenter.adress.region}
               </li>
               <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
-              {isLoaded ? (
-                <li>
-                  Current Carbon Intensity:{" "}
-                  {currentCarbonData.data[0].data[0].intensity.forecast}{" "}
-                  gCO_2/kWH
-                </li>
-              ) : (
-                <li>Waiting for Data</li>
-              )}
+              <li>
+                Current Carbon Intensity:{" "}
+                {currentCarbonData.data[0].data[0].intensity.forecast} gCO_2/kWH
+              </li>
             </div>
 
             <div className="Center-buttons">
