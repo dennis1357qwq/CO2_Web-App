@@ -311,7 +311,7 @@ export function EditCenter(props: CenterObj) {
             </div>
             {!useAddress ? (
               <>
-                <Map centers={[props]} />
+                <Map points={[props]} spawn={[]} showAdress={false} />
                 <div id="lat/long-input" className="input-block">
                   <label>lattitude/longitude: </label>
                   <div>

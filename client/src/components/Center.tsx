@@ -106,12 +106,30 @@ export function Center() {
               </div>
               <div className="Map-Wrapper">
                 <div className="MapSt">
-                  <Map centers={[backendCenter]} />
+                  <Map
+                    points={[backendCenter]}
+                    spawn={[
+                      backendCenter.lattitude,
+                      backendCenter.longitude,
+                      13,
+                    ]}
+                    showAdress={true}
+                  />
                 </div>
               </div>
             </div>
             <div className="row-wrapper">
+              <div className="text-2xl font-medium text-gray-500">
+                With a peak energy consumption of{" "}
+                {backendCenter.peak_consumption}, your center located in{" "}
+                {backendCenter.adress.city} will have a carbon intensity of{" "}
+                {currentCarbonData.data[0].data[0].intensity.forecast}{" "}
+                gCO_2/kWH.
+              </div>
+            </div>
+            <div className="row-wrapper">
               <div className="Charts-Wrapper">
+                <p className="text-2xl font-bold">Daily Charts:</p>
                 <DataLineChart values={carbonDataNext24} />
               </div>
             </div>

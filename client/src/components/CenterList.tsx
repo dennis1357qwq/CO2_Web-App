@@ -38,7 +38,7 @@ export function CenterList() {
           )
         )
       )}
-      <Map centers={backendCenters.centers}></Map>
+      <Map points={backendCenters.centers} spawn={[]} showAdress={false}></Map>
     </div>
   );
 }
