@@ -47,7 +47,7 @@ export default function DataPieChart(values: any) {
     const sy = cy + (outerRadius + 10) * sin;
     const mx = cx + (outerRadius + 30) * cos;
     const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+    const ex = mx + (cos >= 0 ? 1 : -1) * 20;
     const ey = my;
     const textAnchor = cos >= 0 ? "start" : "end";
 
@@ -70,8 +70,8 @@ export default function DataPieChart(values: any) {
           cy={cy}
           startAngle={startAngle}
           endAngle={endAngle}
-          innerRadius={outerRadius + 6}
-          outerRadius={outerRadius + 10}
+          innerRadius={outerRadius + 4}
+          outerRadius={outerRadius + 15}
           fill={fill}
         />
         <path
@@ -101,7 +101,7 @@ export default function DataPieChart(values: any) {
   return (
     <>
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart width={400} height={400}>
+        <PieChart>
           <Pie
             activeIndex={activeIndex}
             activeShape={renderActiveShape}
@@ -111,8 +111,8 @@ export default function DataPieChart(values: any) {
             dataKey="perc"
             nameKey="fuel"
             fill="#8884d8"
-            innerRadius={60}
-            outerRadius={80}
+            innerRadius={110}
+            outerRadius={180}
             onMouseEnter={onPieEnter}
           >
             {values.values.map((entry: any, index: any) => (

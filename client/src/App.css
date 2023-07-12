@@ -18,25 +18,13 @@
   height: 100%;
 }
 
-.MapWrapper {
+.leaflet-container {
+  height: 50vh;
   width: 100%;
 }
 
-.Center-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.Center {
-  display: grid;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  /* top: 50%;
-  left: 50%;
-  transform: translate(-50%, -100%);
-  position: relative; */
+.MapWrapper {
+  width: 100%;
 }
 
 .Center-data-list {

@@ -27,7 +27,7 @@ export function CenterList() {
 
   return (
     <div className="CenterListWrapper">
-      <Map centers={backendCenters.centers}></Map>
+      <Map points={backendCenters.centers} spawn={[]} showAdress={false}></Map>
 
       <div className="grid grid-cols-1 place-items-center gap-5 pt-5">
         {typeof backendCenters.centers === "undefined" ? (
