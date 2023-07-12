@@ -10,25 +10,12 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 
-  const user_id = props.user_id;
-  console.log(`selbst ermittelte userId: `, user_id);
-  console.log(`übergebene props`, props);
+  const user_id = Number(localStorage.getItem("user_id"));
   const { id } = useParams();
   const path1 = `/api/${user_id}`;
   const path = `/api/scenario/${id}`;
 
-  // getting all centers
-  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
-    centers: [],
-  });
-  useEffect(() => {
-    fetch(path1)
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendCenters(data);
-      });
-  }, []);
-
+ 
   // get scenario specific centers
   const [backendScenario, setBackendScenario] = React.useState<ScenarioObj>({
     scenario_id: 0,
@@ -40,10 +27,22 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
       .then((response) => response.json())
       .then((data) => {
         setBackendScenario(data.scenario);
+        backendScenario.user_id = data.scenario.user_id;
       });
   }, []);
-  console.log(`current backendCenters `, backendCenters);
-  console.log(`current backendScenario: `, backendScenario);
+
+ // getting all centers
+  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
+    centers: [],
+  });
+  useEffect(() => {
+    fetch(path1)
+      .then((response) => response.json())
+      .then((data) => {
+        setBackendCenters(data);
+      });
+  }, []);
+
 
   const dialog = document.querySelector("dialog");
 
@@ -75,7 +74,7 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
       .then((data) => console.log(data));
     handleClickCloseEditor();
 
-    navigate(`/scenario/${Number(id)}`);
+    window.location.reload();
   }
 
   const cen: number[] = [];
