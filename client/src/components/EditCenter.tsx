@@ -349,10 +349,17 @@ export function EditCenter(props: CenterObj) {
             {!useAddress ? (
               <>
                 <Map points={[props]} spawn={[]} showAdress={false} />
-                <div id="lat/long-input" className="input-block">
-                  <label>lattitude/longitude: </label>
+                <div className="mb-6">
+                  <label
+                    className="block mt-2 mb-2 text-sm font-medium text-gray-900"
+                    htmlFor="lat"
+                  >
+                    Lattitude:{" "}
+                  </label>
                   <div>
                     <input
+                      id="lat"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       type="text"
                       value={CenterLattitude}
                       placeholder={"" + props.lattitude}
@@ -361,8 +368,15 @@ export function EditCenter(props: CenterObj) {
                       }
                       size={10}
                     ></input>
-
+                    <label
+                      className="block mb-2 text-sm font-medium text-gray-900 mt-2"
+                      htmlFor="long"
+                    >
+                      Longitude:
+                    </label>
                     <input
+                      id="long"
+                      className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       type="text"
                       value={CenterLongitude}
                       placeholder={"" + props.longitude}

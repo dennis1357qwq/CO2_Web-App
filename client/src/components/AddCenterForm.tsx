@@ -338,7 +338,7 @@ export function AddCenterForm() {
           </div>
           {!useAddress ? (
             <>
-              <Map centers={[]} />
+              <Map points={[]} spawn={[]} showAdress={false} />
               <div className="mb-6 mt-4">
                 <label
                   className="block mb-2 text-sm font-medium text-gray-900"
