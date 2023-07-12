@@ -10,6 +10,7 @@ import { CenterObj } from "./CenterInterface";
 import "./Center.css";
 import DataPieChart from "./PieChart";
 import DataLineChart from "./LineChart";
+import { CenterHeader } from "./CenterHeader";
 
 export function Center() {
   const userContext = useContext(UserContext);
@@ -77,66 +78,44 @@ export function Center() {
       });
   }, []);
 
-  console.log(carbonDataNext24);
+  // console.log(carbonDataNext24);
 
   return (
     <>
       {isLoaded ? (
-        <div className="Center-wrapper">
-          <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
-            Home
-          </NavLink>
+        <div className="Center-Wrapper">
           <div className="Center">
-            <div className="Center-data-list">
-              <li>Name: {backendCenter.name}</li>
-              <li>
-                Street: {backendCenter.adress.adress_line_1},{" "}
-                {+backendCenter.adress.unit_number != 0
-                  ? backendCenter.adress.unit_number
-                  : ""}
-              </li>
-              <li>
-                {backendCenter.adress.postal_code} {backendCenter.adress.city},{" "}
-                {backendCenter.adress.region}
-              </li>
-              <li>peak-Verbrauch: {backendCenter.peak_consumption}</li>
-              {isLoaded ? (
-                <li>
-                  Current Carbon Intensity:{" "}
-                  {currentCarbonData.data[0].data[0].intensity.forecast}{" "}
-                  gCO_2/kWH
-                </li>
-              ) : (
-                <li>Waiting for Data</li>
-              )}
-            </div>
-
-            <div className="Center-buttons">
-              <EditCenter
-                center_id={backendCenter.center_id}
-                name={backendCenter.name}
-                peak_consumption={backendCenter.peak_consumption}
-                user_id={backendCenter.user_id}
-                lattitude={backendCenter.lattitude}
-                longitude={backendCenter.longitude}
-                outer_postcode={backendCenter.outer_postcode}
-                adress={backendCenter.adress}
-              />
-              <DeleteButton
-                id={backendCenter.center_id}
-                path={path}
-                user_id={user_id}
-              />
-            </div>
-          </div>
-
-          <div className="Charts-wrapper">
-            <DataPieChart
-              values={currentCarbonData.data[0].data[0].generationmix}
+            <CenterHeader
+              center={backendCenter}
+              path={path}
+              user_id={user_id}
             />
-            <DataLineChart values={carbonDataNext24} />
+            <div>
+              <p className="mt-2 flex items-center text-sm text-gray-500">
+                CURRENT CARBON INTENSITY:
+              </p>
+              <p className="text-3xl font-medium">
+                {currentCarbonData.data[0].data[0].intensity.forecast} gCO_2/kWH
+              </p>
+            </div>
+            <div className="row-wrapper">
+              <div className="pie-wrapper">
+                <DataPieChart
+                  values={currentCarbonData.data[0].data[0].generationmix}
+                />
+              </div>
+              <div className="Map-Wrapper">
+                <div className="MapSt">
+                  <Map centers={[backendCenter]} />
+                </div>
+              </div>
+            </div>
+            <div className="row-wrapper">
+              <div className="Charts-Wrapper">
+                <DataLineChart values={carbonDataNext24} />
+              </div>
+            </div>
           </div>
-          <Map centers={[backendCenter]} />
         </div>
       ) : (
         <div className="loader-container">
