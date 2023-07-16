@@ -79,14 +79,17 @@ export function Scenario() {
         </div>
 
         <div className="Center-buttons">
-          <EditScenario scenario_id={Number(id)} user_id={Number(backendScenario.user_id)} />
+          <EditScenario
+            scenario_id={Number(id)}
+            user_id={Number(backendScenario.user_id)}
+          />
           <DeleteButton id={Number(id)} path={path} user_id={user_id} />
         </div>
         <NavLink className={"Home-Link"} to={`/dashboard/${user_id}`}>
           Home
         </NavLink>
       </div>
-      <Map centers={backendScenario.centers} />
+      <Map points={backendScenario.centers} spawn={[]} showAdress={false} />
     </div>
   );
 }

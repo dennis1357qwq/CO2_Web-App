@@ -128,6 +128,11 @@ export async function updateAdress(
 
 export async function deleteCenter(id) {
   const center = await getCenter(id);
+
+  const [rows] = await pool.query(
+    `DELETE FROM center_scenario WHERE center_id = ?`, [id]
+  );
+
   const [result] = await pool.query(
     `
       DELETE FROM centers WHERE center_id = ?
