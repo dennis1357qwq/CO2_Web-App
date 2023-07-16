@@ -1,5 +1,5 @@
 import express from "express";
-import { addUser, checkUserExists, login,  getScenario, getScenarios, createScenario, deleteScenario } from "./database.js";
+import { addUser, checkUserExists, login,  getScenario, getScenarios, createScenario, deleteScenario,  updateScenario } from "./database.js";
 import {
   getCenter,
   getAdress,
@@ -184,7 +184,9 @@ app.get("/api/scenarios/:id", async (req, res)  =>{
   const scenarios = [];
   if (result.length >0){
     for (let i=0; i<  result.length; i++){
+      
       const x = await getScenario(result[i].scenario_id);
+      console.log(`scenario in question: `,result[i], `bzw: `, x);
       scenarios[i]= writeScenario(x);
     }
   }
@@ -198,7 +200,9 @@ app.get("/api/scenario/:id", async (req, res)  =>{
   console.log( `call of method`);
   console.log(data);
   for (let i in data){
-    cen.push(await getCenter(data[i].center_id))
+    const akt = await getCenter(data[i].center_id);
+    console.log(`center to be added to current scenario: `, akt)
+    cen.push(akt);
   }
   const scenario = writeScenario(data, cen);
 
@@ -213,6 +217,7 @@ function writeScenario(data, cent){
   {const scenario_id = data[0].scenario_id;
   const user_id = data[0].user_id;
   const centers = cent ;
+  console.log(`written scenario: `, scenario_id, user_id, centers)
 
   return{
     scenario_id,
@@ -243,6 +248,13 @@ app.delete("/api/scenario/:id", async (req, res) => {
   res.json({
     scenarios,
   });
+});
+
+app.put("/api/scenario/:id", async (req, res) =>{
+  const result = await  updateScenario(req.body.scenario_id, req.body.centers);
+  res.json({
+    result,
+  })
 });
 
 app.listen(5002, () => {

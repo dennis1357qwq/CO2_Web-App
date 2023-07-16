@@ -5,29 +5,17 @@ import { ScenarioObj, ScenarioStack } from "./ScenarioInterface";
 import { UserContext } from "../context/UserContext";
 import { CenterStack, CenterObj } from "./CenterInterface";
 
-export function EditScenario(props: ScenarioObj) {
+export function EditScenario(props: { scenario_id: number; user_id: number }) {
   const [NoChangesError, setNoChangesError] = useState(false);
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
 
-  const user_id = userContext.user?.user_id;
+  const user_id = Number(localStorage.getItem("user_id"));
   const { id } = useParams();
   const path1 = `/api/${user_id}`;
   const path = `/api/scenario/${id}`;
 
-  // getting all centers
-  useEffect(() => {
-    fetch(path1)
-      .then((response) => response.json())
-      .then((data) => {
-        setBackendCenters(data);
-      });
-  }, []);
-
-  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
-    centers: [],
-  });
-
+ 
   // get scenario specific centers
   const [backendScenario, setBackendScenario] = React.useState<ScenarioObj>({
     scenario_id: 0,
@@ -39,8 +27,22 @@ export function EditScenario(props: ScenarioObj) {
       .then((response) => response.json())
       .then((data) => {
         setBackendScenario(data.scenario);
+        backendScenario.user_id = data.scenario.user_id;
       });
   }, []);
+
+ // getting all centers
+  const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
+    centers: [],
+  });
+  useEffect(() => {
+    fetch(path1)
+      .then((response) => response.json())
+      .then((data) => {
+        setBackendCenters(data);
+      });
+  }, []);
+
 
   const dialog = document.querySelector("dialog");
 
@@ -56,6 +58,37 @@ export function EditScenario(props: ScenarioObj) {
     dialog?.close();
   };
 
+  async function handleSubmit() {
+    const scenario = {
+      scenario_id: Number(id),
+      user_id: user_id,
+      centers: cen,
+    };
+
+    fetch(`/api/scenario/${Number(id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(scenario),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+    handleClickCloseEditor();
+
+    window.location.reload();
+  }
+
+  const cen: number[] = [];
+
+  const included: number[] = [];
+  for (let i = 0; i < backendScenario.centers.length; i++) {
+    included.push(backendScenario.centers[i].center_id);
+  }
+
+  console.log(`current ids`);
+  console.log(included);
+
+  const [checked, setChecked] = React.useState(false);
+
   return (
     <>
       <button onClick={handleClickOpenEditor}>Edit</button>
@@ -65,30 +98,52 @@ export function EditScenario(props: ScenarioObj) {
           <form className="Edit-form">
             <div className="Edit-form-labels">
               <h1>Scenario {id} </h1>
-              <label>centers included: </label>
-            </div>
-            <div className="Edit-form-inputs">
-              {typeof backendScenario.centers === "undefined" ? (
-                <div>Loading ...</div>
-              ) : (
-                backendScenario.centers.map(
-                  (center: CenterObj, i: number = center.center_id) => (
-                    <div key={i}>
-                      <li>{center.name}</li>
-                    </div>
-                  )
-                )
-              )}
             </div>
             <div>
-              <h1> Centers available</h1>
+              <h1> Centers</h1>
               {typeof backendCenters === "undefined" ? (
                 <div>Loading ...</div>
               ) : (
                 backendCenters.centers.map(
                   (center: CenterObj, i: number = center.center_id) => (
                     <div key={i}>
-                      <li>{center.name}</li>
+                      {included.includes(center.center_id) ? (
+                        <div id="adding-center-button">
+                          <input
+                            type="checkbox"
+                            value="Add"
+                            name="checker"
+                            onChange={() => {
+                              if (cen.indexOf(center.center_id) > -1) {
+                                const index = cen.indexOf(center.center_id);
+                                cen.splice(index, 1);
+                              } else {
+                                cen.push(center.center_id);
+                              }
+                              console.log(cen);
+                            }}
+                          />
+                          <label> {center.name}</label>
+                        </div>
+                      ) : (
+                        <div id="adding-center-button">
+                          <input
+                            type="checkbox"
+                            value="Add"
+                            name="checker"
+                            onChange={() => {
+                              if (cen.indexOf(center.center_id) > -1) {
+                                const index = cen.indexOf(center.center_id);
+                                cen.splice(index, 1);
+                              } else {
+                                cen.push(center.center_id);
+                              }
+                              console.log(cen);
+                            }}
+                          />
+                          <label> {center.name}</label>
+                        </div>
+                      )}
                     </div>
                   )
                 )
@@ -98,6 +153,9 @@ export function EditScenario(props: ScenarioObj) {
 
           <div className="Button-Message-row">
             <div className="Button-row">
+              <button id="AddSubmitButton" type="submit" onClick={handleSubmit}>
+                Submit
+              </button>
               {/* <button onClick={testfunc}>Edit</button> */}
               <button onClick={handleClickCloseEditor}>Cancel</button>
             </div>
@@ -111,21 +169,4 @@ export function EditScenario(props: ScenarioObj) {
       </dialog>
     </>
   );
-}
-
-function callPutApi(id: number, centers: []) {
-  const scenario = {
-    scenario_id: id,
-    centers: centers,
-  };
-
-  fetch(`/api/scenario/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(scenario),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      //   succes message
-    });
 }
