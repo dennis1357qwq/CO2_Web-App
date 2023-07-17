@@ -19,7 +19,19 @@ MYSQL_DATABASE="Co2-Center_DB"
 
 ### Run Server and Client
 
-Make sure to install the dependencies of the server and client by running >npm install in the corresponding subdirectories.
-After that you are able to start the server by running >npm run dev in both subdirectories.
+Make sure to install the dependencies of the server and client by running 
+```
+npm install
+```
+in the corresponding subdirectories.
+After that you are able to start the server by running 
+```
+npm run dev
+```
+in both subdirectories.
 
 ### Usage
+
+Access the Application via the localhost link.
+After a successful register and login you can start using the Application by creating your first datacenter.
+Make sure to enter a correct adress in the United Kingdom since the used [Carbon Intensity API](https://carbonintensity.org.uk/) is limited to that.
