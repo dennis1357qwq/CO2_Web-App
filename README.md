@@ -1,14 +1,14 @@
 # CO<sub>2</sub> Database Planer
 
-**CO<sub>2</sub> Database Planer** is a tool for planning or simulating the carbon intensity of datacenters in the United Kingdom. Depending on the location of the datacenter it will show the current generation mix and forecast the carbon intensity for next 24 hours.
+**CO<sub>2</sub> Database Planer** is a tool for planning and simulating the carbon intensity of datacenters in the United Kingdom. Depending on the location of the datacenter it will show the current generation mix and forecast the carbon intensity for the next 24 hours.
 
 ## Getting Started
 
-Clone to most recent version of this repository.
+Clone the most recent version of this repository.
 
 ### Set up a local MySQL database
 
-Create a local Database according to the "schema.sql" file in the "CO2_WEB-APP/co2-server" subdirectory and create a local ".env" file in this directory with the following input and run the MySQL Server
+Create a local Database according to the "schema.sql" file in the "CO2_WEB-APP/co2-server" subdirectory and create a local ".env" file in this directory with the following input and run the MySQL Server.
 
 ```
 MYSQL_HOST="127.0.0.1"
@@ -18,3 +18,8 @@ MYSQL_DATABASE="Co2-Center_DB"
 ```
 
 ### Run Server and Client
+
+Make sure to install the dependencies of the server and client by running >npm install in the corresponding subdirectories.
+After that you are able to start the server by running >npm run dev in both subdirectories.
+
+### Usage
