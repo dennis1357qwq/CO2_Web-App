@@ -17,7 +17,8 @@ export async function getCarbonCurrent(postCode) {
     const result = await response.json();
     return result;
   } catch {
-    console.log("error");
+    console.log("Error beim getCarbonCurrent API Call");
+    return null;
   }
 }
 
@@ -44,6 +45,7 @@ export async function getCarbonNext24(postCode) {
     const receivedData = result.data.data;
     return receivedData;
   } catch {
-    console.log("error");
+    console.log("Error beim getCarbonNext24 API Call");
+    return null;
   }
 } 

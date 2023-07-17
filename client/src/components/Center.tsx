@@ -133,7 +133,11 @@ export function Center() {
             <div className="row-wrapper">
               <div className="Charts-Wrapper">
                 <p className="text-2xl font-bold">Daily Charts:</p>
-                <DataLineChart values={carbonDataNext24} />
+                {carbonDataNext24 ? (
+                  <DataLineChart values={carbonDataNext24} />
+                ) : (
+                  "NO DATA AVAILABLE"
+                )}
               </div>
             </div>
           </div>
