@@ -34,7 +34,7 @@
   height: 500px;
   max-height: 500px;
   overflow: visible;
-
+  margin-right: 12em;
   font-size: large;
 }
 
@@ -57,8 +57,8 @@
   align-items: center;
 }
 .leaflet-container {
-  height: 50vh;
-  width: 50vh;
+  height: 40vh;
+  width: 40vh;
 }
 
 .Map-Wrapper {
@@ -91,6 +91,7 @@
 
 .recharts-surface {
   width: 500px;
+  overflow: visible;
 }
 
 @media (max-width: 400px) {
@@ -104,18 +105,23 @@
     height: 30vh;
     width: 40vh;
   }
+  .pie-wrapper {
+    height: 300px;
+    max-width: 300px;
+    margin-right: 0;
+  }
 
   .recharts-surface {
-    width: 100%;
     margin: 0;
     overflow: visible;
+    width: 300px;
   }
 
   .recharts-wrapper {
-    width: 100%;
+    max-width: 300px;
   }
 
-  .pie-wrapper {
-    height: 300px;
+  .recharts-responsive-container {
+    max-width: 300px;
   }
 }
