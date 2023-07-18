@@ -19,7 +19,7 @@ const Checkbox = (props: {
 
   return (
     <div className="checkbox-wrapper">
-      <label>
+      <label className="text-lg">
         <input
           type="checkbox"
           checked={isChecked}

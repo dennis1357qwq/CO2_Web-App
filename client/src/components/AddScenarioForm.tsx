@@ -74,8 +74,9 @@ export function AddScenarioForm() {
     })
       .then((response) => response.json())
       .then((data) => setInputScenario(data));
-    console.log(`local storage: `, localStorage);
+
     navigate(`/dashboard/${user_id}`);
+    window.location.reload();
   }
 
   return (
@@ -84,44 +85,49 @@ export function AddScenarioForm() {
         <form
           id="AddCenterForm"
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4 min-w-[40%]"
-          onSubmit={handleSubmit}
         >
-          <div className="flex items-start mb-6">
-            <div className="flex items-center mb-2">
-              <div className="CenterListWrapper">
-                {typeof backendCenters.centers === "undefined" ? (
-                  <div>Loading ...</div>
-                ) : (
-                  backendCenters.centers.map(
-                    (center: CenterObj, i: number = center.center_id) => (
-                      <div key={i}>
-                        <div id="adding-center-button">
-                          <Checkbox
-                            label={center.name}
-                            cen={cen}
-                            checked={false}
-                            center={center}
-                          />
+          <div className="row-wrapper">
+            <h3 className="text-xl font-medium text-gray-900 dark:text-gray">
+              Create New Scenario
+            </h3>
+            <div className="row-wrapper">
+              <div className="flex items-center mb-2">
+                <div className="CenterListWrapper">
+                  {typeof backendCenters.centers === "undefined" ? (
+                    <div>Loading ...</div>
+                  ) : (
+                    backendCenters.centers.map(
+                      (center: CenterObj, i: number = center.center_id) => (
+                        <div key={i}>
+                          <div id="adding-center-button">
+                            <Checkbox
+                              label={center.name}
+                              cen={cen}
+                              checked={false}
+                              center={center}
+                            />
+                          </div>
                         </div>
-                      </div>
+                      )
                     )
-                  )
-                )}
+                  )}
+                </div>
               </div>
-              <div className="InputLastLine">
-                <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
-                  <button className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium">
-                    Cancel
-                  </button>
-                </NavLink>
-                <button
-                  className="border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-l font-medium"
-                  type="submit"
-                  onClick={handleSubmit}
-                >
-                  Create
+            </div>
+
+            <div className="InputLastLine">
+              <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
+                <button className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium">
+                  Cancel
                 </button>
-              </div>
+              </NavLink>
+              <button
+                className="border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-l font-medium"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Create
+              </button>
             </div>
           </div>
         </form>
