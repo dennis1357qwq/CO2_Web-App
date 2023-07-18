@@ -46,7 +46,7 @@ export default function Navbar() {
                             />
                           </svg>
                         </div>
-                        <div className="Home-text">Home</div>
+                        <div className="Home-text m-0.5">Home</div>
                       </div>
                     </button>
                   </NavLink>
@@ -74,7 +74,7 @@ export default function Navbar() {
                             />
                           </svg>
                         </div>
-                        <div className="AddCenter-text">Add Center</div>
+                        <div className="AddCenter-text m-0.5">Add Center</div>
                       </div>
                     </button>
                   </NavLink>
@@ -102,7 +102,9 @@ export default function Navbar() {
                             />
                           </svg>
                         </div>
-                        <div className="AddScenario-text">New Scenario</div>
+                        <div className="AddScenario-text m-0.5">
+                          New Scenario
+                        </div>
                       </div>
                     </button>
                   </NavLink>
