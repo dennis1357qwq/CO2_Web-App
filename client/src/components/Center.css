@@ -124,4 +124,8 @@
   .recharts-responsive-container {
     max-width: 300px;
   }
+  .Charts-Wrapper {
+    max-width: 300px;
+    max-height: 250px;
+  }
 }

@@ -130,12 +130,12 @@ export function Center() {
                 gCO<sub>2</sub>/h
               </div>
             </div>
-            {/* <div className="row-wrapper">
+            <div className="row-wrapper">
               <div className="Charts-Wrapper">
                 <p className="text-2xl font-bold">Daily Charts:</p>
                 <DataLineChart values={carbonDataNext24} />
               </div>
-            </div> */}
+            </div>
           </div>
         </div>
       ) : (
