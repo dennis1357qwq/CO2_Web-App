@@ -10,13 +10,12 @@
 }
 
 .spinner {
-    width: 64px;
-    height: 64px;
-    border: 8px solid;
-    border-color: #0d9488 transparent #0d9488 transparent;
-    border-radius: 50%;
-    animation: spin-anim 1.2s linear infinite;
-    
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #0d9488 transparent #0d9488 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
 }
 
 @keyframes spin-anim {
@@ -31,7 +30,7 @@
 .pie-wrapper {
   width: fit-content;
   max-width: 50%;
-  min-width: 620px;
+  min-width: 300px;
   height: 500px;
   max-height: 500px;
   overflow: visible;
@@ -79,9 +78,44 @@
 .Center-Wrapper {
   display: flex;
   justify-content: center;
+  overflow: scroll;
+  width: 100%;
 }
 
 .Charts-Wrapper {
   height: 500px;
   width: 800px;
+  max-width: 60%;
+  overflow: scroll;
+}
+
+.recharts-surface {
+  width: 500px;
+}
+
+@media (max-width: 400px) {
+  .row-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .leaflet-container {
+    height: 30vh;
+    width: 40vh;
+  }
+
+  .recharts-surface {
+    width: 100%;
+    margin: 0;
+    overflow: visible;
+  }
+
+  .recharts-wrapper {
+    width: 100%;
+  }
+
+  .pie-wrapper {
+    height: 300px;
+  }
 }

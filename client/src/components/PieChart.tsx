@@ -11,7 +11,7 @@ import {
 
 export default function DataPieChart(values: any) {
   const windowSize = useRef([window.innerWidth, window.innerHeight]);
-  let scale = windowSize.current[0] <= 800 ? 0.5 : 1;
+  let scale = windowSize.current[0] <= 400 ? 0.6 : 1;
   const COLORS = [
     "#0088FE",
     "#FFBB28",
@@ -49,7 +49,7 @@ export default function DataPieChart(values: any) {
     const sy = cy + (outerRadius + 10) * sin;
     const mx = cx + (outerRadius + 30) * cos;
     const my = cy + (outerRadius + 30) * sin;
-    const ex = mx + (cos >= 0 ? 1 : -1) * 20;
+    const ex = mx + (cos >= 0 ? 1 : -1);
     const ey = my;
     const textAnchor = cos >= 0 ? "start" : "end";
 
