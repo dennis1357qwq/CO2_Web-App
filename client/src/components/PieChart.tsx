@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useRef } from "react";
 import { render } from "react-dom";
 import {
   PieChart,
@@ -10,6 +10,8 @@ import {
 } from "recharts";
 
 export default function DataPieChart(values: any) {
+  const windowSize = useRef([window.innerWidth, window.innerHeight]);
+  let scale = windowSize.current[0] <= 800 ? 0.5 : 1;
   const COLORS = [
     "#0088FE",
     "#FFBB28",
@@ -70,8 +72,8 @@ export default function DataPieChart(values: any) {
           cy={cy}
           startAngle={startAngle}
           endAngle={endAngle}
-          innerRadius={outerRadius + 4}
-          outerRadius={outerRadius + 15}
+          innerRadius={outerRadius + 4 * scale}
+          outerRadius={outerRadius + 15 * scale}
           fill={fill}
         />
         <path
@@ -111,8 +113,8 @@ export default function DataPieChart(values: any) {
             dataKey="perc"
             nameKey="fuel"
             fill="#8884d8"
-            innerRadius={110}
-            outerRadius={180}
+            innerRadius={110 * scale}
+            outerRadius={180 * scale}
             onMouseEnter={onPieEnter}
           >
             {values.values.map((entry: any, index: any) => (
