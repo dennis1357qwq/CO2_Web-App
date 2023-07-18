@@ -29,7 +29,7 @@ export default function Navbar() {
                       className="bg-gray-900 text-white rounded-md px-3 py-2 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-sm font-medium"
                       id="Home"
                     >
-                      <div className="flex gap-2 align-baseline">
+                      <div className="flex gap-2">
                         <div className="Home-icon">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
