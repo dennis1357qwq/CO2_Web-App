@@ -4,6 +4,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import { ScenarioObj, ScenarioStack } from "./ScenarioInterface";
 import { Map } from "./Map";
+import { CenterObj } from "./CenterInterface";
 
 export function ScenarioList() {
   const userContext = useContext(UserContext);
@@ -25,6 +26,8 @@ export function ScenarioList() {
     }
   );
 
+  console.log(backendScenarios);
+
   return (
     <div className="grid grid-cols-1 place-items-center gap-5 pt-5">
       {typeof backendScenarios.scenarios === "undefined" ? (
@@ -41,7 +44,10 @@ export function ScenarioList() {
                   Scenario {scenario.scenario_id}
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Includes Centers:
+                  Includes {scenario.centers.map((ce: CenterObj,)=>(
+                    <li key={ce.center_id}>{ce.name}</li>
+                  )
+                  )}
                 </p>
               </NavLink>
             </div>

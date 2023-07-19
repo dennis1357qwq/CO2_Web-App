@@ -190,11 +190,17 @@ app.get("/api/scenarios/:id", async (req, res) => {
   console.log("current scenarios:");
   console.log(result);
   const scenarios = [];
+  
   if (result.length > 0) {
     for (let i = 0; i < result.length; i++) {
+      const cent=[];
       const x = await getScenario(result[i].scenario_id);
       console.log(`scenario in question: `, result[i], `bzw: `, x);
-      scenarios[i] = writeScenario(x);
+      for (let j = 0; j< x.length; j++){
+        cent.push(await getCenter(x[j].center_id));
+      }
+      scenarios[i] = writeScenario(x, cent);
+      ;
     }
   }
   res.json({ scenarios });
