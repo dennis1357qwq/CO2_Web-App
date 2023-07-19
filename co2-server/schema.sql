@@ -58,6 +58,6 @@ VALUES (2, 14, 'Penlan St', 'Pwllheli', 'Wales', 'LL53 5DE', 'United Kingdom');
 
 INSERT INTO `centers` VALUES (1, 'Perth Center', 100070, 56.4011, -3.45818, 'PH1', 1, 1);
 
-INSERT INTO `centers` VALUES (1, 'Penlan Center', 100071, 52.8889, -4.41725, 'LL53', 2, 1);
+INSERT INTO `centers` VALUES (2, 'Penlan Center', 100071, 52.8889, -4.41725, 'LL53', 2, 1);
 
 
