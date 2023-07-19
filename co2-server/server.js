@@ -71,8 +71,14 @@ app.get("/api/:id", async (req, res) => {
   for (let i = 0; i < centers.length; i++) {
     let adress1 = await getAdress(centers[i].adress_id);
     /*const currentCarbon = await getCarbonCurrent(centers[i].outer_postcode);
-    console.log(currentCarbon.data[0].data[0].intensity.forecast);
-    centerToCarbon.push([centers[i].center_id, currentCarbon.data[0].data[0].intensity.forecast])*/
+    if (currentCarbon == null){
+      centerToCarbon.push([centers[i].center_id, 0])
+    }
+    else{
+      console.log(currentCarbon.data[0].data[0].intensity.forecast);
+      centerToCarbon.push([centers[i].center_id, currentCarbon.data[0].data[0].intensity.forecast])
+    }*/
+
     const center = centers[i];
     centers[i] = writeCenterObj(center, adress1);
   }

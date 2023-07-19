@@ -94,17 +94,30 @@ export function Center() {
               <p className="mt-2 flex items-center text-sm text-gray-500">
                 CURRENT CARBON INTENSITY:
               </p>
-              <p className="text-3xl font-medium">
-                {currentCarbonData.data[0].data[0].intensity.forecast} gCO
-                <sub>2</sub>/kWH
-              </p>
+              {currentCarbonData ? (
+                <p className="text-3xl font-medium">
+                  {currentCarbonData.data[0].data[0].intensity.forecast} gCO
+                  <sub>2</sub>/kWH
+                </p>
+              ) : (
+                <p className="mt-2 flex items-center text-sm text-gray-500">
+                  ERROR
+                </p>
+              )}
             </div>
             <div className="row-wrapper">
-              <div className="pie-wrapper">
-                <DataPieChart
-                  values={currentCarbonData.data[0].data[0].generationmix}
-                />
-              </div>
+              {currentCarbonData ? (
+                <div className="pie-wrapper">
+                  <DataPieChart
+                    values={currentCarbonData.data[0].data[0].generationmix}
+                  />
+                </div>
+              ) : (
+                <p className="mt-2 flex items-center text-sm text-gray-500">
+                  ERROR
+                </p>
+              )}
+
               <div className="Map-Wrapper">
                 <div className="MapSt">
                   <Map
@@ -120,20 +133,39 @@ export function Center() {
               </div>
             </div>
             <div className="row-wrapper">
-              <div className="text-xl font-medium text-gray-500 breaknormal">
-                With a peak energy consumption of{" "}
-                {backendCenter.peak_consumption} kW, your center located in{" "}
-                {backendCenter.adress.city} will have a carbon intensity of
-                approx.{" "}
-                {+currentCarbonData.data[0].data[0].intensity.forecast *
-                  +backendCenter.peak_consumption}{" "}
-                gCO<sub>2</sub>/h
-              </div>
+              {currentCarbonData ? (
+                <div className="text-xl font-medium text-gray-500 breaknormal">
+                  With a peak energy consumption of{" "}
+                  {backendCenter.peak_consumption} kW, your center located in{" "}
+                  {backendCenter.adress.city} will have a carbon intensity of
+                  approx.{" "}
+                  {+currentCarbonData.data[0].data[0].intensity.forecast *
+                    +backendCenter.peak_consumption}{" "}
+                  gCO<sub>2</sub>/h
+                </div>
+              ) : (
+                <div className="text-xl font-medium text-gray-500">
+                  There was an error while fetching the carbon data! Try again
+                  in a Minute.
+                </div>
+              )}
             </div>
             <div className="row-wrapper">
               <div className="Charts-Wrapper">
-                <p className="text-2xl font-bold">Daily Charts:</p>
-                <DataLineChart values={carbonDataNext24} />
+                <p className="text-2xl font-bold mb-6">
+                  Carbon Intensity Forecast (24h):
+                </p>
+                {carbonDataNext24 ? (
+                  <DataLineChart values={carbonDataNext24} />
+                ) : (
+                  <div className="bg-red-100 border border-red-400 test-red-700 px-4 py-3 rounded relative">
+                    <strong className="font-bold">Error! </strong>
+                    <span className="block sm:inline">
+                      There was an error while fetching the carbon data! Try
+                      again in a Minute.
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

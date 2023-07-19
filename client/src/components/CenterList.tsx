@@ -36,16 +36,16 @@ export function CenterList() {
           backendCenters.centers.map(
             (center: CenterObj, i: number = center.center_id) => (
               <div
-                className="block min-w-[30%] max-w-md p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
+                className="block min-w-[30%] max-w-l p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                 key={i}
               >
                 <NavLink key={i} to={`/center/${center.center_id}`}>
                   <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {center.name}
                   </h5>
-                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                  {/* <p className="font-normal text-gray-700 dark:text-gray-400"> 
                     Current Carbon Intensity:
-                  </p>
+                  </p>*/}
                 </NavLink>
               </div>
             )

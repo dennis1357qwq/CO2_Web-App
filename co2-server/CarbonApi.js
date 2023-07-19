@@ -1,3 +1,5 @@
+import { response } from "express";
+
 export async function getCarbonCurrent(postCode) {
   const headers = {
     Accept: "application/json",
@@ -14,11 +16,22 @@ export async function getCarbonCurrent(postCode) {
       }
     );
 
-    const result = await response.json();
-    return result;
-  } catch {
-    console.log("error");
+    if (response?.ok){
+      console.log(`Response Status is: ${response.status}`)
+      const result = await response.json();
+      return result;
+    }
+    else{
+      console.log(`Response Status is: ${response.status}`)
+      return null;
+    }
+
+  } catch (error){
+    console.log(error);
   }
+
+
+
 }
 
 export async function getCarbonNext24(postCode) {
@@ -39,11 +52,20 @@ export async function getCarbonNext24(postCode) {
         headers: headers,
       }
     );
-    
-    const result = await response.json();
-    const receivedData = result.data.data;
-    return receivedData;
-  } catch {
-    console.log("error");
+
+    if (response?.ok){
+      console.log(`Response Status is: ${response.status}`)
+      const result = await response.json();
+      const receivedData = result.data.data;
+      return receivedData;
+    }
+    else{
+      console.log(`Response Status is: ${response.status}`)
+      return null;
+    }
+
+  } catch (error){
+    console.log(error);
+    return null;
   }
 } 
