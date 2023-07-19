@@ -134,14 +134,14 @@ export function EditCenter(props: CenterObj) {
         console.log("else");
         const re = await getAdressFromLatLong(
           CenterLattitude ? +CenterLattitude : +props.lattitude,
-          CenterLongitude ? +CenterLattitude : +props.longitude
+          CenterLongitude ? +CenterLongitude : +props.longitude
         );
         if (PostUKok) {
           const adress = {
             nr: re.house_number ? re.house_number : 0,
             line_1: re.road,
             line_2: "",
-            city: re.city,
+            city: re.city ? re.city : re.state_district,
             region: re.state,
             postCode: re.postcode,
             country: re.country,
@@ -154,7 +154,7 @@ export function EditCenter(props: CenterObj) {
               : props.peak_consumption,
             lat: CenterLattitude ? CenterLattitude : props.lattitude,
             long: CenterLongitude ? CenterLongitude : props.longitude,
-            outPost: re.postcode,
+            outPost: a.outcode,
             adress: adress,
           };
 
@@ -169,10 +169,10 @@ export function EditCenter(props: CenterObj) {
       }
 
       //Info notification: Center with return data has been added!
+      console.log("end");
+      dialog?.close();
+      navigate(0);
     }
-    console.log("end");
-    // dialog?.close();
-    // navigate(0);
   }
 
   async function checkPostalCode(postal_code: string) {

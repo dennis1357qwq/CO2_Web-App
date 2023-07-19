@@ -10,13 +10,12 @@
 }
 
 .spinner {
-    width: 64px;
-    height: 64px;
-    border: 8px solid;
-    border-color: #0d9488 transparent #0d9488 transparent;
-    border-radius: 50%;
-    animation: spin-anim 1.2s linear infinite;
-    
+  width: 64px;
+  height: 64px;
+  border: 8px solid;
+  border-color: #0d9488 transparent #0d9488 transparent;
+  border-radius: 50%;
+  animation: spin-anim 1.2s linear infinite;
 }
 
 @keyframes spin-anim {
@@ -31,11 +30,11 @@
 .pie-wrapper {
   width: fit-content;
   max-width: 50%;
-  min-width: 620px;
+  min-width: 300px;
   height: 500px;
   max-height: 500px;
   overflow: visible;
-
+  margin-right: 12em;
   font-size: large;
 }
 
@@ -58,8 +57,8 @@
   align-items: center;
 }
 .leaflet-container {
-  height: 50vh;
-  width: 50vh;
+  height: 40vh;
+  width: 40vh;
 }
 
 .Map-Wrapper {
@@ -79,9 +78,54 @@
 .Center-Wrapper {
   display: flex;
   justify-content: center;
+  overflow: scroll;
+  width: 100%;
 }
 
 .Charts-Wrapper {
   height: 500px;
   width: 800px;
+  max-width: 60%;
+  overflow: scroll;
+}
+
+.recharts-surface {
+  width: 500px;
+  overflow: visible;
+}
+
+@media (max-width: 400px) {
+  .row-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .leaflet-container {
+    height: 30vh;
+    width: 40vh;
+  }
+  .pie-wrapper {
+    height: 300px;
+    max-width: 300px;
+    margin-right: 0;
+  }
+
+  .recharts-surface {
+    margin: 0;
+    overflow: visible;
+    width: 300px;
+  }
+
+  .recharts-wrapper {
+    max-width: 300px;
+  }
+
+  .recharts-responsive-container {
+    max-width: 300px;
+  }
+  .Charts-Wrapper {
+    max-width: 300px;
+    max-height: 250px;
+  }
 }

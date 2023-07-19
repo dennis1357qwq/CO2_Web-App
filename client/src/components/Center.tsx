@@ -134,7 +134,7 @@ export function Center() {
             </div>
             <div className="row-wrapper">
               {currentCarbonData ? (
-                <div className="text-xl font-medium text-gray-500">
+                <div className="text-xl font-medium text-gray-500 breaknormal">
                   With a peak energy consumption of{" "}
                   {backendCenter.peak_consumption} kW, your center located in{" "}
                   {backendCenter.adress.city} will have a carbon intensity of

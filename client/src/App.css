@@ -83,7 +83,6 @@
   width: min-content;
 }
 
-
 #AddSubmitButton {
   width: min-content;
   /* background-color: green; */
@@ -104,4 +103,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 715px) {
+  .Home-text {
+    display: none;
+  }
+
+  .AddCenter-text {
+    display: none;
+  }
+
+  .AddScenario-text {
+    display: none;
+  }
+
+  .login-text {
+    display: none;
+  }
 }
