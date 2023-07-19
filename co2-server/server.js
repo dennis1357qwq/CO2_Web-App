@@ -196,17 +196,16 @@ app.get("/api/scenarios/:id", async (req, res) => {
   console.log("current scenarios:");
   console.log(result);
   const scenarios = [];
-  
+
   if (result.length > 0) {
     for (let i = 0; i < result.length; i++) {
-      const cent=[];
+      const cent = [];
       const x = await getScenario(result[i].scenario_id);
       console.log(`scenario in question: `, result[i], `bzw: `, x);
-      for (let j = 0; j< x.length; j++){
+      for (let j = 0; j < x.length; j++) {
         cent.push(await getCenter(x[j].center_id));
       }
       scenarios[i] = writeScenario(x, cent);
-      ;
     }
   }
   res.json({ scenarios });
@@ -238,14 +237,14 @@ function writeScenario(data, cent, carb) {
     const user_id = data[0].user_id;
     const centers = cent;
     const carbon = carb;
-  console.log(`written scenario: `, scenario_id, user_id, centers, carbon);
+    console.log(`written scenario: `, scenario_id, user_id, centers, carbon);
 
     return {
       scenario_id,
       user_id,
       centers,
-      carbon
-  };
+      carbon,
+    };
   }
 }
 
@@ -276,6 +275,8 @@ app.put("/api/scenario/:id", async (req, res) => {
   });
 });
 
-app.listen(5002, () => {
+const PORT = process.env.PORT || 5002;
+
+app.listen(PORT, () => {
   console.log("server started on port 5002");
 });
