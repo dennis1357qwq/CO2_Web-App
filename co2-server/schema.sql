@@ -54,7 +54,7 @@ INSERT INTO adresses(`adress_id`, `unit_number`, `adress_line_1`, `city`, `regio
 VALUES (1, 77, 'Kingswell Terrace', 'Perth', 'Scotland', 'M16 7AL', 'United Kingdom');
 
 INSERT INTO adresses(`adress_id`, `unit_number`, `adress_line_1`, `city`, `region`, `postal_code`, `country`) 
-VALUES (1, 14, 'Penlan St', 'Pwllheli', 'Wales', 'LL53 5DE', 'United Kingdom');
+VALUES (2, 14, 'Penlan St', 'Pwllheli', 'Wales', 'LL53 5DE', 'United Kingdom');
 
 INSERT INTO `centers` VALUES (1, 'Perth Center', 100070, 56.4011, -3.45818, 'PH1', 1, 1);
 
