@@ -278,5 +278,5 @@ app.put("/api/scenario/:id", async (req, res) => {
 const PORT = process.env.PORT || 5002;
 
 app.listen(PORT, () => {
-  console.log("server started on port 5002");
+  console.log(`server started on port ${PORT}`);
 });
