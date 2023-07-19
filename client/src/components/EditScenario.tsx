@@ -2,20 +2,15 @@ import * as React from "react";
 import { useEffect, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ScenarioObj, ScenarioStack } from "./ScenarioInterface";
-import { UserContext } from "../context/UserContext";
 import { CenterStack, CenterObj } from "./CenterInterface";
+import Checkbox from "./Checkbox";
 
 export function EditScenario(props: { scenario_id: number; user_id: number }) {
-  const [NoChangesError, setNoChangesError] = useState(false);
-  const navigate = useNavigate();
-  const userContext = useContext(UserContext);
-
   const user_id = Number(localStorage.getItem("user_id"));
   const { id } = useParams();
   const path1 = `/api/${user_id}`;
   const path = `/api/scenario/${id}`;
 
- 
   // get scenario specific centers
   const [backendScenario, setBackendScenario] = React.useState<ScenarioObj>({
     scenario_id: 0,
@@ -31,7 +26,7 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
       });
   }, []);
 
- // getting all centers
+  // getting all centers
   const [backendCenters, setBackendCenters] = React.useState<CenterStack>({
     centers: [],
   });
@@ -42,7 +37,6 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
         setBackendCenters(data);
       });
   }, []);
-
 
   const dialog = document.querySelector("dialog");
 
@@ -62,7 +56,7 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
     const scenario = {
       scenario_id: Number(id),
       user_id: user_id,
-      centers: cen,
+      centers: included,
     };
 
     fetch(`/api/scenario/${Number(id)}`, {
@@ -84,23 +78,43 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
     included.push(backendScenario.centers[i].center_id);
   }
 
+  const check: boolean[] = [];
+  for (let i = 0; i < backendCenters.centers.length; i++) {
+    if (included.includes(backendCenters.centers[i].center_id)) {
+      check.push(true);
+    } else {
+      check.push(false);
+    }
+  }
+
   console.log(`current ids`);
   console.log(included);
 
-  const [checked, setChecked] = React.useState(false);
-
   return (
     <>
-      <button onClick={handleClickOpenEditor}>Edit</button>
+      <button
+        type="button"
+        className="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        onClick={handleClickOpenEditor}
+      >
+        <svg
+          className="-ml-0.5 mr-1.5 h-5 w-5 text-gray-400"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M2.695 14.763l-1.262 3.154a.5.5 0 00.65.65l3.155-1.262a4 4 0 001.343-.885L17.5 5.5a2.121 2.121 0 00-3-3L3.58 13.42a4 4 0 00-.885 1.343z" />
+        </svg>
+        Edit
+      </button>
 
-      <dialog className="Dialog-wrap" id="dialog">
-        <div className="EditScenario-wrapper">
-          <form className="Edit-form">
-            <div className="Edit-form-labels">
-              <h1>Scenario {id} </h1>
-            </div>
-            <div>
-              <h1> Centers</h1>
+      <dialog className="rounded min-w-[50%]" id="dialog">
+        <div className="py-2 py-2 lg:px-8">
+          <div className="py-2 py-2 lg:px-8">
+            <h3 className="text-xl font-medium text-gray-900 dark:text-gray">
+              Edit Center
+            </h3>
+            <form className="bg-white rounded pt-4 pb-5 mb-2 mt-2">
               {typeof backendCenters === "undefined" ? (
                 <div>Loading ...</div>
               ) : (
@@ -109,61 +123,45 @@ export function EditScenario(props: { scenario_id: number; user_id: number }) {
                     <div key={i}>
                       {included.includes(center.center_id) ? (
                         <div id="adding-center-button">
-                          <input
-                            type="checkbox"
-                            value="Add"
-                            name="checker"
-                            onChange={() => {
-                              if (cen.indexOf(center.center_id) > -1) {
-                                const index = cen.indexOf(center.center_id);
-                                cen.splice(index, 1);
-                              } else {
-                                cen.push(center.center_id);
-                              }
-                              console.log(cen);
-                            }}
+                          <Checkbox
+                            label={center.name}
+                            checked={true}
+                            cen={included}
+                            center={center}
                           />
-                          <label> {center.name}</label>
                         </div>
                       ) : (
-                        <div id="adding-center-button">
-                          <input
-                            type="checkbox"
-                            value="Add"
-                            name="checker"
-                            onChange={() => {
-                              if (cen.indexOf(center.center_id) > -1) {
-                                const index = cen.indexOf(center.center_id);
-                                cen.splice(index, 1);
-                              } else {
-                                cen.push(center.center_id);
-                              }
-                              console.log(cen);
-                            }}
-                          />
-                          <label> {center.name}</label>
-                        </div>
+                        <Checkbox
+                          label={center.name}
+                          checked={false}
+                          cen={included}
+                          center={center}
+                        />
                       )}
                     </div>
                   )
                 )
               )}
-            </div>
-          </form>
-
-          <div className="Button-Message-row">
-            <div className="Button-row">
-              <button id="AddSubmitButton" type="submit" onClick={handleSubmit}>
-                Submit
-              </button>
-              {/* <button onClick={testfunc}>Edit</button> */}
-              <button onClick={handleClickCloseEditor}>Cancel</button>
-            </div>
-            {NoChangesError ? (
-              <label id="NoChangesLabel">No changes made!</label>
-            ) : (
-              ""
-            )}
+              <div className="InputLastLine">
+                <button
+                  className="border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-l font-medium"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+                <div className="Button-Message-row">
+                  <div className="Button-row">
+                    <button
+                      className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium"
+                      onClick={handleClickCloseEditor}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </dialog>

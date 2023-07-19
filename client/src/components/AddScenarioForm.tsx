@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { ScenarioObj, ScenarioStack } from "./ScenarioInterface";
 import { CenterStack, CenterObj, adress } from "./CenterInterface";
 import { UserContext } from "../context/UserContext";
+import Checkbox from "./Checkbox";
 
 export function AddScenarioForm() {
   const navigate = useNavigate();
@@ -72,53 +73,65 @@ export function AddScenarioForm() {
       body: JSON.stringify(scenario),
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => setInputScenario(data));
 
     navigate(`/dashboard/${user_id}`);
+    window.location.reload();
   }
 
   return (
     <>
-      <form className="AddCenter-wrapper">
-        <h1>New Scenario</h1>
-        <div className="CenterListWrapper">
-          {typeof backendCenters.centers === "undefined" ? (
-            <div>Loading ...</div>
-          ) : (
-            backendCenters.centers.map(
-              (center: CenterObj, i: number = center.center_id) => (
-                <div key={i}>
-                  <div id="adding-center-button">
-                    <input
-                      type="checkbox"
-                      value="Add"
-                      name="checker"
-                      onChange={() => {
-                        if (cen.indexOf(center.center_id) > -1) {
-                          const index = cen.indexOf(center.center_id);
-                          cen.splice(index, 1);
-                        } else {
-                          cen.push(center.center_id);
-                        }
-                        console.log(cen);
-                      }}
-                    />
-                    <label> {center.name}</label>
-                  </div>
+      <div className="max-w-m flex flex-col justify-center items-center">
+        <form
+          id="AddCenterForm"
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-4 min-w-[40%]"
+        >
+          <div className="row-wrapper">
+            <h3 className="text-xl font-medium text-gray-900 dark:text-gray">
+              Create New Scenario
+            </h3>
+            <div className="row-wrapper">
+              <div className="flex items-center mb-2">
+                <div className="CenterListWrapper">
+                  {typeof backendCenters.centers === "undefined" ? (
+                    <div>Loading ...</div>
+                  ) : (
+                    backendCenters.centers.map(
+                      (center: CenterObj, i: number = center.center_id) => (
+                        <div key={i}>
+                          <div id="adding-center-button">
+                            <Checkbox
+                              label={center.name}
+                              cen={cen}
+                              checked={false}
+                              center={center}
+                            />
+                          </div>
+                        </div>
+                      )
+                    )
+                  )}
                 </div>
-              )
-            )
-          )}
-        </div>
-        <div className="InputLastLine">
-          <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
-            <button>Cancel</button>
-          </NavLink>
-          <button id="AddSubmitButton" type="submit" onClick={handleSubmit}>
-            Add
-          </button>
-        </div>
-      </form>
+              </div>
+            </div>
+
+            <div className="InputLastLine">
+              <NavLink id="AddNavLink" to={`/dashboard/${user_id}`}>
+                <button className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium">
+                  Cancel
+                </button>
+              </NavLink>
+              <button
+                className="border border-teal-500 bg-teal-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-l font-medium"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </>
   );
 }

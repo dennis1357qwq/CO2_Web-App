@@ -203,32 +203,37 @@ app.get("/api/scenarios/:id", async (req, res) => {
 app.get("/api/scenario/:id", async (req, res) => {
   const data = await getScenario(req.params.id);
   const cen = [];
+  const carb = [];
   console.log(`call of method`);
-  console.log(data);
+  console.log(`scenario centers:`, data);
   for (let i in data) {
     const akt = await getCenter(data[i].center_id);
     console.log(`center to be added to current scenario: `, akt);
+    const currentCarbon = await getCarbonCurrent(akt.outer_postcode);
     cen.push(akt);
+    carb.push(currentCarbon);
   }
-  const scenario = writeScenario(data, cen);
+  const scenario = writeScenario(data, cen, carb);
 
   res.json({ scenario });
 });
 
-function writeScenario(data, cent) {
+function writeScenario(data, cent, carb) {
   console.log(`try to write`);
   console.log(data);
   if (data.length > 0) {
     const scenario_id = data[0].scenario_id;
     const user_id = data[0].user_id;
     const centers = cent;
-    console.log(`written scenario: `, scenario_id, user_id, centers);
+    const carbon = carb;
+  console.log(`written scenario: `, scenario_id, user_id, centers, carbon);
 
     return {
       scenario_id,
       user_id,
       centers,
-    };
+      carbon
+  };
   }
 }
 
