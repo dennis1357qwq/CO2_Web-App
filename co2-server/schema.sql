@@ -51,10 +51,13 @@ CREATE TABLE `center_scenario` (
 INSERT INTO `user` VALUES (1, 'admin', 'admin@admin.de', 'admin');
 
 INSERT INTO adresses(`adress_id`, `unit_number`, `adress_line_1`, `city`, `region`, `postal_code`, `country`) 
-VALUES (1, 18, 'Zinzendorfstr.', 'Berlin', 'Berlin', '10555', 'Germany');
+VALUES (1, 77, 'Kingswell Terrace', 'Perth', 'Scotland', 'M16 7AL', 'United Kingdom');
 
-INSERT INTO `centers` VALUES (1, 'Center 1', 100070, 52.5226, 13.3314, 'RG10', 1, 1);
+INSERT INTO adresses(`adress_id`, `unit_number`, `adress_line_1`, `city`, `region`, `postal_code`, `country`) 
+VALUES (1, 14, 'Penlan St', 'Pwllheli', 'Wales', 'LL53 5DE', 'United Kingdom');
 
-INSERT INTO `scenario` VALUES (1, 1);
+INSERT INTO `centers` VALUES (1, 'Perth Center', 100070, 56.4011, -3.45818, 'PH1', 1, 1);
 
-INSERT INTO `center_scenario` VALUES(1, 1); 
+INSERT INTO `centers` VALUES (1, 'Penlan Center', 100071, 52.8889, -4.41725, 'LL53', 2, 1);
+
+
