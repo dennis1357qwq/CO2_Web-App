@@ -43,12 +43,20 @@ export function ScenarioList() {
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   Scenario {scenario.scenario_id}
                 </h5>
-                <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Includes {scenario.centers.map((ce: CenterObj,)=>(
-                    <li key={ce.center_id}>{ce.name}</li>
-                  )
+                <h5 className="font-normal w-40 text-gray-700 dark:text-gray-400">
+                  {scenario.centers.length > 2 ? (
+                    <div>
+                      {scenario.centers[0].name}, {scenario.centers[1].name},
+                      ...
+                    </div>
+                  ) : scenario.centers.length == 1 ? (
+                    <div> {scenario.centers[0].name}</div>
+                  ) : (
+                    <div>
+                      {scenario.centers[0].name}, {scenario.centers[1].name}
+                    </div>
                   )}
-                </p>
+                </h5>
               </NavLink>
             </div>
           )
