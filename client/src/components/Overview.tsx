@@ -29,7 +29,7 @@ export const Overview = () => {
         });
         await userContext.setAuthenticated(true);
       } else {
-        navigate("/");
+        navigate("/co2");
       }
     }
     checkLoggedIn();

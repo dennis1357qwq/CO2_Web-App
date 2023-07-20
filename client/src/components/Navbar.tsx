@@ -24,7 +24,7 @@ export default function Navbar() {
               <div className="flex-shrink-0"></div>
               <div className="ml-10 flex items-baseline space-x-4">
                 <div>
-                  <NavLink to={`/dashboard/${user_id}`}>
+                  <NavLink to={`/co2/dashboard/${user_id}`}>
                     <button
                       className="bg-gray-900 text-white rounded-md px-3 py-2 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-sm font-medium"
                       id="Home"
@@ -52,7 +52,7 @@ export default function Navbar() {
                   </NavLink>
                 </div>
                 <div>
-                  <NavLink to={`/newCenter/${user_id}`}>
+                  <NavLink to={`/co2/newCenter/${user_id}`}>
                     <button
                       className="bg-gray-700 text-white rounded-md px-3 py-2 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-sm font-medium"
                       id="AddButton"
@@ -80,7 +80,7 @@ export default function Navbar() {
                   </NavLink>
                 </div>
                 <div>
-                  <NavLink to={`/newScenario`}>
+                  <NavLink to={`/co2/newScenario`}>
                     <button
                       className="bg-gray-700 text-white rounded-md px-3 py-2 transition duration-500 ease select-none hover:bg-teal-600 focus:outline-none focus:shadow-outline text-sm font-medium"
                       id="AddButton"

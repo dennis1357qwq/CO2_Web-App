@@ -17,15 +17,15 @@ function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/dashboard/:id" element={<Overview />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/center/:id" element={<Center />} />
-        <Route path="/newCenter/:id" element={<AddCenterForm />} />
-        <Route path="*" element={<Overview />} />
+        <Route path="/co2" element={<LoginPage />} />
+        <Route path="/co2/dashboard/:id" element={<Overview />} />
+        <Route path="/co2/register" element={<RegisterPage />} />
+        <Route path="/co2/center/:id" element={<Center />} />
+        <Route path="/co2/newCenter/:id" element={<AddCenterForm />} />
+        <Route path="*" element={<LoginPage />} />
 
-        <Route path="/newScenario" element={<AddScenarioForm />} />
-        <Route path="/scenario/:id" element={<Scenario />} />
+        <Route path="/co2/newScenario" element={<AddScenarioForm />} />
+        <Route path="/co2/scenario/:id" element={<Scenario />} />
       </Routes>
     </>
   );

@@ -17,7 +17,7 @@ export function DeleteButton(props: {
 
     //Info notification: Center with return data has been added!
 
-    navigate(`/dashboard/${props.user_id}`);
+    navigate(`/co2/dashboard/${props.user_id}`);
   };
 
   return (

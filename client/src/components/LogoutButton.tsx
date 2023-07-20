@@ -11,7 +11,7 @@ export function LogoutButton() {
     userContext.setUser(null);
     userContext.setAuthenticated(false);
     localStorage.clear();
-    navigate("/");
+    navigate("/co2");
   };
   return (
     <>

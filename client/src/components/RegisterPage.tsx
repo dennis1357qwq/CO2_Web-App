@@ -120,7 +120,7 @@ export default function RegisterPage() {
         >
           Register
         </button>
-        <NavLink to="/">
+        <NavLink to="/co2">
           <button className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
             Already have an Account?
           </button>

@@ -39,7 +39,7 @@ export function CenterList() {
                 className="block min-w-[30%] max-w-l p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
                 key={i}
               >
-                <NavLink key={i} to={`/center/${center.center_id}`}>
+                <NavLink key={i} to={`/co2/center/${center.center_id}`}>
                   <h5 className="mb-2 w-40 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {center.name}
                   </h5>

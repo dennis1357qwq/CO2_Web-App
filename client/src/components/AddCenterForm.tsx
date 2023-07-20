@@ -176,7 +176,7 @@ export function AddCenterForm() {
 
         //Info notification: Center with return data has been added!
 
-        navigate(`/dashboard/${id}`);
+        navigate(`/co2/dashboard/${id}`);
       }
     }
   }
@@ -502,7 +502,7 @@ export function AddCenterForm() {
             >
               Add Center
             </button>
-            <NavLink id="AddNavLink" to={`/dashboard/${id}`}>
+            <NavLink id="AddNavLink" to={`/co2/dashboard/${id}`}>
               <button className="border border-red-500 bg-red-500 text-white rounded-md px-4 py-2 m-3 transition duration-500 ease select-none hover:bg-red-800 focus:outline-none focus:shadow-outline text-l font-medium">
                 Cancel
               </button>

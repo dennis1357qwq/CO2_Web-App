@@ -61,7 +61,7 @@ export default function LoginPage() {
       localStorage.setItem("status", "loggedIn");
       localStorage.setItem("username", username);
       localStorage.setItem("user_id", user_id);
-      navigate(`/dashboard/${user_id}`);
+      navigate(`/co2/dashboard/${user_id}`);
     }
   }
 
@@ -113,7 +113,7 @@ export default function LoginPage() {
         >
           Login
         </button>
-        <NavLink to="/register">
+        <NavLink to="/co2/register">
           <button className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">
             Need an Account?
           </button>
