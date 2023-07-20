@@ -24,7 +24,7 @@ Make sure to install the dependencies of the server and client by running
 npm install
 ```
 in the corresponding subdirectories.
-After that you are able to start the server by running 
+After that you are able to start the server and client by running 
 ```
 npm run dev
 ```
