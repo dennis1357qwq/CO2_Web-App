@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import { CenterObj } from "./CenterInterface";
 import { Map } from "./Map";
@@ -53,6 +53,10 @@ export function EditCenter(props: CenterObj) {
   dialog?.addEventListener("cancel", (event) => {
     event.preventDefault();
   });
+
+  useEffect(() => {
+    dialog?.removeAttribute("open");
+  }, []);
 
   const handleClickOpenEditor = () => {
     dialog?.showModal();

@@ -151,7 +151,11 @@ export function AddCenterForm() {
               nr: re.house_number ? re.house_number : 0,
               line_1: re.road,
               line_2: "",
-              city: re.city,
+              city: re.city
+                ? re.city
+                : re.state_district
+                ? re.state_district
+                : re.town,
               region: re.state,
               postCode: a.postcode,
               country: re.country,
