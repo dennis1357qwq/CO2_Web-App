@@ -146,13 +146,14 @@ export function AddCenterForm() {
               +CenterLongitude
             );
 
+            a = await checkPostalCode(re.postcode);
             const adress = {
               nr: re.house_number ? re.house_number : 0,
               line_1: re.road,
               line_2: "",
               city: re.city,
               region: re.state,
-              postCode: re.postcode,
+              postCode: a.postcode,
               country: re.country,
             };
             const center = {
@@ -160,7 +161,7 @@ export function AddCenterForm() {
               CenterPeakConsumption: CenterPeakConsumption,
               lat: CenterLattitude,
               long: CenterLongitude,
-              outPost: re.postcode,
+              outPost: a.outcode,
               adress: adress,
             };
 
