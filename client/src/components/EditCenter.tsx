@@ -54,10 +54,6 @@ export function EditCenter(props: CenterObj) {
     event.preventDefault();
   });
 
-  useEffect(() => {
-    dialog?.removeAttribute("open");
-  }, []);
-
   const handleClickOpenEditor = () => {
     dialog?.showModal();
   };
