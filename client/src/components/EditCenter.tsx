@@ -55,6 +55,7 @@ export function EditCenter(props: CenterObj) {
   });
 
   const handleClickOpenEditor = () => {
+    dialog?.removeAttribute("open");
     dialog?.showModal();
   };
 
@@ -265,12 +266,7 @@ export function EditCenter(props: CenterObj) {
         Edit
       </button>
 
-      <dialog
-        className="rounded min-w-[50%]"
-        id="dialog"
-        role="dialog"
-        aria-modal="true"
-      >
+      <dialog className="rounded min-w-[50%]" id="dialog" role="dialog">
         <div className="py-2 py-2 lg:px-8">
           <h3 className="text-xl font-medium text-gray-900 dark:text-gray">
             Edit Center
