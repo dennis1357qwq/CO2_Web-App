@@ -314,7 +314,7 @@ export function AddCenterForm() {
               className="block mb-2 text-sm font-medium text-gray-900"
               htmlFor="name"
             >
-              Center Name
+              Center Name:
             </label>
             <input
               id="name"
@@ -329,7 +329,7 @@ export function AddCenterForm() {
               className="block mb-2 text-sm font-medium text-gray-900"
               htmlFor="peak-consumption"
             >
-              Peak Consumption
+              Peak Consumption in kW (kilowatt):
             </label>
             <input
               id="peak-consumption"

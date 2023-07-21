@@ -284,7 +284,7 @@ export function EditCenter(props: CenterObj) {
               className="block mb-2 text-sm font-medium text-gray-900"
               htmlFor="center-name"
             >
-              Name:
+              Center Name:
             </label>
             <input
               id="center-name"
@@ -300,7 +300,7 @@ export function EditCenter(props: CenterObj) {
               className="block mb-2 text-sm font-medium text-gray-900"
               htmlFor="peak-consumption"
             >
-              Peak Consumption:{" "}
+              Peak Consumption in kW (kilowatt):{" "}
             </label>
             <input
               id="peak-consumption"
