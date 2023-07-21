@@ -4,7 +4,7 @@
 
 ## Getting Started
 
-Clone the most recent version of this repository.
+Clone the most recent version of this repository and make sure to have atleast Node.js Version 18.15.0 installed.
 
 ### Set up a local MySQL database
 
