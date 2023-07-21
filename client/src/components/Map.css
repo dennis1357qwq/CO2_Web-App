@@ -3,3 +3,7 @@
   width: 100%;
   z-index: 0;
 }
+
+.leaflet-default-icon-path {
+  background-image: url('https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png')
+}
