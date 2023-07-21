@@ -21,6 +21,7 @@ export function EditCenter(props: CenterObj) {
   const [CenterAdressRegion, setCenterAdressRegion] = useState("");
   const [CenterAdressPostCode, setCenterAdressPostCode] = useState("");
   const [CenterAdressCountry, setCenterAdressCountry] = useState("");
+  const [DialogOpen, setDialogOpen] = useState(false);
   const navigate = useNavigate();
 
   const dialog = document.querySelector("dialog");
@@ -57,6 +58,7 @@ export function EditCenter(props: CenterObj) {
   const handleClickOpenEditor = () => {
     dialog?.removeAttribute("open");
     dialog?.showModal();
+    setDialogOpen(true);
   };
 
   const handleClickCloseEditor = () => {
@@ -266,7 +268,7 @@ export function EditCenter(props: CenterObj) {
         Edit
       </button>
 
-      <dialog className="rounded min-w-[50%]" id="dialog" role="dialog">
+      <dialog className="rounded min-w-[50%]" open={DialogOpen}>
         <div className="py-2 py-2 lg:px-8">
           <h3 className="text-xl font-medium text-gray-900 dark:text-gray">
             Edit Center
