@@ -90,9 +90,9 @@ app.get("/api/:id", async (req, res) => {
 app.get("/api/center/:id", async (req, res) => {
   const center1 = await getCenter(req.params.id);
   if (!center1) res.status(404);
-  if (!center1.adress_id) {
+  if (!center1?.adress_id) {
     res.json({
-      center: center,
+      center: center1,
     });
   } else {
     const adress1 = await getAdress(center1.adress_id);
