@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  co2API:
+    container_name: co2APIcontainer
+    build: .
+    ports:
+      - 5002:5002
+    expose:
+      - 5002
+    environment:
+      MYSQL_HOST: "192.168.2.124"
+      MYSQL_USER: "outside"
+      MYSQL_PASSWORD: "M4q03r4db"
+      MYSQL_DATABASE: "Co2_Center_DB"
