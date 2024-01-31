@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: co2-app-deploy
+  labels:
+    name: co2-app-deploy
+    app: co2-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: co2-api-pod
+      app: co2-app
+
+  template:
+    metadata:
+      name: co2-api-pod
+      labels:
+        name: co2-api-pod
+        app: co2-app
+    spec:
+      containers:
+        - name: co2-api
+          image: dennis1357/co2api:1.0.1
+          ports:
+            - containerPort: 5002
