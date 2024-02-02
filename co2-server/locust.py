@@ -1,8 +1,8 @@
 import time
-from locust import HttpUser, tast, between
+from locust import HttpUser, task, between
 
 class WebsiteUser(HttpUser):
-    wait_time = between(1, 5)
+    wait_time = between(1, 2)
 
     @task
     def centers_array_1(self):

@@ -6,7 +6,7 @@ metadata:
     name: co2-app-deploy
     app: co2-app
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       name: co2-api-pod
@@ -24,3 +24,5 @@ spec:
           image: dennis1357/co2api:1.0.1
           ports:
             - containerPort: 5002
+      nodeSelector:
+        worker-node: indeed
